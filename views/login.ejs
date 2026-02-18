@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+</head>
+
+<body style="
+    margin:0;
+    padding:20px;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #141426, #1c1c3c);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    box-sizing:border-box;
+">
+
+<div style="
+    background: rgba(28, 28, 60, 0.95);
+    padding: clamp(20px, 5vw, 35px);
+    border-radius: 18px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 0 30px rgba(155, 89, 255, 0.25);
+    color: #fff;
+    box-sizing:border-box;
+">
+
+    <h2 style="
+        text-align:center;
+        margin-bottom:25px;
+        color:#b388ff;
+        font-size: clamp(20px, 5vw, 24px);
+        letter-spacing:1px;
+    ">Airline Voucher System</h2>
+
+    <form>
+
+        <div style="margin-bottom:20px;">
+            <label style="font-size:14px; color:#bbb;">Email</label>
+            <input type="email" placeholder="Enter your email" required
+                style="
+                    width:100%;
+                    padding:14px;
+                    margin-top:6px;
+                    border-radius:10px;
+                    border:1px solid #333;
+                    background:#1a1a35;
+                    color:#fff;
+                    outline:none;
+                    font-size:15px;
+                    box-sizing:border-box;
+                ">
+        </div>
+
+        <div style="margin-bottom:22px;">
+            <label style="font-size:14px; color:#bbb;">Password</label>
+            <input type="password" placeholder="Enter your password" required
+                style="
+                    width:100%;
+                    padding:14px;
+                    margin-top:6px;
+                    border-radius:10px;
+                    border:1px solid #333;
+                    background:#1a1a35;
+                    color:#fff;
+                    outline:none;
+                    font-size:15px;
+                    box-sizing:border-box;
+                ">
+        </div>
+
+        <button type="submit"
+            style="
+                width:100%;
+                padding:14px;
+                border:none;
+                border-radius:10px;
+                background: linear-gradient(90deg, #7b2ff7, #a855f7);
+                color:#fff;
+                font-size:16px;
+                font-weight:bold;
+                cursor:pointer;
+                transition:0.3s ease;
+            "
+            onmouseover="this.style.transform='scale(1.02)'"
+            onmouseout="this.style.transform='scale(1)'"
+        >
+            Login
+        </button>
+
+    </form>
+
+    <!-- <p style="
+        text-align:center;
+        margin-top:20px;
+        font-size:14px;
+        color:#aaa;
+    ">
+        Don't have an account?
+        <a href="#" style="color:#b388ff; text-decoration:none;">Sign Up</a>
+    </p> -->
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voucher Entry</title>
+</head>
+<body style="
+    margin:0;
+    padding:0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #141426, #1c1c3c);
+    color:#fff;
+">
+
+<!-- Voucher Header -->
+<div style="
+    width:100%;
+    padding:16px 24px;
+    background: #1e1e3d;
+    border-bottom: 3px solid #7b2ff7;
+    font-size:20px;
+    font-weight:bold;
+    color:#b388ff;
+">
+    Voucher Entry Form
+</div>
+
+<form style="width:100%; max-width:900px; margin:20px auto; padding:20px; box-sizing:border-box;">
+
+<!-- Customers Section -->
+<div style="margin-bottom:24px;">
+    <h3 style="margin-bottom:12px; color:#c77dff;">Passenger(s)</h3>
+    <div id="customersContainer"></div>
+    <button type="button" onclick="addCustomer()" style="
+        padding:10px 16px;
+        background:#7b2ff7;
+        border:none;
+        border-radius:8px;
+        color:#fff;
+        cursor:pointer;
+        margin-top:6px;
+    ">+ Add Customer</button>
+</div>
+
+<!-- Hotels Section -->
+<div style="margin-bottom:24px;">
+    <h3 style="margin-bottom:12px; color:#c77dff;">Hotel(s)</h3>
+    <div id="hotelsContainer"></div>
+    <button type="button" onclick="addHotel()" style="
+        padding:10px 16px;
+        background:#7b2ff7;
+        border:none;
+        border-radius:8px;
+        color:#fff;
+        cursor:pointer;
+        margin-top:6px;
+    ">+ Add Hotel</button>
+</div>
+
+<!-- Transport Section -->
+<div style="margin-bottom:24px;">
+    <h3 style="margin-bottom:12px; color:#c77dff;">Transport(s)</h3>
+    <div id="transportContainer"></div>
+    <button type="button" onclick="addTransport()" style="
+        padding:10px 16px;
+        background:#7b2ff7;
+        border:none;
+        border-radius:8px;
+        color:#fff;
+        cursor:pointer;
+        margin-top:6px;
+    ">+ Add Transport</button>
+</div>
+
+<!-- Flight Section -->
+<div style="margin-bottom:24px;">
+    <h3 style="margin-bottom:12px; color:#c77dff;">Flight / Transport</h3>
+
+    <label>Departure Flight</label><br>
+    <input type="text" name="depFlight" placeholder="Enter Flight Code" required
+        style="width:100%; padding:12px; margin:6px 0; border-radius:8px; border:1px solid #444; background:#1a1a35; color:#fff;">
+
+    <label>Departure Time (24h)</label><br>
+    <input type="time" name="depTime" required style="width:100%; padding:12px; margin:6px 0; border-radius:8px; border:1px solid #444; background:#1a1a35; color:#fff;">
+
+    <label>Arrival Flight</label><br>
+    <input type="text" name="arrFlight" placeholder="Enter Flight Code" required
+        style="width:100%; padding:12px; margin:6px 0; border-radius:8px; border:1px solid #444; background:#1a1a35; color:#fff;">
+
+    <label>Arrival Time (24h)</label><br>
+    <input type="time" name="arrTime" required style="width:100%; padding:12px; margin:6px 0; border-radius:8px; border:1px solid #444; background:#1a1a35; color:#fff;">
+</div>
+
+<!-- Notes Section -->
+<div style="margin-bottom:24px;">
+    <h3 style="margin-bottom:12px; color:#c77dff;">Notes</h3>
+    <textarea name="voucherNotes" placeholder="Type your notes here..." rows="5" 
+        style="width:100%; padding:12px; border-radius:8px; border:1px solid #444; background:#1a1a35; color:#fff; resize:vertical;"
+        oninput="formatBullets(this)"></textarea>
+</div>
+
+<!-- Submit Button -->
+<button type="submit"
+    style="
+        width:100%;
+        padding:14px;
+        border:none;
+        border-radius:10px;
+        background: linear-gradient(90deg, #7b2ff7, #a855f7);
+        color:#fff;
+        font-size:16px;
+        font-weight:bold;
+        cursor:pointer;
+        margin-top:12px;
+    "
+>
+    Save Voucher
+</button>
+
+</form>
+
+<script>
+let customerCount = 0;
+let hotelCount = 0;
+let transportCount = 0;
+
+// ----- Customers -----
+function addCustomer() {
+    customerCount++;
+    const container = document.getElementById('customersContainer');
+    const div = document.createElement('div');
+    div.className = 'customerRow';
+    div.style = "border:1px solid #444; padding:12px; margin-bottom:12px; border-radius:8px; background:#1a1a35; position:relative;";
+    div.innerHTML = `
+        <span onclick="removeRow(this)" style="position:absolute; top:6px; right:6px; cursor:pointer; color:#ff6b6b; font-weight:bold;">❌</span>
+
+        <label>Customer Name</label><br>
+        <input type="text" name="customerName[]" placeholder="Enter Name" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
+
+        <label>Gender</label><br>
+        <select name="customerGender[]" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="infant">Infant</option>
+            <option value="children">Children</option>
+        </select>
+
+        <label>Passport No</label><br>
+        <input type="text" name="customerPassport[]" placeholder="Enter Passport" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
+
+        <label>Visa No</label><br>
+        <input type="text" name="customerVisa[]" placeholder="Enter Visa No" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
+
+        <label>PNR</label><br>
+        <input type="text" name="customerPNR[]" placeholder="Enter PNR" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
+    `;
+    container.appendChild(div);
+}
+
+// ----- Hotels -----
+function addHotel() {
+    hotelCount++;
+    const container = document.getElementById('hotelsContainer');
+    const div = document.createElement('div');
+    div.className = 'hotelRow';
+    div.style = "border:1px solid #444; padding:12px; margin-bottom:12px; border-radius:8px; background:#1a1a35; position:relative;";
+    div.innerHTML = `
+        <span onclick="removeRow(this)" style="position:absolute; top:6px; right:6px; cursor:pointer; color:#ff6b6b; font-weight:bold;">❌</span>
+
+        <label>Hotel Name</label><br>
+        <input type="text" name="hotelName[]" placeholder="Enter Hotel" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
+
+        <label>City</label><br>
+        <input type="text" name="hotelCity[]" placeholder="Enter City" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
+
+        <label>Room Type</label><br>
+        <select name="hotelRoomType[]" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
+            <option value="">Select Room Type</option>
+            <option value="sharing">Sharing</option>
+            <option value="quint">Quint</option>
+            <option value="quad">Quad</option>
+            <option value="triple">Triple</option>
+            <option value="double">Double</option>
+        </select>
+
+        <label>Check-in Date</label><br>
+        <input type="date" name="hotelCheckin[]" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
+
+        <label>Check-out Date</label><br>
+        <input type="date" name="hotelCheckout[]" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
+    `;
+    container.appendChild(div);
+}
+
+// ----- Transport -----
+function addTransport() {
+    transportCount++;
+    const container = document.getElementById('transportContainer');
+    const div = document.createElement('div');
+    div.className = 'transportRow';
+    div.style = "border:1px solid #444; padding:12px; margin-bottom:12px; border-radius:8px; background:#1a1a35; position:relative;";
+    div.innerHTML = `
+        <span onclick="removeRow(this)" style="position:absolute; top:6px; right:6px; cursor:pointer; color:#ff6b6b; font-weight:bold;">❌</span>
+
+        <label>Route / Description</label><br>
+        <input type="text" name="transportRoute[]" placeholder="Enter Route / Description" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
+
+        <label>Transport Type</label><br>
+        <select name="transportType[]" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
+            <option value="">Select Transport Type</option>
+            <option value="privateCar">Private Car</option>
+            <option value="economyBus">Economy By Bus</option>
+        </select>
+    `;
+    container.appendChild(div);
+}
+
+// ----- Remove row -----
+function removeRow(el) {
+    const parent = el.parentElement;
+    parent.remove();
+}
+
+// ----- Notes bullet auto -----
+function formatBullets(textarea) {
+    let lines = textarea.value.split(/\r?\n/);
+    textarea.value = lines.map(l => l.startsWith("• ") ? l : "• " + l).join("\n");
+}
+
+// Page load: containers empty
+</script>
+
+</body>
+</html>

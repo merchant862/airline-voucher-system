@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Voucher</title>
+</head>
+
+<body style="
+    margin:0;
+    padding:0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #141426, #1c1c3c);
+    color:#fff;
+">
+
+<!-- Header -->
+<div style="
+    width:100%;
+    padding:18px 24px;
+    background:#1e1e3d;
+    border-bottom:3px solid #7b2ff7;
+    font-size:20px;
+    font-weight:bold;
+    color:#b388ff;
+">
+    Edit Voucher
+</div>
+
+<form style="max-width:1100px;margin:20px auto;padding:20px;box-sizing:border-box;">
+
+<!-- ============================= -->
+<!-- Departure Flight -->
+<!-- ============================= -->
+
+<div style="margin-bottom:30px;border:1px solid #444;padding:20px;border-radius:10px;background:#1a1a35;">
+    <h3 style="color:#c77dff;">Departure Flight</h3>
+
+    <label>Date</label>
+    <input type="date"
+        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+
+    <label>Flight No</label>
+    <input type="text"
+        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+
+    <label>From City</label>
+    <input type="text"
+        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+
+    <label>To City</label>
+    <input type="text"
+        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+
+    <label>Takeoff Time</label>
+    <input type="time"
+        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+
+    <label>Landing Time</label>
+    <input type="time"
+        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+</div>
+
+<!-- ============================= -->
+<!-- Arrival Flight -->
+<!-- ============================= -->
+
+<div style="margin-bottom:30px;border:1px solid #444;padding:20px;border-radius:10px;background:#1a1a35;">
+    <h3 style="color:#c77dff;">Arrival Flight</h3>
+
+    <label>Date</label>
+    <input type="date"
+        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+
+    <label>Flight No</label>
+    <input type="text"
+        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+
+    <label>From City</label>
+    <input type="text"
+        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+
+    <label>To City</label>
+    <input type="text"
+        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+
+    <label>Takeoff Time</label>
+    <input type="time"
+        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+
+    <label>Landing Time</label>
+    <input type="time"
+        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+</div>
+
+<!-- ============================= -->
+<!-- Passengers -->
+<!-- ============================= -->
+
+<div style="margin-bottom:30px;">
+    <h3 style="color:#c77dff;">Passengers</h3>
+
+    <div style="border:1px solid #444;padding:15px;border-radius:10px;background:#1a1a35;margin-bottom:10px;">
+        <input type="text" placeholder="Name"
+            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
+        <input type="text" placeholder="Passport"
+            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
+        <input type="text" placeholder="Visa"
+            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
+        <input type="text" placeholder="PNR"
+            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
+    </div>
+
+    <button type="button"
+        style="padding:8px 14px;background:#7b2ff7;border:none;border-radius:6px;color:#fff;">
+        + Add Passenger
+    </button>
+</div>
+
+<!-- ============================= -->
+<!-- Hotels -->
+<!-- ============================= -->
+
+<div style="margin-bottom:30px;">
+    <h3 style="color:#c77dff;">Hotels</h3>
+
+    <div style="border:1px solid #444;padding:15px;border-radius:10px;background:#1a1a35;margin-bottom:10px;">
+        <input type="text" placeholder="Hotel Name"
+            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
+        <input type="text" placeholder="City"
+            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
+        <input type="text" placeholder="Room Type"
+            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
+        <input type="date"
+            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
+        <input type="date"
+            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
+        <input type="number" placeholder="No of Nights"
+            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
+    </div>
+
+    <button type="button"
+        style="padding:8px 14px;background:#7b2ff7;border:none;border-radius:6px;color:#fff;">
+        + Add Hotel
+    </button>
+</div>
+
+<!-- ============================= -->
+<!-- Transports -->
+<!-- ============================= -->
+
+<div style="margin-bottom:30px;">
+    <h3 style="color:#c77dff;">Transports</h3>
+
+    <div style="border:1px solid #444;padding:15px;border-radius:10px;background:#1a1a35;margin-bottom:10px;">
+        <input type="text" placeholder="Route"
+            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
+        <input type="text" placeholder="Type"
+            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
+    </div>
+
+    <button type="button"
+        style="padding:8px 14px;background:#7b2ff7;border:none;border-radius:6px;color:#fff;">
+        + Add Transport
+    </button>
+</div>
+
+<!-- ============================= -->
+<!-- Notes -->
+<!-- ============================= -->
+
+<div style="margin-bottom:30px;">
+    <h3 style="color:#c77dff;">Notes</h3>
+    <textarea rows="5"
+        style="width:100%;padding:10px;border-radius:8px;border:1px solid #333;background:#2a2a50;color:#fff;">
+    </textarea>
+</div>
+
+<!-- Submit -->
+<button type="submit"
+    style="
+        width:100%;
+        padding:14px;
+        border:none;
+        border-radius:10px;
+        background: linear-gradient(90deg, #7b2ff7, #a855f7);
+        color:#fff;
+        font-size:16px;
+        font-weight:bold;
+        cursor:pointer;
+    ">
+    Update Voucher
+</button>
+
+</form>
+</body>
+</html>

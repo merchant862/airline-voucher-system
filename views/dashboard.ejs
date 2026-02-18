@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voucher List</title>
+</head>
+<body style="
+    margin:0;
+    padding:0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #141426, #1c1c3c);
+    color:#fff;
+">
+
+<!-- Top Total Vouchers with Generate Button -->
+<div style="
+    width:100%;
+    padding:16px 24px;
+    background:#1e1e3d;
+    border-bottom:3px solid #7b2ff7;
+    font-size:20px;
+    font-weight:bold;
+    color:#b388ff;
+    box-sizing:border-box;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+">
+    <span>Total Vouchers: <span id="totalVouchers">0</span></span>
+    <button onclick="generateVoucher()" style="
+        padding:8px 16px;
+        border:none;
+        border-radius:8px;
+        background: linear-gradient(90deg, #7b2ff7, #a855f7);
+        color:#fff;
+        font-weight:bold;
+        cursor:pointer;
+    ">Generate New Voucher</button>
+</div>
+
+<!-- Table Container -->
+<div style="width:95%; max-width:1000px; margin:20px auto; overflow-x:auto;">
+    <table style="width:100%; border-collapse:collapse;">
+        <thead>
+            <tr style="background:#1a1a35; color:#c77dff;">
+                <th style="padding:12px; border:1px solid #444; text-align:left;">Voucher No</th>
+                <th style="padding:12px; border:1px solid #444; text-align:left;">Voucher Date</th>
+                <th style="padding:12px; border:1px solid #444; text-align:left;">Company Name</th>
+            </tr>
+        </thead>
+        <tbody id="voucherTableBody">
+            <!-- Rows will be populated dynamically -->
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+<div style="width:95%; max-width:1000px; margin:0 auto 40px auto; text-align:center;">
+    <button onclick="prevPage()" style="padding:8px 12px; margin:4px; border-radius:6px; border:none; background:#7b2ff7; color:#fff; cursor:pointer;">Previous</button>
+    <button onclick="nextPage()" style="padding:8px 12px; margin:4px; border-radius:6px; border:none; background:#7b2ff7; color:#fff; cursor:pointer;">Next</button>
+</div>
+
+<script>
+// Example voucher data (replace with backend API fetch)
+const vouchers = [];
+for(let i=1;i<=57;i++){
+    vouchers.push({
+        voucherNo: 'UB-' + (1000+i),
+        voucherDate: '2026-02-' + ((i%28)+1).toString().padStart(2,'0'),
+        companyName: 'Company ' + ((i%5)+1)
+    });
+}
+
+let currentPage = 1;
+const pageSize = 5; // ✅ page size 5
+
+function renderTable(){
+    const tbody = document.getElementById('voucherTableBody');
+    tbody.innerHTML = '';
+    const start = (currentPage-1)*pageSize;
+    const end = start + pageSize;
+    const pageData = vouchers.slice(start,end);
+
+    pageData.forEach(v => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="padding:12px; border:1px solid #444;">${v.voucherNo}</td>
+            <td style="padding:12px; border:1px solid #444;">${v.voucherDate}</td>
+            <td style="padding:12px; border:1px solid #444;">${v.companyName}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+
+    document.getElementById('totalVouchers').textContent = vouchers.length;
+}
+
+function prevPage(){
+    if(currentPage>1){
+        currentPage--;
+        renderTable();
+    }
+}
+
+function nextPage(){
+    if(currentPage*pageSize < vouchers.length){
+        currentPage++;
+        renderTable();
+    }
+}
+
+// Generate New Voucher button placeholder
+function generateVoucher(){
+    alert("Redirect to Voucher Entry Form or API call to create new voucher.");
+}
+
+// Initial render
+renderTable();
+</script>
+
+</body>
+</html>
