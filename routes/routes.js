@@ -7,7 +7,13 @@ const createVoucherController = require('../controllers/views/create_voucher');
 
 const loginController      = require('../controllers/actions/login');
 const dashboardController  = require('../controllers/actions/dashboard');
-const addVoucherController = require('../controllers/actions/addVoucher') 
+const addVoucherController = require('../controllers/actions/addVoucher'); 
+const getAgenciesController = require('../controllers/actions/getLocalAgencies');
+const getCustomersByVoucherController = require('../controllers/actions/getVoucherCustomers');
+const getHotelsByVoucherController = require('../controllers/actions/getVoucherHotels');
+const getNotesByVoucherController = require('../controllers/actions/getVoucherNotes');
+const getTransportsByVoucherController = require('../controllers/actions/getVoucherTransports');
+const getVoucherFormatsByVoucherController = require('../controllers/actions/getVoucherFormats');
 
 const auth   = require('../middlewares/auth');
 const deauth = require('../middlewares/deauth');
@@ -17,7 +23,13 @@ router.get('/dashboard',      auth(), dashboardViewController);
 router.get('/voucher/create', auth(), createVoucherController)
 
 router.get('/api/dashboard', auth(), dashboardController);
+router.get('/api/agencies/:type', auth(), getAgenciesController);
+router.get('/api/customers/:id', auth(),getCustomersByVoucherController);
+router.get('/api/hotels/:id', auth(), getHotelsByVoucherController);
+router.get('/api/notes/:id', auth(), getNotesByVoucherController);
+router.get('/api/transports/:id', auth(), getTransportsByVoucherController);
+router.get('/api/voucher/formats', auth(), getVoucherFormatsByVoucherController);
+router.post('/api/voucher/create', auth(), addVoucherController);
 router.post('/login', loginController);
-router.post('/api/voucher/create', addVoucherController);
 
 module.exports = router;

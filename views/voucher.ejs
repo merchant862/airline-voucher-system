@@ -3,6 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+.custom-dropdown {
+    position: relative;
+    background:#2a2a50;
+    border:1px solid #444;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.dropdown-selected {
+    padding:10px;
+    color:#fff;
+}
+
+.dropdown-options {
+    display:none;
+    position:absolute;
+    width:100%;
+    background:#1a1a35;
+    border:1px solid #444;
+    border-radius:8px;
+    max-height:200px;
+    overflow-y:auto;
+    z-index:999;
+}
+
+.dropdown-option {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:8px;
+    color:#fff;
+}
+
+.dropdown-option:hover {
+    background:#7b2ff7;
+}
+
+.dropdown-option img {
+    height:30px;
+    width:30px;
+    object-fit:cover;
+    border-radius:6px;
+}
+</style>
+
 <title>Voucher Entry</title>
 </head>
 <body style="
@@ -27,6 +74,48 @@
 </div>
 
 <form style="width:100%; max-width:900px; margin:20px auto; padding:20px; box-sizing:border-box;">
+
+<!-- Selection Section -->
+<div style="
+    width:100%;
+    max-width:900px;
+    margin:20px auto 0 auto;
+    padding:20px;
+    background:#1a1a35;
+    border-radius:10px;
+    border:1px solid #333;
+    box-sizing:border-box;
+">
+
+    <h3 style="margin-bottom:16px; color:#c77dff;">Voucher Configuration</h3>
+
+        <!-- Local Agency -->
+    <label>Local Agency</label>
+    <div class="custom-dropdown" id="localAgencyDropdown">
+        <div class="dropdown-selected">Select Local Agency</div>
+        <div class="dropdown-options"></div>
+    </div>
+    <input type="hidden" name="localAgencyId" id="localAgencyId">
+
+    <br><br>
+
+    <!-- Foreign Agency -->
+    <label>Foreign Agency</label>
+    <div class="custom-dropdown" id="foreignAgencyDropdown">
+        <div class="dropdown-selected">Select Foreign Agency</div>
+        <div class="dropdown-options"></div>
+    </div>
+    <input type="hidden" name="foreignAgencyId" id="foreignAgencyId">
+
+    <br><br>
+
+    <!-- Voucher Format -->
+    <label>Voucher Format</label>
+    <select id="voucherFormatSelect" style="width:100%; padding:10px; border-radius:6px; border:1px solid #444; background:#2a2a50; color:#fff;">
+        <option value="">Select Voucher Format</option>
+    </select>
+
+</div>
 
 <!-- Customers Section -->
 <div style="margin-bottom:24px;">
@@ -121,6 +210,82 @@
 </form>
 
 <script>
+
+document.addEventListener("DOMContentLoaded", async function() {
+
+    await loadCustomAgencies('local', 'localAgencyDropdown', 'localAgencyId');
+    await loadCustomAgencies('foreign', 'foreignAgencyDropdown', 'foreignAgencyId');
+    await loadVoucherFormats();
+});
+
+async function loadVoucherFormats() {
+
+    try {
+        const res = await fetch('/api/voucher/formats');
+        const data = await res.json();
+
+        if (!data.success) return;
+
+        const select = document.getElementById('voucherFormatSelect');
+
+        data.data.forEach(format => {
+            const option = document.createElement('option');
+            option.value = format.id;
+            option.textContent = format.ejsPath; // show path as name, or you can format it
+            select.appendChild(option);
+        });
+
+    } catch (err) {
+        console.error('Error loading voucher formats:', err);
+    }
+}
+
+async function loadCustomAgencies(type, dropdownId, hiddenInputId) {
+
+    const res = await fetch(`/api/agencies/${type}`);
+    const data = await res.json();
+    if (!data.success) return;
+
+    const dropdown = document.getElementById(dropdownId);
+    const selected = dropdown.querySelector('.dropdown-selected');
+    const optionsContainer = dropdown.querySelector('.dropdown-options');
+    const hiddenInput = document.getElementById(hiddenInputId);
+
+    data.data.forEach(agency => {
+
+        const option = document.createElement('div');
+        option.className = 'dropdown-option';
+
+        option.innerHTML = `
+            <img src="${agency.image}" />
+            <span>${agency.name}</span>
+        `;
+
+        option.addEventListener('click', () => {
+            selected.innerHTML = `
+                <img src="${agency.image}" style="height:20px; vertical-align:middle; margin-right:6px;">
+                ${agency.name}
+            `;
+            hiddenInput.value = agency.id;
+            optionsContainer.style.display = 'none';
+        });
+
+        optionsContainer.appendChild(option);
+    });
+
+    selected.addEventListener('click', () => {
+        optionsContainer.style.display =
+            optionsContainer.style.display === 'block' ? 'none' : 'block';
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target)) {
+            optionsContainer.style.display = 'none';
+        }
+    });
+}
+
+
 let customerCount = 0;
 let hotelCount = 0;
 let transportCount = 0;
