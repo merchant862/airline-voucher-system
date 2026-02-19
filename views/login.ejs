@@ -37,11 +37,12 @@
         letter-spacing:1px;
     ">Airline Voucher System</h2>
 
-    <form>
+    <!-- Give form an ID for JS -->
+    <form id="loginForm">
 
         <div style="margin-bottom:20px;">
             <label style="font-size:14px; color:#bbb;">Email</label>
-            <input type="email" placeholder="Enter your email" required
+            <input name="email" type="email" placeholder="Enter your email" required
                 style="
                     width:100%;
                     padding:14px;
@@ -58,7 +59,7 @@
 
         <div style="margin-bottom:22px;">
             <label style="font-size:14px; color:#bbb;">Password</label>
-            <input type="password" placeholder="Enter your password" required
+            <input name="password" type="password" placeholder="Enter your password" required
                 style="
                     width:100%;
                     padding:14px;
@@ -94,17 +95,37 @@
 
     </form>
 
-    <!-- <p style="
-        text-align:center;
-        margin-top:20px;
-        font-size:14px;
-        color:#aaa;
-    ">
-        Don't have an account?
-        <a href="#" style="color:#b388ff; text-decoration:none;">Sign Up</a>
-    </p> -->
-
 </div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const email = e.target.email.value;
+  const password = e.target.password.value;
+
+  try {
+    const res = await fetch('/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+
+    if(data.success){
+      // ✅ Dashboard redirect, cookie already set by server (httpOnly)
+      window.location.href = '/dashboard';
+    } else {
+      alert(data.message || "Login failed");
+    }
+
+  } catch(err) {
+    console.error(err);
+    alert("Server error. Try again later.");
+  }
+});
+</script>
 
 </body>
 </html>

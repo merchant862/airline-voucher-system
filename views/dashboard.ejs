@@ -46,7 +46,7 @@
             <tr style="background:#1a1a35; color:#c77dff;">
                 <th style="padding:12px; border:1px solid #444; text-align:left;">Voucher No</th>
                 <th style="padding:12px; border:1px solid #444; text-align:left;">Voucher Date</th>
-                <th style="padding:12px; border:1px solid #444; text-align:left;">Company Name</th>
+                <th style="padding:12px; border:1px solid #444; text-align:left;">Action</th>
             </tr>
         </thead>
         <tbody id="voucherTableBody">
@@ -62,61 +62,70 @@
 </div>
 
 <script>
-// Example voucher data (replace with backend API fetch)
-const vouchers = [];
-for(let i=1;i<=57;i++){
-    vouchers.push({
-        voucherNo: 'UB-' + (1000+i),
-        voucherDate: '2026-02-' + ((i%28)+1).toString().padStart(2,'0'),
-        companyName: 'Company ' + ((i%5)+1)
-    });
+let currentPage = 1;
+const pageSize = 5;
+let totalVouchers = 0;
+
+async function fetchVouchers(page=1){
+    try {
+        const res = await fetch(`/api/dashboard?page=${page}`, {
+            method:'GET',
+            headers:{ 'Content-Type':'application/json' }
+        });
+        const data = await res.json();
+        if(!data.success) return alert('Failed to fetch vouchers');
+
+        totalVouchers = data.totalVouchers; // ✅ update total
+        renderTable(data.vouchers);
+
+    } catch(err) {
+        console.error(err);
+        alert("Server error fetching vouchers");
+    }
 }
 
-let currentPage = 1;
-const pageSize = 5; // ✅ page size 5
 
-function renderTable(){
+function renderTable(vouchers){
     const tbody = document.getElementById('voucherTableBody');
     tbody.innerHTML = '';
-    const start = (currentPage-1)*pageSize;
-    const end = start + pageSize;
-    const pageData = vouchers.slice(start,end);
-
-    pageData.forEach(v => {
+    vouchers.forEach(v => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td style="padding:12px; border:1px solid #444;">${v.voucherNo}</td>
             <td style="padding:12px; border:1px solid #444;">${v.voucherDate}</td>
-            <td style="padding:12px; border:1px solid #444;">${v.companyName}</td>
+            <td style="padding:12px; border:1px solid #444;">
+                <a href="/voucher/edit/${v.voucherNo}" style="color:#7b2ff7; font-weight:bold;">Edit</a>
+            </td>
         `;
         tbody.appendChild(tr);
     });
 
-    document.getElementById('totalVouchers').textContent = vouchers.length;
+    document.getElementById('totalVouchers').textContent = totalVouchers;
 }
 
 function prevPage(){
     if(currentPage>1){
         currentPage--;
-        renderTable();
+        fetchVouchers(currentPage);
     }
 }
 
 function nextPage(){
-    if(currentPage*pageSize < vouchers.length){
+    if(currentPage*pageSize < totalVouchers){
         currentPage++;
-        renderTable();
+        fetchVouchers(currentPage);
     }
 }
 
 // Generate New Voucher button placeholder
 function generateVoucher(){
-    alert("Redirect to Voucher Entry Form or API call to create new voucher.");
+    window.location.assign('/voucher/create')
 }
 
-// Initial render
-renderTable();
+// Initial fetch
+fetchVouchers(currentPage);
 </script>
+
 
 </body>
 </html>
