@@ -509,16 +509,34 @@ document.getElementById('voucherForm').addEventListener('submit', async (e)=>{
         vouchernotes:document.getElementById('vouchernotes').value
     };
 
-    try{
-        const res = await fetch('/api/voucher/create',{
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify(payload)
+    
+    try {
+        const response = await fetch('/api/voucher/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
         });
-        const data = await res.json();
-        if(data.success) alert(`Voucher created successfully! ID: ${data.voucherId}`);
-        else console.error(data);
-    }catch(err){ console.error(err); }
+
+        if (!response.ok) throw new Error('Failed to generate PDF');
+
+        // 👇 PDF as blob
+        const blob = await response.blob();
+
+        // 👇 create download link
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'voucher.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        window.URL.revokeObjectURL(url);
+
+    } catch (err) {
+        console.error(err);
+        alert('Error generating voucher.');
+    }
 });
 
 </script>
