@@ -16,6 +16,7 @@ const getNotesByVoucherController = require('../controllers/actions/getVoucherNo
 const getTransportsByVoucherController = require('../controllers/actions/getVoucherTransports');
 const getVoucherFormatsByVoucherController = require('../controllers/actions/getVoucherFormats');
 const renderAnEJSTemplateForVoucherController = require('../controllers/actions/renderAnEjsTemplateForVoucher');
+const getVoucherDataByIdController = require('../controllers/actions/fetchVoucherDatabyId');
 
 const auth   = require('../middlewares/auth');
 const deauth = require('../middlewares/deauth');
@@ -33,6 +34,7 @@ router.get('/api/notes/:id', auth(), getNotesByVoucherController);
 router.get('/api/transports/:id', auth(), getTransportsByVoucherController);
 router.get('/api/voucher/template/:id', auth(), renderAnEJSTemplateForVoucherController);
 router.get('/api/voucher/formats/:name', auth(), getVoucherFormatsByVoucherController);
+router.get('/api/voucher/:id', auth(), getVoucherDataByIdController);
 router.post('/api/voucher/create', auth(), addVoucherController);
 router.post('/login', loginController);
 

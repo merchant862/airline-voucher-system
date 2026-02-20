@@ -1,305 +1,290 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Service Voucher</title>
 
 <style>
-@page { size: A4; margin: 10mm; }
-
 body{
+    font-family: Arial, "Noto Naskh Arabic", "Amiri", Tahoma, sans-serif;
+    background:#f2f2f2;
     margin:0;
-    background:#e5e5e5;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
-.page{
-    width:210mm;
-    min-height:297mm;
+.wrapper{
+    width:1000px;
+    margin:20px auto;
     background:#fff;
-    margin:auto;
-    padding:15mm;
-    box-sizing:border-box;
-    font-size:12px;
-    color:#000;
+    padding:20px;
+    border:1px solid #000;
 }
 
-.center{text-align:center;}
-.right{text-align:right;}
-.bold{font-weight:bold;}
+.header-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:10px;
+}
 
-.hr{
-    border-top:1px solid #000;
-    margin:6px 0;
+.header-table td{
+    border:none;
+    vertical-align:middle;
+}
+
+.logo{
+    height:70px;
+}
+
+.center-title{
+    text-align:center;
+}
+
+.center-title h2{
+    margin:0;
+    font-size:20px;
+}
+
+.service-title{
+    text-align:center;
+    font-weight:bold;
+    letter-spacing:3px;
+    margin-top:5px;
 }
 
 table{
     width:100%;
     border-collapse:collapse;
-    font-size:11px;
+    font-size:12px;
+    margin-top:5px;
+}
+
+table, th, td{
+    border:1px solid #000;
 }
 
 th, td{
-    border:1px solid #000;
-    padding:4px 6px;
-    vertical-align:middle;
+    padding:5px;
 }
 
-.section-title{
+.section-heading{
     text-align:center;
     font-weight:bold;
-    letter-spacing:3px;
-    margin:6px 0;
+    margin-top:10px;
+    letter-spacing:2px;
 }
 
-.header-table td{
-    border:none;
-    padding:2px 4px;
+.center{text-align:center;}
+.right{text-align:right;}
+
+.qr-wrapper{
+    margin-top:10px;
 }
 
-.small{
-    font-size:10px;
-}
-
-.notice{
+.note{
     font-size:11px;
     margin-top:8px;
+    white-space:pre-line;
 }
 
-.footer{
+.arabic-block{
+    direction:rtl;
+    text-align:right;
+    font-size:13px;
     margin-top:8px;
+    font-family: "Noto Naskh Arabic","Amiri",Tahoma,Arial;
 }
 
-.logo-placeholder{
-    width:90px;
-    height:60px;
-    border:1px solid #000;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:10px;
-}
-
-.qr-placeholder{
-    width:90px;
-    height:90px;
-    border:1px solid #000;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:10px;
+.important{
+    margin-top:10px;
+    border-top:2px solid #000;
+    padding-top:5px;
+    font-size:12px;
 }
 </style>
 </head>
+
 <body>
 
-<div class="page">
+<div class="wrapper">
 
 <!-- HEADER -->
 <table class="header-table">
 <tr>
-<td style="width:25%;">
-    <div class="logo-placeholder">LOGO</div>
+<td width="20%">
+    <img src="<%= company.logo %>" class="logo">
 </td>
-<td class="center" style="width:50%;">
-    <div class="bold" style="font-size:18px;">DAR-AL-SALAM GROUP</div>
-    <div class="small">Address : Office # 2 Time Tower Abdullah Haroon Road, Karachi,Pakistan.</div>
-    <div class="small">Ph: 021-35668951-3</div>
-    <div class="section-title">SERVICE&nbsp;&nbsp;VOUCHER</div>
+
+<td width="60%" class="center-title">
+    <h2><%= company.name.toUpperCase() %></h2>
+    <div>Address: Office # 2 Time Tower Abdullah Haroon Road, Karachi, Pakistan.</div>
+    <div class="service-title">SERVICE VOUCHER</div>
 </td>
-<td class="right" style="width:25%;">
-    <div class="logo-placeholder">LOGO</div>
+
+<td width="20%" class="right">
+    <img src="<%= foreignCompany.logo %>" class="logo">
 </td>
 </tr>
 </table>
 
-<div class="hr"></div>
+<!-- VOUCHER INFO -->
+<table>
+<tr>
+<td><strong>UMRAH COMPANY</strong></td>
+<td><%= foreignCompany.name %></td>
+<td><strong>HOTEL VOUCHER#</strong></td>
+<td><%= voucher.voucherNo %></td>
+<td><strong>V-DATE</strong></td>
+<td><%= voucher.date %></td>
+</tr>
+<tr>
+<td><strong>Executive Agent</strong></td>
+<td colspan="5">PKG CATEGORY / DAZ 0%</td>
+</tr>
+</table>
+
+<!-- PARTY DETAILS -->
+<div class="section-heading">PARTY DETAILS</div>
 
 <table>
 <tr>
-<td class="bold">SAUDI UMRAH COMPANY</td>
-<td class="bold center">HOTEL VOUCHER</td>
-<td class="right small">
-HV-DATE : 13/02/2026<br>
-PRINT DT : 14-02-2026 12:55:23
+<th>SR</th>
+<th>PAX NAME(S)</th>
+<th>PASSPORT NO.</th>
+<th>GROUP</th>
+<th>VISA NO.</th>
+</tr>
+
+<% customers.forEach((c,i)=>{ %>
+<tr>
+<td class="center"><%= i+1 %></td>
+<td><%= c.name %></td>
+<td><%= c.passport %></td>
+<td>901052165</td>
+<td><%= c.visaNumber %></td>
+</tr>
+<% }) %>
+
+<tr>
+<td colspan="5" class="center">
+GENTS: <%= customers.filter(c=>c.gender==='Male').length %> &nbsp;&nbsp;
+LADIES: <%= customers.filter(c=>c.gender==='Female').length %> &nbsp;&nbsp;
+CHILDREN: <%= customers.filter(c=>c.paxType==='Child').length %> &nbsp;&nbsp;
+TOTAL PAX: <%= customers.length %>
 </td>
 </tr>
-<tr>
-<td class="bold">DALEEL AL ZOWAR</td>
-<td class="center bold">HV-1100</td>
-<td></td>
-</tr>
 </table>
-
-<div class="hr"></div>
-
-<table>
-<tr>
-<td><b>HV ISSUE DATE :</b> 13/02/2026</td>
-<td><b>PAX CATEGORY :</b> DAZ DV</td>
-</tr>
-<tr>
-<td colspan="2"><b>PARTY CODE :</b> U</td>
-</tr>
-</table>
-
-<!-- PAX TABLE -->
-<table>
-<tr class="bold center">
-<td>SR</td>
-<td>PAX NAME(S)</td>
-<td>PASSPORT NO.</td>
-<td>GROUP</td>
-<td>VISA NO.</td>
-</tr>
-<tr>
-<td class="center">1</td>
-<td>IRFAN RAO TANVIR</td>
-<td>AV73573713</td>
-<td>DAZ DV</td>
-<td>6536696661</td>
-</tr>
-</table>
-
-<div class="center small" style="margin:4px 0;">
-GENT(S): 1 &nbsp;&nbsp; LADIES( ): 0 &nbsp;&nbsp; CHILDREN( ): 0 &nbsp;&nbsp; INFANT(S): 0 &nbsp;&nbsp; TOTAL PAX : 1
-</div>
 
 <!-- ACCOMMODATION -->
-<div class="section-title">ACCOMMODATION DETAILS</div>
+<div class="section-heading">ACCOMMODATION DETAILS</div>
 
 <table>
-<tr class="bold center">
-<td>CITY</td>
-<td>HV#</td>
-<td>HOTEL NAME(S)</td>
-<td>ROOMS</td>
-<td>ROOM TYPE</td>
-<td>CHECK IN</td>
-<td>CHECK OUT</td>
-<td>NIGHTS</td>
+<tr>
+<th>CITY</th>
+<th>HOTEL NAME</th>
+<th>ROOM</th>
+<th>ROOM TYPE</th>
+<th>CHECK IN</th>
+<th>CHECK OUT</th>
+<th>NIGHTS</th>
 </tr>
 
+<% hotels.forEach(h=>{ %>
 <tr>
-<td>MAKKAH</td>
-<td>5699</td>
-<td>DAR AL TAWAHID</td>
+<td><%= h.city %></td>
+<td><%= h.name %></td>
 <td class="center">1</td>
-<td></td>
-<td>16-02-2026</td>
-<td>20-02-2026</td>
-<td class="center">5</td>
+<td><%= h.roomType %></td>
+<td><%= h.checkIn %></td>
+<td><%= h.checkOut %></td>
+<td class="center"><%= h.nights %></td>
 </tr>
+<% }) %>
 
 <tr>
-<td>MADINAH</td>
-<td>5699</td>
-<td>SOFITEL SHAD AL MADINAH</td>
-<td class="center">1</td>
-<td></td>
-<td>20-02-2026</td>
-<td>25-02-2026</td>
-<td class="center">5</td>
-</tr>
-
-<tr>
-<td>MAKKAH</td>
-<td>5699</td>
-<td>DAR AL TAWAHID</td>
-<td class="center">1</td>
-<td></td>
-<td>25-02-2026</td>
-<td>03-03-2026</td>
-<td class="center">5</td>
+<td colspan="6" class="right"><strong>Total Nights</strong></td>
+<td class="center">
+<%= hotels.reduce((sum,h)=>sum+h.nights,0) %>
+</td>
 </tr>
 </table>
-
-<div class="small">NOTE : CHECK-IN TIME : 1600 HRS & CHECK-OUT TIME : 1200 NOON.</div>
 
 <!-- TRANSPORT -->
-<div class="section-title">TRANSPORTATION DETAILS</div>
+<div class="section-heading">TRANSPORTATION DETAILS</div>
 
 <table>
 <tr>
-<td class="bold center">PRIVATE TRANSPORT</td>
+<th>TYPE</th>
+<th>ROUTE</th>
 </tr>
+
+<% transports.forEach(t=>{ %>
+<tr>
+<td><%= t.type %></td>
+<td><%= t.route %></td>
+</tr>
+<% }) %>
 </table>
 
-<!-- FLIGHT -->
-<div class="section-title">FLIGHT DETAILS</div>
+<!-- FLIGHT DETAILS -->
+<div class="section-heading">FLIGHT DETAILS</div>
 
 <table>
-<tr class="bold center">
-<td>PNR</td>
-<td>DATE</td>
-<td>FLIGHT</td>
-<td>FROM</td>
-<td>TO</td>
-<td>DEPARTURE</td>
-<td>ARRIVAL</td>
-</tr>
-
 <tr>
-<td>40RBR1Q</td>
-<td>16-02-2026</td>
-<td>9P-500</td>
-<td>KHI</td>
-<td>JED</td>
-<td>20:25</td>
-<td>23:15</td>
+<th>FLIGHT</th>
+<th>FROM</th>
+<th>TO</th>
+<th>DEPARTURE</th>
+<th>ARRIVAL</th>
 </tr>
-
 <tr>
-<td></td>
-<td>05-03-2026</td>
-<td>EK-802</td>
-<td>JED</td>
-<td>KHI</td>
-<td>04:15</td>
-<td>21:05</td>
+<td><%= departureFlight.flightNo %></td>
+<td><%= departureFlight.fromCity %></td>
+<td><%= departureFlight.toCity %></td>
+<td><%= departureFlight.date %> - <%= departureFlight.takeoff %></td>
+<td><%= departureFlight.date %> - <%= departureFlight.landing %></td>
+</tr>
+<tr>
+<td><%= arrivalFlight.flightNo %></td>
+<td><%= arrivalFlight.fromCity %></td>
+<td><%= arrivalFlight.toCity %></td>
+<td><%= arrivalFlight.date %> - <%= arrivalFlight.takeoff %></td>
+<td><%= arrivalFlight.date %> - <%= arrivalFlight.landing %></td>
 </tr>
 </table>
 
-<!-- CONTACT + QR -->
-<table style="margin-top:8px;">
+<!-- QR + CONTACT -->
+<table class="qr-wrapper">
 <tr>
-<td style="width:60%;" class="small">
-<b>CONTACT NO.</b><br>
-MR. FAISAL 0092-3452614769 (WHATSAPP)<br>
-MR. ADNAN 0092-3335153394 (WHATSAPP)
+<td width="70%">
+<strong>CONTACT NO.</strong><br>
+MR. FAISAL 0092-3422614769 (WHATSAPP)<br>
+MR. ADNAN 0092-3333153594 (WHATSAPP)
 </td>
 
-<td style="width:20%;" class="center">
-<div class="qr-placeholder">QR</div>
-</td>
-
-<td style="width:20%;" class="small center">
-*** AUTHORIZED ***<br>
-BY DAR-AL-SALAM GROUP
+<td width="30%" class="center">
+<img src="<%= qrImage %>" width="160"><br>
+<strong>AUTHORIZED<br>DAR-AL-SALAM GROUP</strong>
 </td>
 </tr>
 </table>
 
-<!-- NOTICE -->
-<div class="notice">
-<b>Note:</b><br>
-- Please contact Makkah/Madinah operations 24 hours before the scheduled transportation and notify them accordingly.<br>
-- Room sharing means 4-6 beds per room.<br>
-- Separate room will incur extra cost.<br>
-- In case of any unexpected hotel unavailability, similar category hotel will be provided.<br>
-- Please ensure you call before entering transportation.<br>
-- No service will be provided without showing voucher.
+<!-- NOTES -->
+<div class="note">
+<strong>Note:</strong><br>
+<%= notes %>
 </div>
 
-<div class="footer center bold" style="margin-top:10px;">
-IMPORTANT NOTICE
+<!-- ARABIC BLOCK -->
+<div class="arabic-block">
+تنبيه هام: يمنع تسليم جواز السفر لأي شخص داخل المملكة العربية السعودية سواء وكيل أو شركة نقل.
+يرجى التواصل مع وكيل السفر الباكستاني في حال حدوث أي مشكلة.
 </div>
 
-<div class="small center">
-Passengers are requested to not annoy in Saudi Arabia either agent or transporter provider,
-for any inconvenience contact your Pakistani Travel Agent.
+<div class="important">
+<strong>IMPORTANT NOTICE:</strong>
+Passengers are requested not to hand over your passport to anyone in Saudi Arabia either agent or transporter provider.
 </div>
 
 </div>
+
 </body>
 </html>
