@@ -3,8 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voucher Entry</title>
 
 <style>
+body {
+    margin:0;
+    padding:0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #141426, #1c1c3c);
+    color:#fff;
+}
+
 .custom-dropdown {
     position: relative;
     background:#2a2a50;
@@ -48,200 +57,300 @@
     object-fit:cover;
     border-radius:6px;
 }
-</style>
-
-<title>Voucher Entry</title>
-</head>
-<body style="
-    margin:0;
-    padding:0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #141426, #1c1c3c);
-    color:#fff;
-">
-
-<!-- Voucher Header -->
-<div style="
-    width:100%;
-    padding:16px 24px;
-    background: #1e1e3d;
-    border-bottom: 3px solid #7b2ff7;
-    font-size:20px;
+.customerRow, .hotelRow, .transportRow {
+    border:1px solid #444;
+    padding:12px;
+    margin-bottom:12px;
+    border-radius:8px;
+    background:#1a1a35;
+    position:relative;
+}
+.removeBtn {
+    position:absolute;
+    top:6px; right:6px;
+    cursor:pointer;
+    color:#ff6b6b;
     font-weight:bold;
-    color:#b388ff;
-">
+}
+input, select, textarea {
+    width:100%;
+    padding:8px;
+    margin:6px 0;
+    border-radius:6px;
+    border:1px solid #333;
+    background:#2a2a50;
+    color:#fff;
+    box-sizing:border-box;
+}
+button.addBtn {
+    padding:10px 16px;
+    background:#7b2ff7;
+    border:none;
+    border-radius:8px;
+    color:#fff;
+    cursor:pointer;
+    margin-top:6px;
+}
+button.submitBtn {
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background: linear-gradient(90deg, #7b2ff7, #a855f7);
+    color:#fff;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:12px;
+}
+
+.form-section {
+    padding:20px; 
+    background:#1a1a35; 
+    border-radius:10px; 
+    border:1px solid #333; 
+    margin-bottom:24px;
+}
+
+.form-section h3 {
+    color:#c77dff;
+    margin-bottom:12px;
+}
+
+.flex-row {
+    display:flex;
+    flex-wrap:wrap;
+    gap:16px;
+}
+
+.flex-col {
+    flex:1 1 200px;
+    min-width:200px;
+}
+
+/* Responsive table-like appearance for flight section */
+.flight-grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap:12px;
+}
+
+</style>
+</head>
+<body>
+
+<div style="width:100%; padding:16px 24px; background: #1e1e3d; border-bottom: 3px solid #7b2ff7; font-size:20px; font-weight:bold; color:#b388ff;">
     Voucher Entry Form
 </div>
 
-<form style="width:100%; max-width:900px; margin:20px auto; padding:20px; box-sizing:border-box;">
+<form id="voucherForm" style="width:100%; max-width:900px; margin:20px auto; padding:20px; box-sizing:border-box;">
 
 <!-- Selection Section -->
-<div style="
-    width:100%;
-    max-width:900px;
-    margin:20px auto 0 auto;
-    padding:20px;
-    background:#1a1a35;
-    border-radius:10px;
-    border:1px solid #333;
-    box-sizing:border-box;
-">
+<div class="form-section">
+    <h3>Voucher Configuration</h3>
 
-    <h3 style="margin-bottom:16px; color:#c77dff;">Voucher Configuration</h3>
-
-        <!-- Local Agency -->
-    <label>Local Agency</label>
+    <label>Local Agency *</label>
     <div class="custom-dropdown" id="localAgencyDropdown">
         <div class="dropdown-selected">Select Local Agency</div>
         <div class="dropdown-options"></div>
     </div>
-    <input type="hidden" name="localAgencyId" id="localAgencyId">
+    <input type="hidden" id="companySelect" name="companyId">
 
-    <br><br>
-
-    <!-- Foreign Agency -->
-    <label>Foreign Agency</label>
+    <label>Foreign Agency *</label>
     <div class="custom-dropdown" id="foreignAgencyDropdown">
         <div class="dropdown-selected">Select Foreign Agency</div>
         <div class="dropdown-options"></div>
     </div>
-    <input type="hidden" name="foreignAgencyId" id="foreignAgencyId">
+    <input type="hidden" id="foreignCompanySelect" name="foreignCompanyId">
 
-    <br><br>
-
-    <!-- Voucher Format -->
-    <label>Voucher Format</label>
-    <select id="voucherFormatSelect" style="width:100%; padding:10px; border-radius:6px; border:1px solid #444; background:#2a2a50; color:#fff;">
-        <option value="">Select Voucher Format</option>
-    </select>
-
+    <div class="flex-row" style="display:flex; gap:20px; flex-wrap:wrap; margin-top:16px;">
+        <div class="flex-col" style="flex:1 1 250px; min-width:220px;">
+            <label>Download Voucher Format</label>
+            <select id="voucherFormatSelect" style="width:100%; padding:10px; border-radius:6px; border:1px solid #444; background:#2a2a50; color:#fff;">
+                <option value="">Select Download Voucher Format</option>
+            </select>
+        </div>
+        <div class="flex-col" style="flex:1 1 250px; min-width:220px;">
+            <label>Link Voucher Format</label>
+            <select id="linkVoucherFormatSelect" style="width:100%; padding:10px; border-radius:6px; border:1px solid #444; background:#2a2a50; color:#fff;">
+                <option value="">Select Link Voucher Format</option>
+            </select>
+        </div>
+    </div>
 </div>
 
 <!-- Customers Section -->
-<div style="margin-bottom:24px;">
-    <h3 style="margin-bottom:12px; color:#c77dff;">Passenger(s)</h3>
+<div class="form-section">
+    <h3>Passenger(s)</h3>
     <div id="customersContainer"></div>
-    <button type="button" onclick="addCustomer()" style="
-        padding:10px 16px;
-        background:#7b2ff7;
-        border:none;
-        border-radius:8px;
-        color:#fff;
-        cursor:pointer;
-        margin-top:6px;
-    ">+ Add Customer</button>
+    <button type="button" class="addBtn" onclick="addCustomer()">+ Add Customer</button>
 </div>
 
 <!-- Hotels Section -->
-<div style="margin-bottom:24px;">
-    <h3 style="margin-bottom:12px; color:#c77dff;">Hotel(s)</h3>
+<div class="form-section">
+    <h3>Hotel(s)</h3>
     <div id="hotelsContainer"></div>
-    <button type="button" onclick="addHotel()" style="
-        padding:10px 16px;
-        background:#7b2ff7;
-        border:none;
-        border-radius:8px;
-        color:#fff;
-        cursor:pointer;
-        margin-top:6px;
-    ">+ Add Hotel</button>
+    <button type="button" class="addBtn" onclick="addHotel()">+ Add Hotel</button>
 </div>
 
 <!-- Transport Section -->
-<div style="margin-bottom:24px;">
-    <h3 style="margin-bottom:12px; color:#c77dff;">Transport(s)</h3>
+<div class="form-section">
+    <h3>Transport(s)</h3>
     <div id="transportContainer"></div>
-    <button type="button" onclick="addTransport()" style="
-        padding:10px 16px;
-        background:#7b2ff7;
-        border:none;
-        border-radius:8px;
-        color:#fff;
-        cursor:pointer;
-        margin-top:6px;
-    ">+ Add Transport</button>
+    <button type="button" class="addBtn" onclick="addTransport()">+ Add Transport</button>
 </div>
 
 <!-- Flight Section -->
-<div style="margin-bottom:24px;">
-    <h3 style="margin-bottom:12px; color:#c77dff;">Flight / Transport</h3>
+<div class="form-section">
+    <h3>Departure Flight</h3>
+    <div class="flight-grid">
+        <div>
+            <label>Flight No</label>
+            <input type="text" id="departureFlightNo" placeholder="Flight Code" required>
+        </div>
+        <div>
+            <label>Date</label>
+            <input type="date" id="departureFlightDate">
+        </div>
+        <div>
+            <label>From City</label>
+            <input type="text" id="departureFlightFromCity" placeholder="City">
+        </div>
+        <div>
+            <label>To City</label>
+            <input type="text" id="departureFlightToCity" placeholder="City">
+        </div>
+        <div>
+            <label>Takeoff Time</label>
+            <input type="time" id="departureFlightTakeOffTime">
+        </div>
+        <div>
+            <label>Landing Time</label>
+            <input type="time" id="departureFlightLandingTime">
+        </div>
+    </div>
+</div>
 
-    <label>Departure Flight</label><br>
-    <input type="text" name="depFlight" placeholder="Enter Flight Code" required
-        style="width:100%; padding:12px; margin:6px 0; border-radius:8px; border:1px solid #444; background:#1a1a35; color:#fff;">
-
-    <label>Departure Time (24h)</label><br>
-    <input type="time" name="depTime" required style="width:100%; padding:12px; margin:6px 0; border-radius:8px; border:1px solid #444; background:#1a1a35; color:#fff;">
-
-    <label>Arrival Flight</label><br>
-    <input type="text" name="arrFlight" placeholder="Enter Flight Code" required
-        style="width:100%; padding:12px; margin:6px 0; border-radius:8px; border:1px solid #444; background:#1a1a35; color:#fff;">
-
-    <label>Arrival Time (24h)</label><br>
-    <input type="time" name="arrTime" required style="width:100%; padding:12px; margin:6px 0; border-radius:8px; border:1px solid #444; background:#1a1a35; color:#fff;">
+<div class="form-section">
+    <h3>Arrival Flight</h3>
+    <div class="flight-grid">
+        <div>
+            <label>Flight No</label>
+            <input type="text" id="arrivalFlightNo" placeholder="Flight Code" required>
+        </div>
+        <div>
+            <label>Date</label>
+            <input type="date" id="arrivalFlightDate">
+        </div>
+        <div>
+            <label>From City</label>
+            <input type="text" id="arrivalFlightFromCity" placeholder="City">
+        </div>
+        <div>
+            <label>To City</label>
+            <input type="text" id="arrivalFlightToCity" placeholder="City">
+        </div>
+        <div>
+            <label>Takeoff Time</label>
+            <input type="time" id="arrivalFlightTakeOffTime">
+        </div>
+        <div>
+            <label>Landing Time</label>
+            <input type="time" id="arrivalFlightLandingTime">
+        </div>
+    </div>
 </div>
 
 <!-- Notes Section -->
-<div style="margin-bottom:24px;">
-    <h3 style="margin-bottom:12px; color:#c77dff;">Notes</h3>
-    <textarea name="voucherNotes" placeholder="Type your notes here..." rows="5" 
-        style="width:100%; padding:12px; border-radius:8px; border:1px solid #444; background:#1a1a35; color:#fff; resize:vertical;"
-        oninput="formatBullets(this)"></textarea>
+<div class="form-section">
+    <h3>Notes</h3>
+    <textarea id="vouchernotes" rows="5" placeholder="Type your notes here..." oninput="formatBullets(this)"></textarea>
 </div>
 
-<!-- Submit Button -->
-<button type="submit"
-    style="
-        width:100%;
-        padding:14px;
-        border:none;
-        border-radius:10px;
-        background: linear-gradient(90deg, #7b2ff7, #a855f7);
-        color:#fff;
-        font-size:16px;
-        font-weight:bold;
-        cursor:pointer;
-        margin-top:12px;
-    "
->
-    Save Voucher
-</button>
-
+<button type="submit" class="submitBtn">Save Voucher</button>
 </form>
 
 <script>
-
-document.addEventListener("DOMContentLoaded", async function() {
-
-    await loadCustomAgencies('local', 'localAgencyDropdown', 'localAgencyId');
-    await loadCustomAgencies('foreign', 'foreignAgencyDropdown', 'foreignAgencyId');
+    
+    document.addEventListener("DOMContentLoaded", async function() {
+    await loadCustomAgencies('local', 'localAgencyDropdown', 'companySelect');
+    await loadCustomAgencies('foreign', 'foreignAgencyDropdown', 'foreignCompanySelect');
     await loadVoucherFormats();
+    await loadLinkVoucherFormats();
 });
 
+// Load Voucher Formats
 async function loadVoucherFormats() {
-
     try {
-        const res = await fetch('/api/voucher/formats');
+        const res = await fetch('/api/voucher/formats/DOWNLOAD_FORMAT');
         const data = await res.json();
-
-        if (!data.success) return;
+        if(!data.success) return;
 
         const select = document.getElementById('voucherFormatSelect');
-
         data.data.forEach(format => {
             const option = document.createElement('option');
             option.value = format.id;
-            option.textContent = format.ejsPath; // show path as name, or you can format it
+            option.textContent = format.name;
             select.appendChild(option);
         });
 
+        // On select, open template in new tab
+        select.addEventListener('change', function() {
+            const formatId = this.value;
+            if (!formatId) return;
+            // open in new tab
+            window.open(`/api/voucher/template/${formatId}`, '_blank');
+        });
+
+    } catch(err) { console.error(err); }
+}
+/* async function loadVoucherFormats() {
+    try {
+        const res = await fetch('/api/voucher/formats');
+        const data = await res.json();
+        if (!data.success) return;
+
+        const select = document.getElementById('voucherFormatSelect');
+        data.data.forEach(format => {
+            const option = document.createElement('option');
+            option.value = format.id;
+            option.textContent = format.name; // You can format this better
+            select.appendChild(option);
+        });
     } catch (err) {
         console.error('Error loading voucher formats:', err);
     }
+} */
+
+//load Link Voucher Formats
+async function loadLinkVoucherFormats() 
+{
+    try {
+        const res = await fetch('/api/voucher/formats/LINK_FORMAT');
+        const data = await res.json();
+        if(!data.success) return;
+
+        const select = document.getElementById('linkVoucherFormatSelect');
+        data.data.forEach(format => {
+            const option = document.createElement('option');
+            option.value = format.id;
+            option.textContent = format.name;
+            select.appendChild(option);
+        });
+
+        // On select, open template in new tab
+        select.addEventListener('change', function() {
+            const formatId = this.value;
+            if (!formatId) return;
+            // open in new tab
+            window.open(`/api/voucher/template/${formatId}`, '_blank');
+        });
+
+    } catch(err) { console.error(err); }
 }
 
+// Load Agencies
 async function loadCustomAgencies(type, dropdownId, hiddenInputId) {
-
     const res = await fetch(`/api/agencies/${type}`);
     const data = await res.json();
     if (!data.success) return;
@@ -252,149 +361,166 @@ async function loadCustomAgencies(type, dropdownId, hiddenInputId) {
     const hiddenInput = document.getElementById(hiddenInputId);
 
     data.data.forEach(agency => {
-
         const option = document.createElement('div');
         option.className = 'dropdown-option';
-
-        option.innerHTML = `
-            <img src="${agency.image}" />
-            <span>${agency.name}</span>
-        `;
-
+        option.innerHTML = `<img src="${agency.image}" /><span>${agency.name}</span>`;
         option.addEventListener('click', () => {
-            selected.innerHTML = `
-                <img src="${agency.image}" style="height:20px; vertical-align:middle; margin-right:6px;">
-                ${agency.name}
-            `;
+            selected.innerHTML = `<img src="${agency.image}" style="height:20px; vertical-align:middle; margin-right:6px;">${agency.name}`;
             hiddenInput.value = agency.id;
             optionsContainer.style.display = 'none';
         });
-
         optionsContainer.appendChild(option);
     });
 
     selected.addEventListener('click', () => {
-        optionsContainer.style.display =
-            optionsContainer.style.display === 'block' ? 'none' : 'block';
+        optionsContainer.style.display = optionsContainer.style.display === 'block' ? 'none' : 'block';
     });
 
     document.addEventListener('click', (e) => {
-        if (!dropdown.contains(e.target)) {
-            optionsContainer.style.display = 'none';
-        }
+        if (!dropdown.contains(e.target)) optionsContainer.style.display = 'none';
     });
 }
 
+// Dynamic Add Rows
+let customerCount=0, hotelCount=0, transportCount=0;
 
-let customerCount = 0;
-let hotelCount = 0;
-let transportCount = 0;
-
-// ----- Customers -----
 function addCustomer() {
     customerCount++;
-    const container = document.getElementById('customersContainer');
     const div = document.createElement('div');
-    div.className = 'customerRow';
-    div.style = "border:1px solid #444; padding:12px; margin-bottom:12px; border-radius:8px; background:#1a1a35; position:relative;";
-    div.innerHTML = `
-        <span onclick="removeRow(this)" style="position:absolute; top:6px; right:6px; cursor:pointer; color:#ff6b6b; font-weight:bold;">❌</span>
-
-        <label>Customer Name</label><br>
-        <input type="text" name="customerName[]" placeholder="Enter Name" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
-
-        <label>Gender</label><br>
-        <select name="customerGender[]" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
+    div.className='customerRow';
+    div.innerHTML=`
+        <span class="removeBtn" onclick="removeRow(this)">❌</span>
+        <label>Customer Name</label><input type="text" name="customerName[]" required>
+        <label>Gender</label>
+        <select name="customerGender[]" required>
             <option value="">Select Gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="infant">Infant</option>
             <option value="children">Children</option>
         </select>
-
-        <label>Passport No</label><br>
-        <input type="text" name="customerPassport[]" placeholder="Enter Passport" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
-
-        <label>Visa No</label><br>
-        <input type="text" name="customerVisa[]" placeholder="Enter Visa No" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
-
-        <label>PNR</label><br>
-        <input type="text" name="customerPNR[]" placeholder="Enter PNR" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
+        <label>Passport No</label><input type="text" name="customerPassport[]" required>
+        <label>Visa No</label><input type="text" name="customerVisa[]">
+        <label>PNR</label><input type="text" name="customerPNR[]">
     `;
-    container.appendChild(div);
+    document.getElementById('customersContainer').appendChild(div);
 }
 
-// ----- Hotels -----
 function addHotel() {
     hotelCount++;
-    const container = document.getElementById('hotelsContainer');
     const div = document.createElement('div');
-    div.className = 'hotelRow';
-    div.style = "border:1px solid #444; padding:12px; margin-bottom:12px; border-radius:8px; background:#1a1a35; position:relative;";
-    div.innerHTML = `
-        <span onclick="removeRow(this)" style="position:absolute; top:6px; right:6px; cursor:pointer; color:#ff6b6b; font-weight:bold;">❌</span>
-
-        <label>Hotel Name</label><br>
-        <input type="text" name="hotelName[]" placeholder="Enter Hotel" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
-
-        <label>City</label><br>
-        <input type="text" name="hotelCity[]" placeholder="Enter City" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
-
-        <label>Room Type</label><br>
-        <select name="hotelRoomType[]" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
-            <option value="">Select Room Type</option>
+    div.className='hotelRow';
+    div.innerHTML=`
+        <span class="removeBtn" onclick="removeRow(this)">❌</span>
+        <label>Hotel Name</label><input type="text" name="hotelName[]" required>
+        <label>City</label><input type="text" name="hotelCity[]" required>
+        <label>Room Type</label>
+        <select name="hotelRoomType[]" required>
+            <option value="">Select</option>
             <option value="sharing">Sharing</option>
             <option value="quint">Quint</option>
             <option value="quad">Quad</option>
             <option value="triple">Triple</option>
             <option value="double">Double</option>
         </select>
-
-        <label>Check-in Date</label><br>
-        <input type="date" name="hotelCheckin[]" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
-
-        <label>Check-out Date</label><br>
-        <input type="date" name="hotelCheckout[]" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
+        <label>Meal Plan</label>
+        <select name="hotelMealPlan[]">
+            <option value="RO">RO</option>
+            <option value="CP">CP</option>
+            <option value="MAP">MAP</option>
+            <option value="AP">AP</option>
+            <option value="AI">AI</option>
+        </select>
+        <label>Check-in</label><input type="date" name="hotelCheckin[]" required>
+        <label>Check-out</label><input type="date" name="hotelCheckout[]" required>
+        <label>No of Nights</label><input type="number" name="hotelNoOfNights[]" min="0" value="0">
     `;
-    container.appendChild(div);
+    document.getElementById('hotelsContainer').appendChild(div);
 }
 
-// ----- Transport -----
 function addTransport() {
     transportCount++;
-    const container = document.getElementById('transportContainer');
     const div = document.createElement('div');
-    div.className = 'transportRow';
-    div.style = "border:1px solid #444; padding:12px; margin-bottom:12px; border-radius:8px; background:#1a1a35; position:relative;";
-    div.innerHTML = `
-        <span onclick="removeRow(this)" style="position:absolute; top:6px; right:6px; cursor:pointer; color:#ff6b6b; font-weight:bold;">❌</span>
-
-        <label>Route / Description</label><br>
-        <input type="text" name="transportRoute[]" placeholder="Enter Route / Description" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
-
-        <label>Transport Type</label><br>
-        <select name="transportType[]" required style="width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #333; background:#2a2a50; color:#fff;">
-            <option value="">Select Transport Type</option>
+    div.className='transportRow';
+    div.innerHTML=`
+        <span class="removeBtn" onclick="removeRow(this)">❌</span>
+        <label>Route / Description</label><input type="text" name="transportRoute[]" required>
+        <label>Transport Type</label>
+        <select name="transportType[]" required>
+            <option value="">Select</option>
             <option value="privateCar">Private Car</option>
-            <option value="economyBus">Economy By Bus</option>
+            <option value="economyBus">Economy Bus</option>
         </select>
     `;
-    container.appendChild(div);
+    document.getElementById('transportContainer').appendChild(div);
 }
 
-// ----- Remove row -----
-function removeRow(el) {
-    const parent = el.parentElement;
-    parent.remove();
-}
+function removeRow(el){ el.parentElement.remove(); }
 
-// ----- Notes bullet auto -----
-function formatBullets(textarea) {
+function formatBullets(textarea){
     let lines = textarea.value.split(/\r?\n/);
-    textarea.value = lines.map(l => l.startsWith("• ") ? l : "• " + l).join("\n");
+    textarea.value = lines.map(l=>l.startsWith('• ')?l:'• '+l).join('\n');
 }
 
-// Page load: containers empty
+// Form Submit
+document.getElementById('voucherForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+
+    const linkVoucherFormatsId = document.getElementById('linkVoucherFormatSelect').value;
+    const voucherFormatsId = document.getElementById('voucherFormatSelect').value;
+    const companyId = document.getElementById('companySelect').value;
+    const foreignCompanyId = document.getElementById('foreignCompanySelect').value;
+
+    if(!voucherFormatsId || !companyId || !foreignCompanyId){
+        return alert('Please select Voucher Format, Local & Foreign Agencies.');
+    }
+
+    const payload={
+        linkVoucherFormatsId,
+        voucherFormatsId,
+        companyId,
+        foreignCompanyId,
+        departureFlightDate: document.getElementById('departureFlightDate').value, // assign if needed
+        departureFlightNo:document.getElementById('departureFlightNo').value,
+        departureFlightFromCity: document.getElementById('departureFlightFromCity').value,
+        departureFlightToCity: document.getElementById('departureFlightToCity').value,
+        departureFlightTakeOffTime:document.getElementById('departureFlightTakeOffTime').value,
+        departureFlightLandingTime: document.getElementById('departureFlightLandingTime').value,
+        arrivalFlightNo: document.getElementById('arrivalFlightNo').value,
+        arrivalFlightDate: document.getElementById('arrivalFlightDate').value,
+        arrivalFlightFromCity: document.getElementById('arrivalFlightFromCity').value,
+        arrivalFlightToCity: document.getElementById('arrivalFlightToCity').value,
+        arrivalFlightTakeOffTime: document.getElementById('arrivalFlightTakeOffTime').value,
+        arrivalFlightLandingTime: document.getElementById('arrivalFlightLandingTime').value,
+        customerName:[...document.getElementsByName('customerName[]')].map(i=>i.value),
+        customerGender:[...document.getElementsByName('customerGender[]')].map(i=>i.value),
+        customerPassport:[...document.getElementsByName('customerPassport[]')].map(i=>i.value),
+        customerVisa:[...document.getElementsByName('customerVisa[]')].map(i=>i.value),
+        customerPNR:[...document.getElementsByName('customerPNR[]')].map(i=>i.value),
+        hotelName:[...document.getElementsByName('hotelName[]')].map(i=>i.value),
+        hotelCity:[...document.getElementsByName('hotelCity[]')].map(i=>i.value),
+        hotelRoomType:[...document.getElementsByName('hotelRoomType[]')].map(i=>i.value),
+        hotelMealPlan:[...document.getElementsByName('hotelMealPlan[]')].map(i=>i.value),
+        hotelCheckin:[...document.getElementsByName('hotelCheckin[]')].map(i=>i.value),
+        hotelCheckout:[...document.getElementsByName('hotelCheckout[]')].map(i=>i.value),
+        hotelNoOfNights:[...document.getElementsByName('hotelNoOfNights[]')].map(i=>i.value),
+        transportRoute:[...document.getElementsByName('transportRoute[]')].map(i=>i.value),
+        transportType:[...document.getElementsByName('transportType[]')].map(i=>i.value),
+        vouchernotes:document.getElementById('vouchernotes').value
+    };
+
+    try{
+        const res = await fetch('/api/voucher/create',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if(data.success) alert(`Voucher created successfully! ID: ${data.voucherId}`);
+        else console.error(data);
+    }catch(err){ console.error(err); }
+});
+
 </script>
 
 </body>

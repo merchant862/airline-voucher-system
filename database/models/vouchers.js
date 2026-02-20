@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     arrivalFlightLandingTime: DataTypes.TIME,
     foreignCompanyId: DataTypes.INTEGER,
     voucherFormatsId: DataTypes.INTEGER,
+    linkVoucherFormatsId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'vouchers',

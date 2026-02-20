@@ -14,9 +14,10 @@ try
 
     const voucher = await vouchers.create(
     {
-        voucherFormatsId:1,
-        companyId: 64,
-        foreignCompanyId:7,
+        linkVoucherFormatsId: req.body.linkVoucherFormatsId,
+        voucherFormatsId: req.body.voucherFormatsId,
+        companyId: req.body.companyId,
+        foreignCompanyId: req.body.foreignCompanyId,
         voucherNo: `UB-${Math.floor(100000 + Math.random() * 900000)}`,
         departureFlightDate: req.body.departureFlightDate,
         departureFlightNo: req.body.departureFlightNo,

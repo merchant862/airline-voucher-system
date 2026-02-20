@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   voucherFormats.init({
-    ejsPath: DataTypes.STRING
+    ejsPath: DataTypes.STRING,
+    name: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'voucherFormats',

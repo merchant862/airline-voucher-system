@@ -4,9 +4,11 @@ async function getVoucherFormatsByVoucherController(req, res, next) {
   try {
 
     const voucherFormatList = await voucherFormats.findAll({
+      where: { name : req.params.name },
       attributes: [
         'id',
-        'ejsPath'
+        'ejsPath',
+        'name'
       ],
       order: [['id', 'ASC']]
     });
