@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+const rootViewController      = require('../controllers/views/root');
 const loginViewController     = require('../controllers/views/login');
 const dashboardViewController = require('../controllers/views/dashboard');
 const createVoucherController = require('../controllers/views/create_voucher');
@@ -19,6 +20,7 @@ const renderAnEJSTemplateForVoucherController = require('../controllers/actions/
 const auth   = require('../middlewares/auth');
 const deauth = require('../middlewares/deauth');
 
+router.get('/', rootViewController)
 router.get('/login',          deauth, loginViewController);
 router.get('/dashboard',      auth(), dashboardViewController);
 router.get('/voucher/create', auth(), createVoucherController)
