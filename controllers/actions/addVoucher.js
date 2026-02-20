@@ -271,7 +271,7 @@ const formatDate = (date) => {
 
     // Generate PDF
     const browser = await puppeteer.launch({
-        executablePath: '/usr/bin/chromium', // ya VPS ka correct path
+        executablePath: process.env.CHROMIUM_PATH, // ya VPS ka correct path
         headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
