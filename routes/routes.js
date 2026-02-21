@@ -8,6 +8,7 @@ const createVoucherController = require('../controllers/views/create_voucher');
 const voucherUpdateController = require('../controllers/views/voucher_update');
 
 const loginController      = require('../controllers/actions/login');
+const logoutController     = require('../controllers/actions/logout');
 const dashboardController  = require('../controllers/actions/dashboard');
 const addVoucherController = require('../controllers/actions/addVoucher'); 
 const getAgenciesController = require('../controllers/actions/getLocalAgencies');
@@ -41,7 +42,8 @@ router.get('/crm/data/voucher/hotel/travel/c=930390289898889s9ddcc0X9d0d90nsnwxw
 router.get('/api/voucher/formats/:name', auth(), getVoucherFormatsByVoucherController);
 router.get('/api/voucher/:id', auth(), getVoucherDataByIdController);
 router.post('/api/voucher/create', auth(), addVoucherController);
-router.post('/api/voucher/update/:id', auth(), updateVoucherController)
+router.post('/api/voucher/update/:id', auth(), updateVoucherController);
 router.post('/login', loginController);
+router.get('/logout', logoutController);
 
 module.exports = router;

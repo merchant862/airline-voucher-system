@@ -140,6 +140,15 @@ button.submitBtn {
 <body>
 
 <div style="width:100%; padding:16px 24px; background: #1e1e3d; border-bottom: 3px solid #7b2ff7; font-size:20px; font-weight:bold; color:#b388ff;">
+    <button onclick="logout()" style="
+        padding:8px 16px;
+        border:none;
+        border-radius:8px;
+        background: linear-gradient(90deg, #7b2ff7, #a855f7);
+        color:#fff;
+        font-weight:bold;
+        cursor:pointer;
+    ">Logout</button>
     Voucher Entry Form
 </div>
 
@@ -562,6 +571,12 @@ form.addEventListener('submit', async (e)=>{
         statusDiv?.remove();
     }
 });
+
+function logout() {
+    // Direct redirect to backend logout route
+    window.location.href = '/logout';
+}
+
 </script>
 
 </body>
