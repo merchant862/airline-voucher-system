@@ -11,13 +11,14 @@ const listVouchersController = async (req, res, next) => {
 
     // fetch vouchers with limit and offset
     const voucherList = await vouchers.findAll({
-      attributes: ['voucherNo', 'createdAt'],
+      attributes: ['id','voucherNo', 'createdAt'],
       order: [['createdAt', 'DESC']],
       limit: pageSize,
       offset
     });
 
     const formatted = voucherList.map(v => ({
+      id: v.id,
       voucherNo: v.voucherNo,
       voucherDate: v.createdAt.toISOString().split('T')[0] // YYYY-MM-DD
     }));

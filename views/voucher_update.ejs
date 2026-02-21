@@ -6,192 +6,415 @@
 <title>Edit Voucher</title>
 </head>
 
-<body style="
-    margin:0;
-    padding:0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #141426, #1c1c3c);
-    color:#fff;
-">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Voucher</title>
+</head>
+
+<body style="margin:0; padding:0; font-family: Arial, sans-serif; background: linear-gradient(135deg, #141426, #1c1c3c); color:#fff;">
 
 <!-- Header -->
-<div style="
-    width:100%;
-    padding:18px 24px;
-    background:#1e1e3d;
-    border-bottom:3px solid #7b2ff7;
-    font-size:20px;
-    font-weight:bold;
-    color:#b388ff;
-">
-    Edit Voucher
+<div style="width:100%; padding:18px 24px; background:#1e1e3d; border-bottom:3px solid #7b2ff7; font-size:20px; font-weight:bold; color:#b388ff;">
+    Edit Voucher - <%= voucherData.voucherNo %>
 </div>
 
-<form style="max-width:1100px;margin:20px auto;padding:20px;box-sizing:border-box;">
+<form style="max-width:1100px; margin:20px auto; padding:20px; box-sizing:border-box;" method="POST" action="/voucher/update/<%= voucherData.id %>">
 
 <!-- ============================= -->
 <!-- Departure Flight -->
-<!-- ============================= -->
-
-<div style="margin-bottom:30px;border:1px solid #444;padding:20px;border-radius:10px;background:#1a1a35;">
+<div style="margin-bottom:30px; border:1px solid #444; padding:20px; border-radius:10px; background:#1a1a35;">
     <h3 style="color:#c77dff;">Departure Flight</h3>
 
     <label>Date</label>
-    <input type="date"
-        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+    <input type="date" name="departureFlightDate" value="<%= voucherData.departureFlightDate ? new Date(voucherData.departureFlightDate).toISOString().split('T')[0] : '' %>"
+        style="width:100%; padding:10px; margin:8px 0; border-radius:6px; background:#2a2a50; color:#fff; border:1px solid #333;">
 
     <label>Flight No</label>
-    <input type="text"
-        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+    <input type="text" name="departureFlightNo" value="<%= voucherData.departureFlightNo || '' %>"
+        style="width:100%; padding:10px; margin:8px 0; border-radius:6px; background:#2a2a50; color:#fff; border:1px solid #333;">
 
     <label>From City</label>
-    <input type="text"
-        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+    <input type="text" name="departureFlightFromCity" value="<%= voucherData.departureFlightFromCity || '' %>"
+        style="width:100%; padding:10px; margin:8px 0; border-radius:6px; background:#2a2a50; color:#fff; border:1px solid #333;">
 
     <label>To City</label>
-    <input type="text"
-        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+    <input type="text" name="departureFlightToCity" value="<%= voucherData.departureFlightToCity || '' %>"
+        style="width:100%; padding:10px; margin:8px 0; border-radius:6px; background:#2a2a50; color:#fff; border:1px solid #333;">
 
     <label>Takeoff Time</label>
-    <input type="time"
-        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+    <input type="time" name="departureFlightTakeOffTime" value="<%= voucherData.departureFlightTakeOffTime || '' %>"
+        style="width:100%; padding:10px; margin:8px 0; border-radius:6px; background:#2a2a50; color:#fff; border:1px solid #333;">
 
     <label>Landing Time</label>
-    <input type="time"
-        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+    <input type="time" name="departureFlightLandingTime" value="<%= voucherData.departureFlightLandingTime || '' %>"
+        style="width:100%; padding:10px; margin:8px 0; border-radius:6px; background:#2a2a50; color:#fff; border:1px solid #333;">
 </div>
 
 <!-- ============================= -->
 <!-- Arrival Flight -->
-<!-- ============================= -->
-
-<div style="margin-bottom:30px;border:1px solid #444;padding:20px;border-radius:10px;background:#1a1a35;">
+<div style="margin-bottom:30px; border:1px solid #444; padding:20px; border-radius:10px; background:#1a1a35;">
     <h3 style="color:#c77dff;">Arrival Flight</h3>
 
     <label>Date</label>
-    <input type="date"
-        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+    <input type="date" name="arrivalFlightDate" value="<%= voucherData.arrivalFlightDate ? new Date(voucherData.arrivalFlightDate).toISOString().split('T')[0] : '' %>"
+        style="width:100%; padding:10px; margin:8px 0; border-radius:6px; background:#2a2a50; color:#fff; border:1px solid #333;">
 
     <label>Flight No</label>
-    <input type="text"
-        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+    <input type="text" name="arrivalFlightNo" value="<%= voucherData.arrivalFlightNo || '' %>"
+        style="width:100%; padding:10px; margin:8px 0; border-radius:6px; background:#2a2a50; color:#fff; border:1px solid #333;">
 
     <label>From City</label>
-    <input type="text"
-        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+    <input type="text" name="arrivalFlightFromCity" value="<%= voucherData.arrivalFlightFromCity || '' %>"
+        style="width:100%; padding:10px; margin:8px 0; border-radius:6px; background:#2a2a50; color:#fff; border:1px solid #333;">
 
     <label>To City</label>
-    <input type="text"
-        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+    <input type="text" name="arrivalFlightToCity" value="<%= voucherData.arrivalFlightToCity || '' %>"
+        style="width:100%; padding:10px; margin:8px 0; border-radius:6px; background:#2a2a50; color:#fff; border:1px solid #333;">
 
     <label>Takeoff Time</label>
-    <input type="time"
-        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+    <input type="time" name="arrivalFlightTakeOffTime" value="<%= voucherData.arrivalFlightTakeOffTime || '' %>"
+        style="width:100%; padding:10px; margin:8px 0; border-radius:6px; background:#2a2a50; color:#fff; border:1px solid #333;">
 
     <label>Landing Time</label>
-    <input type="time"
-        style="width:100%;padding:10px;margin:8px 0;border-radius:6px;background:#2a2a50;color:#fff;border:1px solid #333;">
+    <input type="time" name="arrivalFlightLandingTime" value="<%= voucherData.arrivalFlightLandingTime || '' %>"
+        style="width:100%; padding:10px; margin:8px 0; border-radius:6px; background:#2a2a50; color:#fff; border:1px solid #333;">
 </div>
 
 <!-- ============================= -->
 <!-- Passengers -->
-<!-- ============================= -->
-
 <div style="margin-bottom:30px;">
     <h3 style="color:#c77dff;">Passengers</h3>
+    <div id="passengers-container">
+        <% voucherData.customers.forEach(function(passenger, index) { %>
+        <div class="passenger-item" style="position:relative; border:1px solid #444; padding:15px; border-radius:10px; background:#1a1a35; margin-bottom:10px;">
+            <button type="button" class="delete-item-btn" style="position:absolute; top:5px; right:5px; background:#ff4d4f; color:#fff; border:none; border-radius:50%; width:24px; height:24px; cursor:pointer;">×</button>
 
-    <div style="border:1px solid #444;padding:15px;border-radius:10px;background:#1a1a35;margin-bottom:10px;">
-        <input type="text" placeholder="Name"
-            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
-        <input type="text" placeholder="Passport"
-            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
-        <input type="text" placeholder="Visa"
-            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
-        <input type="text" placeholder="PNR"
-            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
+            <label>Name</label>
+            <input type="text" name="passengers[<%= index %>][customerName]" value="<%= passenger.customerName %>" placeholder="Name" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>Passport</label>
+            <input type="text" name="passengers[<%= index %>][customerPassport]" value="<%= passenger.customerPassport %>" placeholder="Passport" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>Visa</label>
+            <input type="text" name="passengers[<%= index %>][customerVisa]" value="<%= passenger.customerVisa %>" placeholder="Visa" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>PNR</label>
+            <input type="text" name="passengers[<%= index %>][customerPNR]" value="<%= passenger.customerPNR %>" placeholder="PNR" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>Gender</label>
+            <select name="passengers[<%= index %>][customerGender]" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+                <option value="male" <%= passenger.customerGender==='male' ? 'selected' : '' %>>Male</option>
+                <option value="female" <%= passenger.customerGender==='female' ? 'selected' : '' %>>Female</option>
+                <option value="infant" <%= passenger.customerGender==='infant' ? 'selected' : '' %>>Infant</option>
+                <option value="children" <%= passenger.customerGender==='children' ? 'selected' : '' %>>Children</option>
+            </select>
+        </div>
+        <% }) %>
     </div>
-
-    <button type="button"
-        style="padding:8px 14px;background:#7b2ff7;border:none;border-radius:6px;color:#fff;">
+    <button type="button" id="add-passenger-btn" style="padding:8px 14px; background:#7b2ff7; border:none; border-radius:6px; color:#fff; cursor:pointer;">
         + Add Passenger
     </button>
 </div>
 
 <!-- ============================= -->
 <!-- Hotels -->
-<!-- ============================= -->
-
 <div style="margin-bottom:30px;">
     <h3 style="color:#c77dff;">Hotels</h3>
+    <div id="hotels-container">
+        <% voucherData.hotels.forEach(function(hotel, index) { %>
+        <div class="hotel-item" style="position:relative; border:1px solid #444; padding:15px; border-radius:10px; background:#1a1a35; margin-bottom:10px;">
+            <button type="button" class="delete-item-btn" style="position:absolute; top:5px; right:5px; background:#ff4d4f; color:#fff; border:none; border-radius:50%; width:24px; height:24px; cursor:pointer;">×</button>
 
-    <div style="border:1px solid #444;padding:15px;border-radius:10px;background:#1a1a35;margin-bottom:10px;">
-        <input type="text" placeholder="Hotel Name"
-            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
-        <input type="text" placeholder="City"
-            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
-        <input type="text" placeholder="Room Type"
-            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
-        <input type="date"
-            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
-        <input type="date"
-            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
-        <input type="number" placeholder="No of Nights"
-            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
+            <label>Hotel Name</label>
+            <input type="text" name="hotels[<%= index %>][hotelName]" value="<%= hotel.hotelName %>" placeholder="Hotel Name" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>City</label>
+            <input type="text" name="hotels[<%= index %>][city]" value="<%= hotel.city %>" placeholder="City" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>Room Type</label>
+            <select name="hotels[<%= index %>][roomType]" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+                <option value="sharing" <%= hotel.roomType==='sharing' ? 'selected' : '' %>>Sharing</option>
+                <option value="quint" <%= hotel.roomType==='quint' ? 'selected' : '' %>>Quint</option>
+                <option value="quad" <%= hotel.roomType==='quad' ? 'selected' : '' %>>Quad</option>
+                <option value="triple" <%= hotel.roomType==='triple' ? 'selected' : '' %>>Triple</option>
+                <option value="double" <%= hotel.roomType==='double' ? 'selected' : '' %>>Double</option>
+            </select>
+
+            <label>Meal Plan</label>
+            <select name="hotels[<%= index %>][mealPlan]" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+                <option value="RO" <%= hotel.mealPlan==='RO' ? 'selected' : '' %>>RO</option>
+                <option value="CP" <%= hotel.mealPlan==='CP' ? 'selected' : '' %>>CP</option>
+                <option value="MAP" <%= hotel.mealPlan==='MAP' ? 'selected' : '' %>>MAP</option>
+                <option value="AP" <%= hotel.mealPlan==='AP' ? 'selected' : '' %>>AP</option>
+                <option value="AI" <%= hotel.mealPlan==='AI' ? 'selected' : '' %>>AI</option>
+            </select>
+
+            <label>Confirmation No</label>
+            <input type="text" name="hotels[<%= index %>][confirmationNo]" value="<%= hotel.confirmationNo %>" placeholder="Confirmation No" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>Check In Date</label>
+            <input type="date" name="hotels[<%= index %>][checkInDate]" value="<%= hotel.checkInDate ? new Date(hotel.checkInDate).toISOString().split('T')[0] : '' %>" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>Check Out Date</label>
+            <input type="date" name="hotels[<%= index %>][checkOutDate]" value="<%= hotel.checkOutDate ? new Date(hotel.checkOutDate).toISOString().split('T')[0] : '' %>" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>No of Nights</label>
+            <input type="number" name="hotels[<%= index %>][noOfNights]" value="<%= hotel.noOfNights %>" placeholder="No of Nights" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+        </div>
+        <% }) %>
     </div>
-
-    <button type="button"
-        style="padding:8px 14px;background:#7b2ff7;border:none;border-radius:6px;color:#fff;">
+    <button type="button" id="add-hotel-btn" style="padding:8px 14px; background:#7b2ff7; border:none; border-radius:6px; color:#fff; cursor:pointer;">
         + Add Hotel
     </button>
 </div>
 
 <!-- ============================= -->
 <!-- Transports -->
-<!-- ============================= -->
-
 <div style="margin-bottom:30px;">
     <h3 style="color:#c77dff;">Transports</h3>
+    <div id="transports-container">
+        <% voucherData.transports.forEach(function(trans, index) { %>
+        <div class="transport-item" style="position:relative; border:1px solid #444; padding:15px; border-radius:10px; background:#1a1a35; margin-bottom:10px;">
+            <button type="button" class="delete-item-btn" style="position:absolute; top:5px; right:5px; background:#ff4d4f; color:#fff; border:none; border-radius:50%; width:24px; height:24px; cursor:pointer;">×</button>
 
-    <div style="border:1px solid #444;padding:15px;border-radius:10px;background:#1a1a35;margin-bottom:10px;">
-        <input type="text" placeholder="Route"
-            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
-        <input type="text" placeholder="Type"
-            style="width:100%;padding:8px;margin:6px 0;background:#2a2a50;border:1px solid #333;color:#fff;border-radius:6px;">
+            <label>Route</label>
+            <input type="text" name="transports[<%= index %>][route]" value="<%= trans.route %>" placeholder="Route" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>Type</label>
+            <select name="transports[<%= index %>][type]" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+                <option value="Private Car" <%= trans.type==='Private Car' ? 'selected' : '' %>>Private Car</option>
+                <option value="Economy Bus" <%= trans.type==='Economy Bus' ? 'selected' : '' %>>Economy Bus</option>
+            </select>
+        </div>
+        <% }) %>
     </div>
-
-    <button type="button"
-        style="padding:8px 14px;background:#7b2ff7;border:none;border-radius:6px;color:#fff;">
+    <button type="button" id="add-transport-btn" style="padding:8px 14px; background:#7b2ff7; border:none; border-radius:6px; color:#fff; cursor:pointer;">
         + Add Transport
     </button>
 </div>
 
 <!-- ============================= -->
 <!-- Notes -->
-<!-- ============================= -->
-
 <div style="margin-bottom:30px;">
     <h3 style="color:#c77dff;">Notes</h3>
-    <textarea rows="5"
-        style="width:100%;padding:10px;border-radius:8px;border:1px solid #333;background:#2a2a50;color:#fff;">
-    </textarea>
+    <textarea name="notes" rows="5" style="width:100%; padding:10px; border-radius:8px; border:1px solid #333; background:#2a2a50; color:#fff;"><%= voucherData.notes.map(n => n.content).join('\n') %></textarea>
 </div>
 
 <!-- Submit -->
-<button type="submit"
-    style="
-        width:100%;
-        padding:14px;
-        border:none;
-        border-radius:10px;
-        background: linear-gradient(90deg, #7b2ff7, #a855f7);
-        color:#fff;
-        font-size:16px;
-        font-weight:bold;
-        cursor:pointer;
-    ">
+<button type="submit" style="width:100%; padding:14px; border:none; border-radius:10px; background: linear-gradient(90deg, #7b2ff7, #a855f7); color:#fff; font-size:16px; font-weight:bold; cursor:pointer;">
     Update Voucher
 </button>
 
 </form>
+
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+    // ---------------------
+    // Passengers
+    const passengersContainer = document.getElementById("passengers-container");
+    const addPassengerBtn = document.getElementById("add-passenger-btn");
+
+    addPassengerBtn.addEventListener("click", function() {
+        const index = passengersContainer.children.length;
+        const passengerHTML = `
+        <div class="passenger-item" style="position:relative; border:1px solid #444; padding:15px; border-radius:10px; background:#1a1a35; margin-bottom:10px;">
+            <button type="button" class="delete-item-btn" style="position:absolute; top:5px; right:5px; background:#ff4d4f; color:#fff; border:none; border-radius:50%; width:24px; height:24px; cursor:pointer;">×</button>
+
+            <label>Name</label>
+            <input type="text" name="passengers[${index}][customerName]" placeholder="Name" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>Passport</label>
+            <input type="text" name="passengers[${index}][customerPassport]" placeholder="Passport" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>Visa</label>
+            <input type="text" name="passengers[${index}][customerVisa]" placeholder="Visa" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>PNR</label>
+            <input type="text" name="passengers[${index}][customerPNR]" placeholder="PNR" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>Gender</label>
+            <select name="passengers[${index}][customerGender]" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="infant">Infant</option>
+                <option value="children">Children</option>
+            </select>
+        </div>
+        `;
+        passengersContainer.insertAdjacentHTML('beforeend', passengerHTML);
+    });
+
+    // ---------------------
+    // Hotels
+    const hotelsContainer = document.getElementById("hotels-container");
+    const addHotelBtn = document.getElementById("add-hotel-btn");
+
+    addHotelBtn.addEventListener("click", function() {
+        const index = hotelsContainer.children.length;
+        const hotelHTML = `
+        <div class="hotel-item" style="position:relative; border:1px solid #444; padding:15px; border-radius:10px; background:#1a1a35; margin-bottom:10px;">
+            <button type="button" class="delete-item-btn" style="position:absolute; top:5px; right:5px; background:#ff4d4f; color:#fff; border:none; border-radius:50%; width:24px; height:24px; cursor:pointer;">×</button>
+
+            <label>Hotel Name</label>
+            <input type="text" name="hotels[${index}][hotelName]" placeholder="Hotel Name" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>City</label>
+            <input type="text" name="hotels[${index}][city]" placeholder="City" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>Room Type</label>
+            <select name="hotels[${index}][roomType]" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+                <option value="sharing">Sharing</option>
+                <option value="quint">Quint</option>
+                <option value="quad">Quad</option>
+                <option value="triple">Triple</option>
+                <option value="double">Double</option>
+            </select>
+
+            <label>Meal Plan</label>
+            <select name="hotels[${index}][mealPlan]" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+                <option value="RO">RO</option>
+                <option value="CP">CP</option>
+                <option value="MAP">MAP</option>
+                <option value="AP">AP</option>
+                <option value="AI">AI</option>
+            </select>
+
+            <label>Confirmation No</label>
+            <input type="text" name="hotels[${index}][confirmationNo]" placeholder="Confirmation No" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>Check In Date</label>
+            <input type="date" name="hotels[${index}][checkInDate]" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>Check Out Date</label>
+            <input type="date" name="hotels[${index}][checkOutDate]" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>No of Nights</label>
+            <input type="number" name="hotels[${index}][noOfNights]" placeholder="No of Nights" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+        </div>
+        `;
+        hotelsContainer.insertAdjacentHTML('beforeend', hotelHTML);
+    });
+
+    // ---------------------
+    // Transports
+    const transportsContainer = document.getElementById("transports-container");
+    const addTransportBtn = document.getElementById("add-transport-btn");
+
+    addTransportBtn.addEventListener("click", function() {
+        const index = transportsContainer.children.length;
+        const transportHTML = `
+        <div class="transport-item" style="position:relative; border:1px solid #444; padding:15px; border-radius:10px; background:#1a1a35; margin-bottom:10px;">
+            <button type="button" class="delete-item-btn" style="position:absolute; top:5px; right:5px; background:#ff4d4f; color:#fff; border:none; border-radius:50%; width:24px; height:24px; cursor:pointer;">×</button>
+
+            <label>Route</label>
+            <input type="text" name="transports[${index}][route]" placeholder="Route" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+
+            <label>Type</label>
+            <select name="transports[${index}][type]" style="width:100%; padding:8px; margin:6px 0; background:#2a2a50; border:1px solid #333; color:#fff; border-radius:6px;">
+                <option value="Private Car">Private Car</option>
+                <option value="Economy Bus">Economy Bus</option>
+            </select>
+        </div>
+        `;
+        transportsContainer.insertAdjacentHTML('beforeend', transportHTML);
+    });
+
+    // ---------------------
+    // Delete buttons (delegated)
+    document.body.addEventListener("click", function(e) {
+        if(e.target.classList.contains("delete-item-btn")) {
+            e.target.closest("div").remove();
+        }
+    });
+});
+
+    const form = document.querySelector('form');
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Payload from form
+    // Payload banana form ke fields se
+const payload = {
+    departureFlightDate: document.querySelector('[name="departureFlightDate"]').value,
+    departureFlightNo: document.querySelector('[name="departureFlightNo"]').value,
+    departureFlightFromCity: document.querySelector('[name="departureFlightFromCity"]').value,
+    departureFlightToCity: document.querySelector('[name="departureFlightToCity"]').value,
+    departureFlightTakeOffTime: document.querySelector('[name="departureFlightTakeOffTime"]').value,
+    departureFlightLandingTime: document.querySelector('[name="departureFlightLandingTime"]').value,
+
+    arrivalFlightDate: document.querySelector('[name="arrivalFlightDate"]').value,
+    arrivalFlightNo: document.querySelector('[name="arrivalFlightNo"]').value,
+    arrivalFlightFromCity: document.querySelector('[name="arrivalFlightFromCity"]').value,
+    arrivalFlightToCity: document.querySelector('[name="arrivalFlightToCity"]').value,
+    arrivalFlightTakeOffTime: document.querySelector('[name="arrivalFlightTakeOffTime"]').value,
+    arrivalFlightLandingTime: document.querySelector('[name="arrivalFlightLandingTime"]').value,
+
+    customers: Array.from(document.querySelectorAll('.passenger-item')).map((el, index) => ({
+        customerName: el.querySelector(`[name="passengers[${index}][customerName]"]`).value,
+        customerPassport: el.querySelector(`[name="passengers[${index}][customerPassport]"]`).value,
+        customerVisa: el.querySelector(`[name="passengers[${index}][customerVisa]"]`).value,
+        customerPNR: el.querySelector(`[name="passengers[${index}][customerPNR]"]`).value,
+        customerGender: el.querySelector(`[name="passengers[${index}][customerGender]"]`)?.value || ''
+    })),
+
+    hotels: Array.from(document.querySelectorAll('.hotel-item')).map((el, index) => ({
+        hotelName: el.querySelector(`[name="hotels[${index}][hotelName]"]`).value,
+        city: el.querySelector(`[name="hotels[${index}][city]"]`).value,
+        roomType: el.querySelector(`[name="hotels[${index}][roomType]"]`).value,
+        mealPlan: el.querySelector(`[name="hotels[${index}][mealPlan]"]`).value,
+        confirmationNo: el.querySelector(`[name="hotels[${index}][confirmationNo]"]`).value,
+        checkInDate: el.querySelector(`[name="hotels[${index}][checkInDate]"]`).value,
+        checkOutDate: el.querySelector(`[name="hotels[${index}][checkOutDate]"]`).value,
+        noOfNights: el.querySelector(`[name="hotels[${index}][noOfNights]"]`).value
+    })),
+
+    transports: Array.from(document.querySelectorAll('.transport-item')).map((el, index) => ({
+        route: el.querySelector(`[name="transports[${index}][route]"]`).value,
+        type: el.querySelector(`[name="transports[${index}][type]"]`).value
+    })),
+
+    notes: document.querySelector('[name="notes"]').value.split('\n').map(n => ({ content: n }))
+};
+
+    try {
+        const response = await fetch(`/api/voucher/update/<%= voucherData.id %>`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+});
+
+        if (!response.ok) throw new Error('Failed to update voucher');
+
+        const blob = await response.blob();
+        const disposition = response.headers.get('Content-Disposition');
+        let filename = 'voucher.pdf';
+        if (disposition && disposition.includes('filename=')) {
+            filename = disposition.split('filename=')[1].replace(/['"]/g, '');
+        }
+
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+
+        setTimeout(() => {
+            URL.revokeObjectURL(url);
+            a.remove();
+        }, 1000);
+
+    } catch (err) {
+        alert(err);
+    }
+});
+
+</script>
+
 </body>
 </html>
