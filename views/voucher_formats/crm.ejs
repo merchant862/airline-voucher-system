@@ -178,12 +178,13 @@ td {
 
         <div class="center-logo">
             <% if(company.logo){ %>
-                <img src="<%= company.logo %>" /><br/>
-                <img src="/images/verified.jpeg"
-                     alt="Verified"
-                     style="width:100px; opacity:0.9;" />
+                <img src="<%= company.logo %>" />
             <% } %>
         </div>
+
+        <img src="/images/verified.jpeg"
+                     alt="Verified"
+                     style="width:200px; opacity:0.9;" />
 
         <div class="right-logo">
             <% if(foreignCompany.logo){ %>
