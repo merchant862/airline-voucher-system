@@ -381,6 +381,21 @@ const payload = {
     notes: document.querySelector('[name="notes"]').value.split('\n').map(n => ({ content: n }))
 };
 
+// 👇 show status message
+    const statusDiv = document.createElement('div');
+    statusDiv.id = 'voucher-status';
+    statusDiv.style.position = 'fixed';
+    statusDiv.style.top = '20px';
+    statusDiv.style.left = '50%';
+    statusDiv.style.transform = 'translateX(-50%)';
+    statusDiv.style.background = '#333';
+    statusDiv.style.color = '#fff';
+    statusDiv.style.padding = '10px 20px';
+    statusDiv.style.borderRadius = '5px';
+    statusDiv.style.zIndex = 1000;
+    statusDiv.textContent = 'Generating voucher...';
+    document.body.appendChild(statusDiv);
+
     try {
         const response = await fetch(`/api/voucher/update/<%= voucherData.id %>`, {
     method: 'POST',
@@ -411,6 +426,9 @@ const payload = {
 
     } catch (err) {
         alert(err);
+    }
+    finally{
+        statusDiv?.remove();
     }
 });
 
