@@ -33,9 +33,9 @@ async function getVoucherTemplate(req, res, next) {
         };
 
         const customers = [
-            { name: "SAIF ALI", gender: "Male", passport: "KT9826272", paxType: "Adult", beds: "Yes", visaNumber: "VISA12345", pnr: "PNR001" },
-            { name: "AYESHA KHAN", gender: "Female", passport: "RN4167421", paxType: "Adult", beds: "Yes", visaNumber: "VISA67890", pnr: "PNR002" },
-            { name: "ALI SAIF", gender: "Male", passport: "JV9820162", paxType: "Child", beds: "No", visaNumber: "VISA99999", pnr: "PNR003" }
+            { name: "SAIF ALI", gender: "male", passport: "KT9826272", paxType: "Adult", beds: "Yes", visaNumber: "VISA12345", pnr: "PNR001" },
+            { name: "AYESHA KHAN", gender: "female", passport: "RN4167421", paxType: "Adult", beds: "Yes", visaNumber: "VISA67890", pnr: "PNR002" },
+            { name: "ALI SAIF", gender: "male", passport: "JV9820162", paxType: "Adult", beds: "No", visaNumber: "VISA99999", pnr: "PNR003" }
         ];
 
         const hotels = [
@@ -49,9 +49,8 @@ async function getVoucherTemplate(req, res, next) {
             { route: "MAK-JED", type: "Private Car" }
         ];
 
-        const notes = `MAKKAH HOTEL:- Uzair 0548335007 (Day) Tariq 0549306332 (Night)
-MEDINAH HOTEL:- MR. ARSALAN +966544809146
-Transport Contact: +966500000000`;
+        const notes = `MAKKAH HOTEL:- Uzair 0548335007 (Day) Tariq 0549306332 (Night)\n.MEDINAH HOTEL:- MR. ARSALAN +966544809146
+\nTransport Contact: +966500000000`;
 
         const qrData = `Voucher: ${Date.now()}`;
 
@@ -66,11 +65,13 @@ Transport Contact: +966500000000`;
         // ======= Render EJS =======
         res.render(path.join(__dirname, '../../', format[0].ejsPath), {
             company: {
-                name: "Meezab International Travel & Tourism",
+                name: "Safr-e-hijaaz Travels and Tours",
+                address:'',
                 logo: "/images/safr-e-hijaaz.png"
             },
             foreignCompany:{
-                name: "Meezab International Travel & Tourism",
+                name: "Daleel Alzowar",
+                address:'',
                 logo: "/images/daleel-alzowar.png"
             },
             familyHead: "SAIF ALI",

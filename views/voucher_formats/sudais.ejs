@@ -34,9 +34,9 @@
 
     <!-- Header -->
     <div class="header">
-        <img src="<%= company.logo %>" class="left-logo" />
-        <img src="<%= foreignCompany.logo %>" class="right-logo" />
-
+        <% if(company.logo){ %><img src="<%= company.logo %>" class="left-logo" /><% } %>
+        <% if(foreignCompany.logo){ %><img src="<%= foreignCompany.logo %>" class="right-logo" /><% } %>
+        
         <h2><%= company.name %></h2>
         <h3>Hotel Voucher</h3>
     </div>
@@ -57,7 +57,7 @@
 
 		<tr>
 			<td><strong>Saudi Company:</strong></td>
-			<td>Towa Umrah Services</td>
+			<td><%= foreignCompany.name %></td>
 
 			<td><strong>Date:</strong></td>
 			<td><%= voucher.date %></td>

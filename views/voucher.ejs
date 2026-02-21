@@ -271,15 +271,39 @@ button.submitBtn {
 </form>
 
 <script>
-    
-    document.addEventListener("DOMContentLoaded", async function() {
+document.addEventListener("DOMContentLoaded", async function() {
+    // Load dropdowns and formats
     await loadCustomAgencies('local', 'localAgencyDropdown', 'companySelect');
     await loadCustomAgencies('foreign', 'foreignAgencyDropdown', 'foreignCompanySelect');
     await loadVoucherFormats();
     await loadLinkVoucherFormats();
+
+    // Restore form from localStorage if exists
+    restoreFormData();
 });
 
-// Load Voucher Formats
+// ------------------- FORM STATE PRESERVE -------------------
+const form = document.getElementById('voucherForm');
+form.addEventListener('input', saveFormData);
+
+function saveFormData() {
+    const data = {};
+    new FormData(form).forEach((value, key) => data[key] = value);
+    localStorage.setItem('voucherFormData', JSON.stringify(data));
+}
+
+function restoreFormData() {
+    const saved = localStorage.getItem('voucherFormData');
+    if (saved) {
+        const data = JSON.parse(saved);
+        Object.keys(data).forEach(key => {
+            const input = form.querySelector(`[name="${key}"]`);
+            if (input) input.value = data[key];
+        });
+    }
+}
+
+// ------------------- LOAD VOUCHER FORMATS -------------------
 async function loadVoucherFormats() {
     try {
         const res = await fetch('/api/voucher/formats/DOWNLOAD_FORMAT');
@@ -294,37 +318,17 @@ async function loadVoucherFormats() {
             select.appendChild(option);
         });
 
-        // On select, open template in new tab
         select.addEventListener('change', function() {
             const formatId = this.value;
             if (!formatId) return;
-            // open in new tab
             window.open(`/api/voucher/template/${formatId}`, '_blank');
         });
 
     } catch(err) { console.error(err); }
 }
-/* async function loadVoucherFormats() {
-    try {
-        const res = await fetch('/api/voucher/formats');
-        const data = await res.json();
-        if (!data.success) return;
 
-        const select = document.getElementById('voucherFormatSelect');
-        data.data.forEach(format => {
-            const option = document.createElement('option');
-            option.value = format.id;
-            option.textContent = format.name; // You can format this better
-            select.appendChild(option);
-        });
-    } catch (err) {
-        console.error('Error loading voucher formats:', err);
-    }
-} */
-
-//load Link Voucher Formats
-async function loadLinkVoucherFormats() 
-{
+// ------------------- LOAD LINK VOUCHER FORMATS -------------------
+async function loadLinkVoucherFormats() {
     try {
         const res = await fetch('/api/voucher/formats/LINK_FORMAT');
         const data = await res.json();
@@ -338,18 +342,16 @@ async function loadLinkVoucherFormats()
             select.appendChild(option);
         });
 
-        // On select, open template in new tab
         select.addEventListener('change', function() {
             const formatId = this.value;
             if (!formatId) return;
-            // open in new tab
             window.open(`/api/voucher/template/${formatId}`, '_blank');
         });
 
     } catch(err) { console.error(err); }
 }
 
-// Load Agencies
+// ------------------- LOAD AGENCIES -------------------
 async function loadCustomAgencies(type, dropdownId, hiddenInputId) {
     const res = await fetch(`/api/agencies/${type}`);
     const data = await res.json();
@@ -381,7 +383,7 @@ async function loadCustomAgencies(type, dropdownId, hiddenInputId) {
     });
 }
 
-// Dynamic Add Rows
+// ------------------- DYNAMIC ADD ROWS -------------------
 let customerCount=0, hotelCount=0, transportCount=0;
 
 function addCustomer() {
@@ -462,8 +464,8 @@ function formatBullets(textarea){
     textarea.value = lines.map(l=>l.startsWith('• ')?l:'• '+l).join('\n');
 }
 
-// Form Submit
-document.getElementById('voucherForm').addEventListener('submit', async (e)=>{
+// ------------------- FORM SUBMIT -------------------
+form.addEventListener('submit', async (e)=>{
     e.preventDefault();
 
     const linkVoucherFormatsId = document.getElementById('linkVoucherFormatSelect').value;
@@ -480,7 +482,7 @@ document.getElementById('voucherForm').addEventListener('submit', async (e)=>{
         voucherFormatsId,
         companyId,
         foreignCompanyId,
-        departureFlightDate: document.getElementById('departureFlightDate').value, // assign if needed
+        departureFlightDate: document.getElementById('departureFlightDate').value,
         departureFlightNo:document.getElementById('departureFlightNo').value,
         departureFlightFromCity: document.getElementById('departureFlightFromCity').value,
         departureFlightToCity: document.getElementById('departureFlightToCity').value,
@@ -509,7 +511,21 @@ document.getElementById('voucherForm').addEventListener('submit', async (e)=>{
         vouchernotes:document.getElementById('vouchernotes').value
     };
 
-    
+    // 👇 show status message
+    const statusDiv = document.createElement('div');
+    statusDiv.id = 'voucher-status';
+    statusDiv.style.position = 'fixed';
+    statusDiv.style.top = '20px';
+    statusDiv.style.left = '50%';
+    statusDiv.style.transform = 'translateX(-50%)';
+    statusDiv.style.background = '#333';
+    statusDiv.style.color = '#fff';
+    statusDiv.style.padding = '10px 20px';
+    statusDiv.style.borderRadius = '5px';
+    statusDiv.style.zIndex = 1000;
+    statusDiv.textContent = 'Generating voucher...';
+    document.body.appendChild(statusDiv);
+
     try {
         const response = await fetch('/api/voucher/create', {
             method: 'POST',
@@ -519,26 +535,33 @@ document.getElementById('voucherForm').addEventListener('submit', async (e)=>{
 
         if (!response.ok) throw new Error('Failed to generate PDF');
 
-        // 👇 PDF as blob
         const blob = await response.blob();
 
-        // 👇 create download link
+        // ✅ Get filename from backend header
+        const disposition = response.headers.get('Content-Disposition');
+        let filename = 'voucher.pdf';
+        if (disposition && disposition.includes('filename=')) {
+            filename = disposition.split('filename=')[1].replace(/['"]/g, '');
+        }
+
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'voucher.pdf';
+        a.download = filename;
         document.body.appendChild(a);
         a.click();
-        a.remove();
 
-        window.URL.revokeObjectURL(url);
+        setTimeout(() => {
+            URL.revokeObjectURL(url);
+            a.remove();
+        }, 1000);
 
     } catch (err) {
-        console.error(err);
-        alert('Error generating voucher.');
+        alert(err.message);
+    } finally {
+        statusDiv?.remove();
     }
 });
-
 </script>
 
 </body>

@@ -52,10 +52,16 @@ td { padding: 8px; border-bottom: 1px solid #eee; }
 
 <div class="wrapper">
 
+    <p id="pageUrl"></p>
+    <script>
+        document.getElementById('pageUrl').textContent = window.location.href;
+    </script>
+    
     <!-- Header -->
     <div class="top-header">
         <div>
-            <div class="voucher-title">HOTEL VOUCHER</div>
+            <div class="voucher-title">HOTEL VOUCHER
+            </div>
             <div class="voucher-id">
                 <% const parts = voucher.voucherNo.split('-'); %>
                 <span><%= parts[0] %></span>-<%= parts[1] %>
@@ -63,11 +69,18 @@ td { padding: 8px; border-bottom: 1px solid #eee; }
         </div>
 
         <div class="center-logo">
-            <img src="<%= company.logo %>" />
+            <% if(company.logo){ %>
+                <img src="<%= company.logo %>" /><br/>
+                <img src="/images/verified.jpeg"
+				alt="Verified"
+				style="width:100px; opacity:0.9;" />
+            <% } %>
         </div>
 
         <div class="right-logo">
+            <% if(foreignCompany.logo){ %>
             <img src="<%= foreignCompany.logo %>" />
+        <% } %>
         </div>
     </div>
 
@@ -82,9 +95,9 @@ td { padding: 8px; border-bottom: 1px solid #eee; }
             <div>
                 <strong>PAX:</strong>
                 <%= customers.length %>
-                (A:<%= customers.filter(c => c.paxType === 'Adult').length %>,
-                 C:<%= customers.filter(c => c.paxType === 'Child').length %>,
-                 I:0)
+                (A:<%= customers.filter(c => c.paxType !== 'children').length %>,
+                 C:<%= customers.filter(c => c.paxType === 'children').length %>,
+                 I:<%= customers.filter(c => c.paxType === 'infant').length %>)
             </div>
         </div>
 
@@ -216,22 +229,11 @@ td { padding: 8px; border-bottom: 1px solid #eee; }
         <img src="<%= qrImage %>" width="140" />
     </div> -->
 
-    <div style="margin-top:20px; font-size:13px; display:flex; justify-content:space-between; align-items:flex-start;">
-
-		<!-- Notes Text -->
-		<div style="white-space: pre-line; width:80%;">
-			<strong>Note:</strong><br>
-			<%= notes %>
-		</div>
-
-		<!-- Verified Image -->
-		<div style="width:18%; text-align:right;">
-			<img src="/images/verified.jpeg"
-				alt="Verified"
-				style="width:100px; opacity:0.9;" />
-		</div>
-
-	</div>
+    <!-- Notes Text -->
+    <div style="white-space: pre-line; width:80%;">
+        <strong>Note:</strong><br>
+        <%= notes %>
+    </div>
 
     <div class="print-btn">
         <button onclick="window.print()">Print</button>

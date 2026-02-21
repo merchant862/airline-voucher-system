@@ -110,17 +110,21 @@ th, td{
 <table class="header-table">
 <tr>
 <td width="20%">
-    <img src="<%= company.logo %>" class="logo">
+    <% if(company.logo){ %>
+        <img src="<%= company.logo %>" class="logo">
+    <% } %>
 </td>
 
 <td width="60%" class="center-title">
     <h2><%= company.name.toUpperCase() %></h2>
-    <div>Address: Office # 2 Time Tower Abdullah Haroon Road, Karachi, Pakistan.</div>
+    <div><%= company.name.address %></div>
     <div class="service-title">SERVICE VOUCHER</div>
 </td>
 
 <td width="20%" class="right">
-    <img src="<%= foreignCompany.logo %>" class="logo">
+    <% if(foreignCompany.logo){ %>
+        <img src="<%= foreignCompany.logo %>" class="logo">
+    <% } %>
 </td>
 </tr>
 </table>
@@ -165,9 +169,10 @@ th, td{
 
 <tr>
 <td colspan="5" class="center">
-GENTS: <%= customers.filter(c=>c.gender==='Male').length %> &nbsp;&nbsp;
-LADIES: <%= customers.filter(c=>c.gender==='Female').length %> &nbsp;&nbsp;
-CHILDREN: <%= customers.filter(c=>c.paxType==='Child').length %> &nbsp;&nbsp;
+GENTS: <%= customers.filter(c=>c.gender==='male').length %> &nbsp;&nbsp;
+LADIES: <%= customers.filter(c=>c.gender==='female').length %> &nbsp;&nbsp;
+CHILDREN: <%= customers.filter(c=>c.paxType==='children').length %> &nbsp;&nbsp;
+INFANT: <%= customers.filter(c=>c.paxType==='infant').length %> &nbsp;&nbsp;
 TOTAL PAX: <%= customers.length %>
 </td>
 </tr>
@@ -255,14 +260,13 @@ TOTAL PAX: <%= customers.length %>
 <table class="qr-wrapper">
 <tr>
 <td width="70%">
-<strong>CONTACT NO.</strong><br>
-MR. FAISAL 0092-3422614769 (WHATSAPP)<br>
-MR. ADNAN 0092-3333153594 (WHATSAPP)
+<!-- <strong>CONTACT NO.</strong><br> -->
+<%= notes %>
 </td>
 
 <td width="30%" class="center">
 <img src="<%= qrImage %>" width="160"><br>
-<strong>AUTHORIZED<br>DAR-AL-SALAM GROUP</strong>
+<strong>AUTHORIZED<br><%= company.name.toUpperCase() %></strong>
 </td>
 </tr>
 </table>
@@ -270,7 +274,14 @@ MR. ADNAN 0092-3333153594 (WHATSAPP)
 <!-- NOTES -->
 <div class="note">
 <strong>Note:</strong><br>
-<%= notes %>
+- Please contact Makkah/Madinah operations 24 hours before the scheduled transportation and notify them accordingly.
+- Room sharing means 4-6 beds per room.
+- Separate room will incur extra cost.
+- If the above mentioned hotel is unavailable in that case a similar category hotel will be provided.
+- In case of any transport related delays, our esteemed passengers are advised to observe patience at airports and hotels.
+- Each and every Pax has to wear wrist band or company badge. If anybody fails to follow directions SAR 2,000 will be charged as penalty per Pax.
+- Please when you call for requesting Transportation or any services you must give us the Name of the Agency and the Serial Number above.
+- No, service will be provided if the vendor fails to notify us the agency name and the serial number
 </div>
 
 <!-- ARABIC BLOCK -->
