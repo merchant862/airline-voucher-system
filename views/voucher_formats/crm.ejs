@@ -5,22 +5,84 @@
 <title>Hotel Voucher</title>
 
 <style>
-body { font-family: Arial, sans-serif; background: #e9ecef; margin: 0; }
-.wrapper { width: 1100px; margin: 30px auto; background: #fff; padding: 30px 40px; border-radius: 6px; }
 
-.top-header { display: flex; justify-content: space-between; align-items: center; }
+/* Force A4 Portrait */
+@page {
+    size: A4 portrait;
+    margin: 12mm;
+}
 
-.voucher-title { font-size: 28px; letter-spacing: 2px; color: #333; }
-.voucher-id { font-size: 20px; margin-top: 5px; }
-.voucher-id span { background: #1abc9c; color: #fff; padding: 2px 6px; }
+body {
+    font-family: Arial, sans-serif;
+    background: #e9ecef;
+    margin: 0;
+}
 
-.center-logo img { height: 90px; }
-.right-logo img { height: 90px; }
+.wrapper {
+    width: 100%;
+    max-width: 800px;   /* Portrait friendly width */
+    margin: 20px auto;
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
 
-.divider { margin: 25px 0; border-top: 1px solid #ddd; }
+/* Long URL Safe */
+#pageUrl {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 15px;
+}
 
-.info-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 10px; }
-.info-left div, .info-right div { margin-bottom: 6px; }
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.voucher-title {
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: #333;
+}
+
+.voucher-id {
+    font-size: 20px;
+    margin-top: 5px;
+}
+
+.voucher-id span {
+    background: #1abc9c;
+    color: #fff;
+    padding: 2px 6px;
+}
+
+.center-logo img,
+.right-logo img {
+    height: 90px;
+    max-width: 150px;
+    object-fit: contain;
+}
+
+.divider {
+    margin: 25px 0;
+    border-top: 1px solid #ddd;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.info-left div,
+.info-right div {
+    margin-bottom: 6px;
+}
 
 .section-title {
     background: #f1f3f5;
@@ -32,19 +94,65 @@ body { font-family: Arial, sans-serif; background: #e9ecef; margin: 0; }
     letter-spacing: 1px;
 }
 
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-th { text-align: left; padding: 8px; border-bottom: 1px solid #ccc; background: #fafafa; }
-td { padding: 8px; border-bottom: 1px solid #eee; }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
 
-.total-nights { text-align: center; margin-top: 10px; font-size: 14px; }
+th {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+    background: #fafafa;
+}
 
-.flight-wrapper { display: flex; justify-content: space-between; margin-top: 15px; }
-.flight-box { width: 48%; }
+td {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
 
-.qr-box { text-align: center; margin-top: 20px; }
+.total-nights {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+}
 
-.print-btn { text-align: right; margin-top: 30px; }
-.print-btn button { background: #0b6fa4; color: #fff; border: none; padding: 8px 15px; cursor: pointer; }
+.flight-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.flight-box {
+    width: 48%;
+}
+
+.qr-box {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.print-btn {
+    text-align: right;
+    margin-top: 30px;
+}
+
+/* Hide Print Button in PDF */
+@media print {
+    .print-btn {
+        display: none;
+    }
+}
+
+.print-btn button {
+    background: #0b6fa4;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
 </style>
 </head>
 
@@ -52,16 +160,16 @@ td { padding: 8px; border-bottom: 1px solid #eee; }
 
 <div class="wrapper">
 
+    <!-- Page URL (Wrapped Properly) -->
     <p id="pageUrl"></p>
     <script>
         document.getElementById('pageUrl').textContent = window.location.href;
     </script>
-    
+
     <!-- Header -->
     <div class="top-header">
         <div>
-            <div class="voucher-title">HOTEL VOUCHER
-            </div>
+            <div class="voucher-title">HOTEL VOUCHER</div>
             <div class="voucher-id">
                 <% const parts = voucher.voucherNo.split('-'); %>
                 <span><%= parts[0] %></span>-<%= parts[1] %>
@@ -72,15 +180,15 @@ td { padding: 8px; border-bottom: 1px solid #eee; }
             <% if(company.logo){ %>
                 <img src="<%= company.logo %>" /><br/>
                 <img src="/images/verified.jpeg"
-				alt="Verified"
-				style="width:100px; opacity:0.9;" />
+                     alt="Verified"
+                     style="width:100px; opacity:0.9;" />
             <% } %>
         </div>
 
         <div class="right-logo">
             <% if(foreignCompany.logo){ %>
-            <img src="<%= foreignCompany.logo %>" />
-        <% } %>
+                <img src="<%= foreignCompany.logo %>" />
+            <% } %>
         </div>
     </div>
 
@@ -93,8 +201,7 @@ td { padding: 8px; border-bottom: 1px solid #eee; }
             <div><strong>Family Head:</strong> <%= familyHead %></div>
             <div><strong>Package:</strong> Custom</div>
             <div>
-                <strong>PAX:</strong>
-                <%= customers.length %>
+                <strong>PAX:</strong> <%= customers.length %>
                 (A:<%= customers.filter(c => c.paxType !== 'children').length %>,
                  C:<%= customers.filter(c => c.paxType === 'children').length %>,
                  I:<%= customers.filter(c => c.paxType === 'infant').length %>)
@@ -134,8 +241,8 @@ td { padding: 8px; border-bottom: 1px solid #eee; }
         <% }) %>
     </table>
 
-    <!-- Accommodation -->
-    <div class="section-title">Accommodation</div>
+    <!-- Hotels -->
+    <div class="section-title">Hotels</div>
 
     <table>
         <tr>
@@ -224,13 +331,8 @@ td { padding: 8px; border-bottom: 1px solid #eee; }
 
     </div>
 
-    <!-- QR -->
-    <!-- <div class="qr-box">
-        <img src="<%= qrImage %>" width="140" />
-    </div> -->
-
-    <!-- Notes Text -->
-    <div style="white-space: pre-line; width:80%;">
+    <!-- Notes -->
+    <div style="white-space: pre-line; margin-top:20px;">
         <strong>Note:</strong><br>
         <%= notes %>
     </div>
