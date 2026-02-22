@@ -4,30 +4,150 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Edit Voucher</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #141426, #1c1c3c);
+        color: #fff;
+    }
+
+    /* Header */
+    .header {
+        width: 100%;
+        padding: 18px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: linear-gradient(135deg, #141426, #1c1c3c);
+        border-bottom: 3px solid #7b2ff7;
+        font-size: 20px;
+        font-weight: bold;
+        color: #b388ff;
+    }
+
+    .header-buttons {
+    display:flex;
+    gap:10px;
+}
+.header-buttons button {
+    padding:8px 16px;
+    border:none;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+    color:#fff;
+}
+.logoutBtn {
+    background: linear-gradient(90deg, #7b2ff7, #a855f7);
+}
+.homeBtn {
+    background: linear-gradient(90deg, #00bcd4, #0097a7);
+}
+
+    /* Forms */
+    form {
+        max-width: 1100px;
+        margin: 20px auto;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .section {
+        margin-bottom: 30px;
+        border: 1px solid #444;
+        padding: 20px;
+        border-radius: 10px;
+        background: #1a1a35;
+    }
+
+    .section h3 {
+        color: #c77dff;
+        margin-bottom: 10px;
+    }
+
+    .section label {
+        display: block;
+        margin-top: 10px;
+    }
+
+    .section input, .section select, .section textarea {
+        width: 100%;
+        padding: 8px 10px;
+        margin-top: 6px;
+        border-radius: 6px;
+        background: #2a2a50;
+        color: #fff;
+        border: 1px solid #333;
+        box-sizing: border-box;
+    }
+
+    .section textarea {
+        resize: vertical;
+    }
+
+    /* Buttons inside sections */
+    .add-btn {
+        padding: 8px 14px;
+        background: #7b2ff7;
+        border: none;
+        border-radius: 6px;
+        color: #fff;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .delete-item-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: #ff4d4f;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+    }
+
+    /* Submit button */
+    .submit-btn {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(90deg, #7b2ff7, #a855f7);
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+    /* Passenger / hotel / transport items */
+    .passenger-item, .hotel-item, .transport-item {
+        position: relative;
+        border: 1px solid #444;
+        padding: 15px;
+        border-radius: 10px;
+        background: #1a1a35;
+        margin-bottom: 10px;
+    }
+</style>
 </head>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Edit Voucher</title>
-</head>
-
-<body style="margin:0; padding:0; font-family: Arial, sans-serif; background: linear-gradient(135deg, #141426, #1c1c3c); color:#fff;">
+<body>
 
 <!-- Header -->
-<div style="width:100%; padding:18px 24px; background:#1e1e3d; border-bottom:3px solid #7b2ff7; font-size:20px; font-weight:bold; color:#b388ff;">
-    <button onclick="logout()" style="
-        padding:8px 16px;
-        border:none;
-        border-radius:8px;
-        background: linear-gradient(90deg, #7b2ff7, #a855f7);
-        color:#fff;
-        font-weight:bold;
-        cursor:pointer;
-    ">Logout</button>
-    Edit Voucher - <%= voucherData.voucherNo %>
+<div style="width:100%; max-width:1200px; margin:0 auto; padding:16px 24px; 
+    background:#1e1e3d; border-bottom:3px solid #7b2ff7; font-size:20px; 
+    font-weight:bold; color:#b388ff; display:flex; justify-content:space-between; align-items:center; box-sizing:border-box;">
+    <div>Edit Voucher - <%= voucherData.voucherNo %></div>
+    <div class="header-buttons">
+        <button class="logoutBtn" onclick="logout()">Logout</button>
+        <button class="homeBtn" onclick="window.location.href='/'">Home</button>
+    </div>
 </div>
 
 <form style="max-width:1100px; margin:20px auto; padding:20px; box-sizing:border-box;" method="POST" action="/voucher/update/<%= voucherData.id %>">

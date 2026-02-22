@@ -84,6 +84,10 @@ async function getVoucherTemplate(req, res, next) {
             return res.status(404).send("Voucher not found");
         }
 
+        if(voucher.status == 'inactive'){
+            next();
+        }
+
         // ================= Flight Data =================
 
         const departureFlight = {

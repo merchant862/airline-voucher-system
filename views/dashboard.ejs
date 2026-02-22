@@ -36,7 +36,7 @@
         font-weight:bold;
         cursor:pointer;
     ">Logout</button>
-    <span>Total Vouchers: <span id="totalVouchers">0</span></span>
+
     <button onclick="generateVoucher()" style="
         padding:8px 16px;
         border:none;
@@ -48,20 +48,98 @@
     ">Generate New Voucher</button>
 </div>
 
-<!-- Table Container -->
-<div style="width:95%; max-width:1000px; margin:20px auto; overflow-x:auto;">
-    <table style="width:100%; border-collapse:collapse;">
-        <thead>
-            <tr style="background:#1a1a35; color:#c77dff;">
-                <th style="padding:12px; border:1px solid #444; text-align:left;">Voucher No</th>
-                <th style="padding:12px; border:1px solid #444; text-align:left;">Voucher Date</th>
-                <th style="padding:12px; border:1px solid #444; text-align:left;">Action</th>
-            </tr>
-        </thead>
-        <tbody id="voucherTableBody">
-            <!-- Rows will be populated dynamically -->
-        </tbody>
-    </table>
+<!-- Stats Boxes -->
+<div style="
+    width:95%;
+    max-width:1000px;
+    margin:25px auto;
+    display:flex;
+    flex-wrap:wrap;
+    gap:15px;
+    justify-content:space-between;
+">
+
+<!-- Total -->
+<div style="
+    flex:1;
+    min-width:180px;
+    background:#1e1e3d;
+    padding:10px;
+    border-radius:12px;
+    border:2px solid #7b2ff7;
+    text-align:center;
+    box-shadow:0 0 10px rgba(123,47,247,0.3);
+">
+    <h3 style="margin:0; color:#b388ff; font-size:16px;">
+        Total Vouchers: <span id="totalVouchers">0</span>
+    </h3>
+</div>
+
+<!-- Active -->
+<div style="
+    flex:1;
+    min-width:180px;
+    background:#1e1e3d;
+    padding:10px;
+    border-radius:12px;
+    border:2px solid #00e676;
+    text-align:center;
+    box-shadow:0 0 10px rgba(0,230,118,0.3);
+">
+    <h3 style="margin:0; color:#00e676; font-size:16px;">
+        Active Vouchers: <span id="totalActiveVouchers">0</span>
+    </h3>
+</div>
+
+<!-- Inactive -->
+<div style="
+    flex:1;
+    min-width:180px;
+    background:#1e1e3d;
+    padding:10px;
+    border-radius:12px;
+    border:2px solid #ff5252;
+    text-align:center;
+    box-shadow:0 0 10px rgba(255,82,82,0.3);
+">
+    <h3 style="margin:0; color:#ff5252; font-size:16px;">
+        Inactive Vouchers: <span id="totalInactiveVouchers">0</span>
+    </h3>
+</div>
+
+</div>
+
+<!-- Table Container + Search -->
+<div style="width:95%; max-width:1000px; margin:20px auto;">
+    <!-- Search Input -->
+    <div style="margin-bottom:12px; display:flex; justify-content:flex-end;">
+        <input type="text" id="voucherSearch" placeholder="Search Voucher (UB-123456)" 
+            style="
+                padding:8px 12px; 
+                border-radius:8px; 
+                border:1px solid #444; 
+                background:#2a2a50; 
+                color:#fff; 
+                width:250px;
+                box-sizing:border-box;
+            "
+        />
+    </div>
+
+    <div style="overflow-x:auto;">
+        <table style="width:100%; border-collapse:collapse;">
+            <thead>
+                <tr style="background:#1a1a35; color:#c77dff;">
+                    <th style="padding:12px; border:1px solid #444; text-align:left;">Voucher No</th>
+                    <th style="padding:12px; border:1px solid #444; text-align:left;">Voucher Date</th>
+                    <th style="padding:12px; border:1px solid #444; text-align:left;">Action</th>
+                </tr>
+            </thead>
+            <tbody id="voucherTableBody">
+                <!-- Rows populated dynamically -->
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!-- Pagination -->
@@ -71,75 +149,115 @@
 </div>
 
 <script>
+// --------------------- VARIABLES ---------------------
 let currentPage = 1;
 const pageSize = 5;
 let totalVouchers = 0;
+let totalActiveVouchers = 0;
+let totalInactiveVouchers = 0;
 
-async function fetchVouchers(page=1){
+// --------------------- FETCH VOUCHERS ---------------------
+async function fetchVouchers(page = 1) {
     try {
         const res = await fetch(`/api/dashboard?page=${page}`, {
-            method:'GET',
-            headers:{ 'Content-Type':'application/json' }
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
         });
         const data = await res.json();
-        if(!data.success) return alert('Failed to fetch vouchers');
+        if (!data.success) return alert('Failed to fetch vouchers');
 
-        totalVouchers = data.totalVouchers; // ✅ update total
+        totalVouchers = data.totalVouchers;
+        totalActiveVouchers = data.activeCount;
+        totalInactiveVouchers = data.inactiveCount;
         renderTable(data.vouchers);
 
-    } catch(err) {
+    } catch (err) {
         console.error(err);
         alert("Server error fetching vouchers");
     }
 }
 
-
-function renderTable(vouchers){
+// --------------------- RENDER TABLE ---------------------
+function renderTable(vouchers) {
     const tbody = document.getElementById('voucherTableBody');
     tbody.innerHTML = '';
+
     vouchers.forEach(v => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td style="padding:12px; border:1px solid #444;">${v.voucherNo}</td>
             <td style="padding:12px; border:1px solid #444;">${v.voucherDate}</td>
             <td style="padding:12px; border:1px solid #444;">
-                <a href="/voucher/update/${v.id}" style="color:#7b2ff7; font-weight:bold;">Edit</a>
+                <div style="display:flex; flex-direction:column; gap:4px;">
+                    <a href="/voucher/update/${v.id}" style="color:#7b2ff7; font-weight:bold; font-size:13px;">Edit</a>
+                    <a href="/voucher/download/${v.id}" style="color:#7b2ff7; font-weight:bold; font-size:13px;">Download</a>
+                    <a href="/crm/data/voucher/hotel/travel/c=930390289898889s9ddcc0X9d0d90nsnwxweeddd&q=1909cnkxcjdsdudd9d9sd9sd9si9sdsdd/crm/data/voucher/hotel/travel/c=930390289898889s9ddcc0X9d0d90nsnwxweeddd&q=1909cnkxcjdsdudd9d9sd9sd9si9sdsdd/${v.id}" style="color:#7b2ff7; font-weight:bold; font-size:13px;">Link Voucher</a>
+                    <a href="/api/voucher/update/active/${v.id}" style="color:#7b2ff7; font-weight:bold; font-size:13px;">Set active</a>
+                    <a href="/api/voucher/update/inactive/${v.id}" style="color:#7b2ff7; font-weight:bold; font-size:13px;">Set inactive</a>
+                </div>
             </td>
         `;
         tbody.appendChild(tr);
     });
 
+    // Update totals
     document.getElementById('totalVouchers').textContent = totalVouchers;
+    document.getElementById('totalActiveVouchers').textContent = totalActiveVouchers;
+    document.getElementById('totalInactiveVouchers').textContent = totalInactiveVouchers;
+
+    // Apply search filter if any
+    const searchInput = document.getElementById('voucherSearch');
+    if (searchInput && searchInput.value.trim() !== '') {
+        const search = searchInput.value.trim().toUpperCase();
+        Array.from(tbody.querySelectorAll('tr')).forEach(tr => {
+            const voucherNo = tr.cells[0].textContent.toUpperCase();
+            tr.style.display = voucherNo.includes(search) ? '' : 'none';
+        });
+    }
 }
 
-function prevPage(){
-    if(currentPage>1){
+// --------------------- SEARCH VOUCHER ---------------------
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('voucherSearch');
+    if(searchInput){
+        searchInput.addEventListener('input', function() {
+            const search = this.value.trim().toUpperCase();
+            const tbody = document.getElementById('voucherTableBody');
+            Array.from(tbody.querySelectorAll('tr')).forEach(tr => {
+                const voucherNo = tr.cells[0].textContent.toUpperCase();
+                tr.style.display = voucherNo.includes(search) ? '' : 'none';
+            });
+        });
+    }
+});
+
+// --------------------- PAGINATION ---------------------
+function prevPage() {
+    if (currentPage > 1) {
         currentPage--;
         fetchVouchers(currentPage);
     }
 }
 
-function nextPage(){
-    if(currentPage*pageSize < totalVouchers){
+function nextPage() {
+    if (currentPage * pageSize < totalVouchers) {
         currentPage++;
         fetchVouchers(currentPage);
     }
 }
 
-// Generate New Voucher button placeholder
-function generateVoucher(){
-    window.location.assign('/voucher/create')
+// --------------------- BUTTON ACTIONS ---------------------
+function generateVoucher() {
+    window.location.assign('/voucher/create');
 }
 
 function logout() {
-    // Direct redirect to backend logout route
     window.location.href = '/logout';
 }
 
-// Initial fetch
+// --------------------- INITIAL FETCH ---------------------
 fetchVouchers(currentPage);
 </script>
-
 
 </body>
 </html>

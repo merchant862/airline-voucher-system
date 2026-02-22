@@ -38,7 +38,8 @@ module.exports = (sequelize, DataTypes) => {
     arrivalFlightLandingTime: DataTypes.TIME,
     foreignCompanyId: DataTypes.INTEGER,
     voucherFormatsId: DataTypes.INTEGER,
-    linkVoucherFormatsId: DataTypes.INTEGER
+    linkVoucherFormatsId: DataTypes.INTEGER,
+    status: DataTypes.ENUM('active', 'inactive'),
   }, {
     sequelize,
     modelName: 'vouchers',

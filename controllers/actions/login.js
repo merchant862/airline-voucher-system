@@ -20,13 +20,13 @@ const loginController = async (req, res, next) => {
     const token = jwt.sign(
       { id: admin.id, email: admin.email, role: 'admin' },
       process.env.SECRET,
-      { expiresIn: '30d' }
+      { expiresIn: '15m' }   // ✅ 15 minutes
     );
 
     // Set cookie
     res.cookie('adminToken', token, {
       httpOnly: true,
-      maxAge: 30*24*60*60*1000, // 30 days
+      maxAge: 15 * 60 * 1000,   // ✅ 15 minutes in milliseconds
       sameSite: 'strict',
       secure: process.env.NODE_ENV === 'production'
     });

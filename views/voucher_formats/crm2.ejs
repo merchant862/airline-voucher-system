@@ -13,114 +13,70 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Arial, sans-serif;
     background: #e9ecef;
     margin: 0;
-    color: #333;
 }
 
 .wrapper {
     width: 100%;
-    max-width: 800px;
+    max-width: 800px;   /* Portrait friendly width */
     margin: 20px auto;
     background: #fff;
     padding: 30px 40px;
-    border-radius: 8px;
+    border-radius: 6px;
     box-sizing: border-box;
-    border: 1px solid #ccc;
 }
 
-/* Header */
-.header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.header .company-name {
-    font-size: 26px;
-    font-weight: bold;
-    color: #0b6fa4;
-}
-
-.header .company-address {
-    font-size: 14px;
+/* Long URL Safe */
+#pageUrl {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    font-size: 12px;
     color: #555;
-    margin-top: 4px;
+    margin-bottom: 15px;
 }
 
 .top-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
-}
-
-.voucher-info {
-    text-align: left;
+    align-items: center;
 }
 
 .voucher-title {
     font-size: 28px;
     letter-spacing: 2px;
-    font-weight: bold;
     color: #333;
 }
 
 .voucher-id {
-    font-size: 18px;
+    font-size: 20px;
     margin-top: 5px;
-    font-weight: bold;
 }
 
 .voucher-id span {
     background: #1abc9c;
     color: #fff;
-    padding: 3px 8px;
-    border-radius: 4px;
+    padding: 2px 6px;
 }
 
-/* Logo & Verified */
 .center-logo img,
 .right-logo img {
+    height: 90px;
+    max-width: 150px;
     object-fit: contain;
 }
 
-.center-logo img {
-    max-height: 90px;
-    max-width: 150px;
-    margin-top: 10px;
-}
-
-.right-logo img {
-    max-height: 120px; /* Foreign company logo bada kiya */
-    max-width: 200px;
-    margin-top: 10px;
-}
-
-.verified-box {
-    border: 2px solid #0b6fa4;
-    padding: 5px 10px;
-    display: inline-block;
-    font-weight: bold;
-    color: #0b6fa4;
-    background: #e0f0ff;
-    border-radius: 6px;
-    font-size: 14px;
-    margin-bottom: 10px;
-}
-
-/* Divider */
 .divider {
     margin: 25px 0;
-    border-top: 2px solid #0b6fa4;
+    border-top: 1px solid #ddd;
 }
 
-/* Info Section */
 .info-row {
     display: flex;
     justify-content: space-between;
     font-size: 14px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .info-left div,
@@ -128,45 +84,40 @@ body {
     margin-bottom: 6px;
 }
 
-/* Sections */
 .section-title {
-    background: #0b6fa4;
-    color: #fff;
+    background: #f1f3f5;
+    color: #0b6fa4;
     text-align: center;
     padding: 8px;
     margin: 25px 0 10px;
-    font-size: 18px;
+    font-size: 20px;
     letter-spacing: 1px;
-    border-radius: 4px;
 }
 
-/* Tables */
 table {
     width: 100%;
     border-collapse: collapse;
     font-size: 13px;
 }
 
-table th, table td {
-    padding: 10px;
-    border: 1px solid #ccc;
-}
-
-table th {
-    background: #f1f3f5;
-    color: #0b6fa4;
+th {
     text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+    background: #fafafa;
 }
 
-/* Total nights */
+td {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
 .total-nights {
     text-align: center;
     margin-top: 10px;
     font-size: 14px;
-    font-weight: bold;
 }
 
-/* Flight wrapper */
 .flight-wrapper {
     display: flex;
     justify-content: space-between;
@@ -177,39 +128,14 @@ table th {
     width: 48%;
 }
 
-/* QR Box */
 .qr-box {
     text-align: center;
     margin-top: 20px;
 }
 
-/* Notes / Links */
-.notes {
-    white-space: pre-line;
-    margin-top: 20px;
-    font-weight: 600; /* thoda bold */
-    line-height: 1.4;
-}
-
-.notes a {
-    font-weight: 500; /* halki bold */
-    color: #0b6fa4;
-    text-decoration: underline;
-}
-
-/* Print Button */
 .print-btn {
     text-align: right;
     margin-top: 30px;
-}
-
-.print-btn button {
-    background: #0b6fa4;
-    color: #fff;
-    border: none;
-    padding: 8px 15px;
-    cursor: pointer;
-    border-radius: 4px;
 }
 
 /* Hide Print Button in PDF */
@@ -219,6 +145,14 @@ table th {
     }
 }
 
+.print-btn button {
+    background: #0b6fa4;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
 </style>
 </head>
 
@@ -226,30 +160,27 @@ table th {
 
 <div class="wrapper">
 
-    <!-- Company Header -->
-    <div class="header">
-        <div class="company-name"><%= company.name %></div>
-        <div class="company-address">
-            Shaheen View Appartments, Office #7, Mezzanine floor, Shaheen View, off Shahrah e Faisal, Block-6, P.E.C.H.S., Karachi, 76800
-        </div>
-    </div>
-
-    <!-- Voucher Info & Logos -->
+    <!-- Header -->
     <div class="top-header">
-
-        <div class="voucher-info">
+        <div>
             <div class="voucher-title">HOTEL VOUCHER</div>
             <div class="voucher-id">
                 <% const parts = voucher.voucherNo.split('-'); %>
                 <span><%= parts[0] %></span>-<%= parts[1] %>
             </div>
+        </div>
+
+        <div class="center-logo">
             <% if(company.logo){ %>
-                <div class="center-logo"><img src="<%= company.logo %>" /></div>
+                <img src="<%= company.logo %>" />
             <% } %>
         </div>
 
+        <img src="/images/verified.jpeg"
+                     alt="Verified"
+                     style="width:200px; opacity:0.9;" />
+
         <div class="right-logo">
-            <div class="verified-box">VERIFIED</div>
             <% if(foreignCompany.logo){ %>
                 <img src="<%= foreignCompany.logo %>" />
             <% } %>
@@ -261,6 +192,8 @@ table th {
     <!-- Info Section -->
     <div class="info-row">
         <div class="info-left">
+            <div><strong>Customer:</strong> <%= company.name %></div>
+            <div><strong>Address:</strong>Shaheen View Appartments, Office #7, Mezzanine floor, Shaheen View, off Shahrah e Faisal, Block-6 Block 6 P.E.C.H.S., Karachi, 76800</div>
             <div><strong>Family Head:</strong> <%= familyHead %></div>
             <div><strong>Package:</strong> Custom</div>
             <div>
@@ -279,16 +212,18 @@ table th {
 
     <!-- Mutamers -->
     <div class="section-title">Mutamers</div>
+
     <table>
         <tr>
             <th>Passport</th>
-            <th>Name</th>
+            <th>Mutamer Name</th>
             <th>Gender</th>
             <th>PAX</th>
             <th>Bed</th>
             <th>Visa</th>
             <th>PNR</th>
         </tr>
+
         <% customers.forEach(c => { %>
         <tr>
             <td><%= c.passport %></td>
@@ -304,6 +239,7 @@ table th {
 
     <!-- Hotels -->
     <div class="section-title">Hotels</div>
+
     <table>
         <tr>
             <th>Hotel Name</th>
@@ -314,6 +250,7 @@ table th {
             <th>Nights</th>
             <th>Meal Plan</th>
         </tr>
+
         <% hotels.forEach(h => { %>
         <tr>
             <td><%= h.name %></td>
@@ -326,17 +263,21 @@ table th {
         </tr>
         <% }) %>
     </table>
+
     <div class="total-nights">
-        <strong>Total Nights:</strong> <%= hotels.reduce((sum, h) => sum + h.nights, 0) %>
+        <strong>Total Nights:</strong>
+        <%= hotels.reduce((sum, h) => sum + h.nights, 0) %>
     </div>
 
-    <!-- Transport / Services -->
+    <!-- Transport -->
     <div class="section-title">Transport / Services</div>
+
     <table>
         <tr>
             <th>Type</th>
             <th>Route</th>
         </tr>
+
         <% transports.forEach(t => { %>
         <tr>
             <td><%= t.type %></td>
@@ -347,11 +288,15 @@ table th {
 
     <!-- Flights -->
     <div class="flight-wrapper">
+
         <div class="flight-box">
-            <div class="section-title">Departure (PAK → KSA)</div>
+            <div class="section-title">Departure (Pakistan to KSA)</div>
             <table>
                 <tr>
-                    <th>Flight</th><th>Sector</th><th>Departure</th><th>Arrival</th>
+                    <th>Flight</th>
+                    <th>Sector</th>
+                    <th>Departure</th>
+                    <th>Arrival</th>
                 </tr>
                 <tr>
                     <td><%= departureFlight.flightNo %></td>
@@ -363,10 +308,13 @@ table th {
         </div>
 
         <div class="flight-box">
-            <div class="section-title">Arrival (KSA → PAK)</div>
+            <div class="section-title">Arrival (KSA to PAK)</div>
             <table>
                 <tr>
-                    <th>Flight</th><th>Sector</th><th>Departure</th><th>Arrival</th>
+                    <th>Flight</th>
+                    <th>Sector</th>
+                    <th>Departure</th>
+                    <th>Arrival</th>
                 </tr>
                 <tr>
                     <td><%= arrivalFlight.flightNo %></td>
@@ -376,33 +324,25 @@ table th {
                 </tr>
             </table>
         </div>
+
     </div>
 
     <!-- Notes -->
-    <div class="notes" style="white-space: pre-line; margin-top:20px; font-weight: bold; line-height:1.5; font-size:14px;">
+    <div style="white-space: pre-line; margin-top:20px;">
         <strong>Note:</strong><br>
         <%= notes %>
     </div>
 
-    <!-- Print Button -->
     <div class="print-btn">
         <button onclick="window.print()">Print</button>
     </div>
 
-    <p id="pageUrl" style="font-weight: bold; text-decoration: underline;"></p>
+    <!-- Page URL (Wrapped Properly) -->
+    <p id="pageUrl"></p>
     <script>
         document.getElementById('pageUrl').textContent = window.location.href;
     </script>
 
-    <style>
-    .notes a{
-        font-weight: bold; /* links ko bhi bold kiya */
-        color: #0b6fa4;
-        text-decoration: underline;
-    }
-    </style>
-
-    
 </div>
 
 </body>
