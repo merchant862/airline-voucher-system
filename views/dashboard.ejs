@@ -194,7 +194,6 @@ function renderTable(vouchers) {
     vouchers.forEach(v => {
         const tr = document.createElement('tr');
 
-        // Status color and label
         let statusColor = v.status === 'active' ? '#00e676' : '#ff5252';
         let statusText  = v.status === 'active' ? 'ACTIVE' : 'INACTIVE';
 
@@ -208,7 +207,7 @@ function renderTable(vouchers) {
                 <div style="display:flex; flex-direction:column; gap:4px;">
                     <a href="/voucher/update/${v.id}" style="color:#7b2ff7; font-weight:bold; font-size:13px;">Edit</a>
                     <a href="/voucher/download/${v.id}" style="color:#7b2ff7; font-weight:bold; font-size:13px;">Download</a>
-                    <a href="/crm/data/voucher/hotel/travel/c=930390289898889s9ddcc0X9d0d90nsnwxweeddd&q=1909cnkxcjdsdudd9d9sd9sd9si9sdsdd/crm/data/voucher/hotel/travel/c=930390289898889s9ddcc0X9d0d90nsnwxweeddd&q=1909cnkxcjdsdudd9d9sd9sd9si9sdsdd/${v.id}" style="color:#7b2ff7; font-weight:bold; font-size:13px;">Link Voucher</a>
+                    <a href="/crm/data/voucher/hotel/travel/.../${v.id}" style="color:#7b2ff7; font-weight:bold; font-size:13px;">Link Voucher</a>
                     <a href="/api/voucher/update/active/${v.id}" style="color:#7b2ff7; font-weight:bold; font-size:13px;">Set active</a>
                     <a href="/api/voucher/update/inactive/${v.id}" style="color:#7b2ff7; font-weight:bold; font-size:13px;">Set inactive</a>
                 </div>
@@ -217,10 +216,10 @@ function renderTable(vouchers) {
         tbody.appendChild(tr);
     });
 
-    // Update totals
-    document.getElementById('totalVouchers').textContent = vouchers.length;
-    document.getElementById('totalActiveVouchers').textContent = vouchers.filter(v => v.status === 'active').length;
-    document.getElementById('totalInactiveVouchers').textContent = vouchers.filter(v => v.status !== 'active').length;
+    // --------------------- USE API TOTALS ---------------------
+    document.getElementById('totalVouchers').textContent = totalVouchers;
+    document.getElementById('totalActiveVouchers').textContent = totalActiveVouchers;
+    document.getElementById('totalInactiveVouchers').textContent = totalInactiveVouchers;
 
     // --------------------- SEARCH FILTER ---------------------
     const searchInput = document.getElementById('voucherSearch');
@@ -232,7 +231,6 @@ function renderTable(vouchers) {
         });
     }
 }
-
 // --------------------- SEARCH VOUCHER ---------------------
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('voucherSearch');
