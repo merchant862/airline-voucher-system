@@ -84,6 +84,8 @@ async function getVoucherTemplate(req, res, next) {
             return res.status(404).send("Voucher not found");
         }
 
+        console.log(voucher.status)
+
         if(voucher.status == 'inactive'){
             next();
         }
