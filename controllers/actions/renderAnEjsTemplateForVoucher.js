@@ -49,8 +49,7 @@ async function getVoucherTemplate(req, res, next) {
             { route: "MAK-JED", type: "Private Car" }
         ];
 
-        const notes = `MAKKAH HOTEL:- Uzair 0548335007 (Day) Tariq 0549306332 (Night)\n.MEDINAH HOTEL:- MR. ARSALAN +966544809146
-\nTransport Contact: +966500000000`;
+        const notes = ``;
 
         const qrData = `Voucher: ${Date.now()}`;
 

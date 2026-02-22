@@ -80,33 +80,42 @@ body {
 }
 
 /* Logo & Verified */
-.center-logo img,
+/* .center-logo img,
 .right-logo img {
     object-fit: contain;
-}
+} */
 
 .center-logo img {
+    object-fit: contain;
     max-height: 90px;
     max-width: 150px;
     margin-top: 10px;
 }
 
+.right-logo {
+    display: flex;
+    flex-direction: column;   /* top se niche stack */
+    align-items: center;      /* horizontally center children */
+    justify-content: flex-start; /* top se start */
+}
+
 .right-logo img {
+    object-fit: contain;
     max-height: 120px; /* Foreign company logo bada kiya */
     max-width: 200px;
     margin-top: 10px;
 }
 
 .verified-box {
-    border: 2px solid #0b6fa4;
-    padding: 5px 10px;
-    display: inline-block;
+    border: 3px solid #0b6fa4;
+    padding: 12px 25px;
     font-weight: bold;
     color: #0b6fa4;
     background: #e0f0ff;
-    border-radius: 6px;
-    font-size: 14px;
-    margin-bottom: 10px;
+    border-radius: 8px;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 10px;     /* thodi spacing niche logo ke liye */
 }
 
 /* Divider */
@@ -381,6 +390,9 @@ table th {
     <!-- Notes -->
     <div class="notes" style="white-space: pre-line; margin-top:20px; font-weight: bold; line-height:1.5; font-size:14px;">
         <strong>Note:</strong><br>
+        MAKKAH HOTEL:- Uzair 0548335007 (Day) Tariq 0549306332 (Night)\
+        MEDINAH HOTEL:- MR. ARSALAN +966544809146
+        Transport Contact: +966500000000
         <%= notes %>
     </div>
 
@@ -389,7 +401,7 @@ table th {
         <button onclick="window.print()">Print</button>
     </div>
 
-    <p id="pageUrl" style="font-weight:bold; text-decoration:underline; word-break:break-word;"></p>
+    <p id="pageUrl" style="text-decoration:underline; word-break:break-word;"></p>
     <script>
         document.getElementById('pageUrl').textContent = window.location.href;
     </script>
