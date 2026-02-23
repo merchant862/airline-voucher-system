@@ -61,7 +61,7 @@ async function updateVoucherController(req, res, next) {
                 city: h.city?.trim() || null,
                 roomType: h.roomType?.trim() || null,
                 mealPlan: h.mealPlan?.trim() || 'RO',
-                confirmationNo: h.confirmNo?.trim() || `CONF-${voucherId}-${Date.now()}-${i+1}`,
+                //confirmationNo: h.confirmNo?.trim() || `CONF-${voucherId}-${Date.now()}-${i+1}`,
                 checkInDate: h.checkInDate || null,
                 checkOutDate: h.checkOutDate || null,
                 noOfNights: Number(h.noOfNights) || 0,

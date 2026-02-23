@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Voucher Entry</title>
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <style>
 body {
     margin:0;
@@ -13,7 +13,6 @@ body {
     background: linear-gradient(135deg, #141426, #1c1c3c);
     color:#fff;
 }
-
 .custom-dropdown {
     position: relative;
     background:#2a2a50;
@@ -21,12 +20,10 @@ body {
     border-radius:8px;
     cursor:pointer;
 }
-
 .dropdown-selected {
     padding:10px;
     color:#fff;
 }
-
 .dropdown-options {
     display:none;
     position:absolute;
@@ -38,7 +35,6 @@ body {
     overflow-y:auto;
     z-index:999;
 }
-
 .dropdown-option {
     display:flex;
     align-items:center;
@@ -46,11 +42,9 @@ body {
     padding:8px;
     color:#fff;
 }
-
 .dropdown-option:hover {
     background:#7b2ff7;
 }
-
 .dropdown-option img {
     height:30px;
     width:30px;
@@ -103,7 +97,6 @@ button.submitBtn {
     cursor:pointer;
     margin-top:12px;
 }
-
 .form-section {
     padding:20px; 
     background:#1a1a35; 
@@ -111,30 +104,24 @@ button.submitBtn {
     border:1px solid #333; 
     margin-bottom:24px;
 }
-
 .form-section h3 {
     color:#c77dff;
     margin-bottom:12px;
 }
-
 .flex-row {
     display:flex;
     flex-wrap:wrap;
     gap:16px;
 }
-
 .flex-col {
     flex:1 1 200px;
     min-width:200px;
 }
-
-/* Responsive table-like appearance for flight section */
 .flight-grid {
     display:grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap:12px;
 }
-
 .header-buttons {
     display:flex;
     gap:10px;
@@ -157,16 +144,14 @@ button.submitBtn {
 </head>
 <body>
 
-    <div style="width:100%; max-width:1200px; margin:0 auto; padding:16px 24px; 
-    background:#1e1e3d; border-bottom:3px solid #7b2ff7; font-size:20px; 
-    font-weight:bold; color:#b388ff; display:flex; justify-content:space-between; align-items:center; box-sizing:border-box;">
-    
-    <span>Voucher Entry Form</span>
-
-    <div class="header-buttons" style="display:flex; gap:10px;">
-        <button class="homeBtn" onclick="goHome()">Home</button>
-        <button class="logoutBtn" onclick="logout()">Logout</button>
-    </div>
+<div style="width:100%; max-width:1200px; margin:0 auto; padding:16px 24px; 
+background:#1e1e3d; border-bottom:3px solid #7b2ff7; font-size:20px; 
+font-weight:bold; color:#b388ff; display:flex; justify-content:space-between; align-items:center; box-sizing:border-box;">
+<span>Voucher Entry Form</span>
+<div class="header-buttons">
+    <button class="homeBtn" onclick="goHome()">Home</button>
+    <button class="logoutBtn" onclick="logout()">Logout</button>
+</div>
 </div>
 
 <form id="voucherForm" style="width:100%; max-width:900px; margin:20px auto; padding:20px; box-sizing:border-box;">
@@ -189,16 +174,16 @@ button.submitBtn {
     </div>
     <input type="hidden" id="foreignCompanySelect" name="foreignCompanyId">
 
-    <div class="flex-row" style="display:flex; gap:20px; flex-wrap:wrap; margin-top:16px;">
-        <div class="flex-col" style="flex:1 1 250px; min-width:220px;">
+    <div class="flex-row" style="margin-top:16px;">
+        <div class="flex-col">
             <label>Download Voucher Format</label>
-            <select id="voucherFormatSelect" style="width:100%; padding:10px; border-radius:6px; border:1px solid #444; background:#2a2a50; color:#fff;">
+            <select id="voucherFormatSelect">
                 <option value="">Select Download Voucher Format</option>
             </select>
         </div>
-        <div class="flex-col" style="flex:1 1 250px; min-width:220px;">
+        <div class="flex-col">
             <label>Link Voucher Format</label>
-            <select id="linkVoucherFormatSelect" style="width:100%; padding:10px; border-radius:6px; border:1px solid #444; background:#2a2a50; color:#fff;">
+            <select id="linkVoucherFormatSelect">
                 <option value="">Select Link Voucher Format</option>
             </select>
         </div>
@@ -226,65 +211,65 @@ button.submitBtn {
     <button type="button" class="addBtn" onclick="addTransport()">+ Add Transport</button>
 </div>
 
-<!-- Flight Section -->
+<!-- Flights Section -->
 <div class="form-section">
-    <h3>Departure Flight</h3>
-    <div class="flight-grid">
-        <div>
-            <label>Flight No</label>
-            <input type="text" id="departureFlightNo" placeholder="Flight Code" required>
-        </div>
-        <div>
-            <label>Date</label>
-            <input type="date" id="departureFlightDate">
-        </div>
-        <div>
-            <label>From City</label>
-            <input type="text" id="departureFlightFromCity" placeholder="City">
-        </div>
-        <div>
-            <label>To City</label>
-            <input type="text" id="departureFlightToCity" placeholder="City">
-        </div>
-        <div>
-            <label>Takeoff Time</label>
-            <input type="time" id="departureFlightTakeOffTime">
-        </div>
-        <div>
-            <label>Landing Time</label>
-            <input type="time" id="departureFlightLandingTime">
-        </div>
-    </div>
+<h3>Departure Flight</h3>
+<div class="flight-grid">
+  <div>
+    <label>Flight No</label>
+    <input type="text" id="departureFlightNo" placeholder="Flight Code" required>
+  </div>
+  <div>
+    <label>Date</label>
+    <input type="date" id="departureFlightDate" required>
+  </div>
+  <div>
+    <label>From City</label>
+    <input type="text" id="departureFlightFromCity" placeholder="City" required>
+  </div>
+  <div>
+    <label>To City</label>
+    <input type="text" id="departureFlightToCity" placeholder="City" required>
+  </div>
+  <div>
+    <label>Takeoff Time (24h)</label>
+    <input type="text" id="departureFlightTakeOffTime" placeholder="HH:MM" required>
+  </div>
+  <div>
+    <label>Landing Time (24h)</label>
+    <input type="text" id="departureFlightLandingTime" placeholder="HH:MM" required>
+  </div>
+</div>
 </div>
 
 <div class="form-section">
-    <h3>Arrival Flight</h3>
-    <div class="flight-grid">
-        <div>
-            <label>Flight No</label>
-            <input type="text" id="arrivalFlightNo" placeholder="Flight Code" required>
-        </div>
-        <div>
-            <label>Date</label>
-            <input type="date" id="arrivalFlightDate">
-        </div>
-        <div>
-            <label>From City</label>
-            <input type="text" id="arrivalFlightFromCity" placeholder="City">
-        </div>
-        <div>
-            <label>To City</label>
-            <input type="text" id="arrivalFlightToCity" placeholder="City">
-        </div>
-        <div>
-            <label>Takeoff Time</label>
-            <input type="time" id="arrivalFlightTakeOffTime">
-        </div>
-        <div>
-            <label>Landing Time</label>
-            <input type="time" id="arrivalFlightLandingTime">
-        </div>
-    </div>
+<h3>Arrival Flight</h3>
+<div class="flight-grid">
+  <div>
+    <label>Flight No</label>
+    <input type="text" id="arrivalFlightNo" placeholder="Flight Code" required>
+  </div>
+  <div>
+    <label>Date</label>
+    <input type="date" id="arrivalFlightDate" required>
+  </div>
+  <div>
+    <label>From City</label>
+    <input type="text" id="arrivalFlightFromCity" placeholder="City" required>
+  </div>
+  <div>
+    <label>To City</label>
+    <input type="text" id="arrivalFlightToCity" placeholder="City" required>
+  </div>
+  <div>
+    <label>Takeoff Time (24h)</label>
+    <input type="text" id="arrivalFlightTakeOffTime" placeholder="HH:MM" required>
+  </div>
+  <div>
+    <label>Landing Time (24h)</label>
+    <input type="text" id="arrivalFlightLandingTime" placeholder="HH:MM" required>
+  </div>
+</div>
 </div>
 
 <!-- Notes Section -->
@@ -296,125 +281,112 @@ button.submitBtn {
 <button type="submit" class="submitBtn">Save Voucher</button>
 </form>
 
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
 document.addEventListener("DOMContentLoaded", async function() {
-    // Load dropdowns and formats
+    ['departureFlightTakeOffTime','departureFlightLandingTime','arrivalFlightTakeOffTime','arrivalFlightLandingTime'].forEach(id=>{
+        flatpickr("#"+id, {enableTime:true,noCalendar:true,dateFormat:"H:i",time_24hr:true});
+    });
+
     await loadCustomAgencies('local', 'localAgencyDropdown', 'companySelect');
     await loadCustomAgencies('foreign', 'foreignAgencyDropdown', 'foreignCompanySelect');
     await loadVoucherFormats();
     await loadLinkVoucherFormats();
-
-    // Restore form from localStorage if exists
+    await loadTransportList();
     restoreFormData();
 });
 
-// ------------------- FORM STATE PRESERVE -------------------
+// ------------------- FORM STATE -------------------
 const form = document.getElementById('voucherForm');
 form.addEventListener('input', saveFormData);
-
 function saveFormData() {
     const data = {};
-    new FormData(form).forEach((value, key) => data[key] = value);
+    new FormData(form).forEach((value, key)=>data[key]=value);
     localStorage.setItem('voucherFormData', JSON.stringify(data));
 }
-
 function restoreFormData() {
     const saved = localStorage.getItem('voucherFormData');
-    if (saved) {
+    if(saved){
         const data = JSON.parse(saved);
-        Object.keys(data).forEach(key => {
+        Object.keys(data).forEach(key=>{
             const input = form.querySelector(`[name="${key}"]`);
-            if (input) input.value = data[key];
+            if(input) input.value=data[key];
         });
     }
 }
 
-// ------------------- LOAD VOUCHER FORMATS -------------------
+// ------------------- VOUCHER FORMATS -------------------
 async function loadVoucherFormats() {
-    try {
+    try{
         const res = await fetch('/api/voucher/formats/DOWNLOAD_FORMAT');
         const data = await res.json();
         if(!data.success) return;
-
         const select = document.getElementById('voucherFormatSelect');
-        data.data.forEach(format => {
-            const option = document.createElement('option');
-            option.value = format.id;
-            option.textContent = format.name;
-            select.appendChild(option);
+        data.data.forEach(f=>{
+            const o=document.createElement('option');
+            o.value=f.id; o.textContent=f.name;
+            select.appendChild(o);
         });
-
-        select.addEventListener('change', function() {
-            const formatId = this.value;
-            if (!formatId) return;
-            window.open(`/api/voucher/template/${formatId}`, '_blank');
+        select.addEventListener('change', function(){
+            const id=this.value;
+            if(!id) return;
+            window.open(`/api/voucher/template/${id}`,'_blank');
         });
-
-    } catch(err) { console.error(err); }
+    } catch(err){console.error(err);}
 }
-
-// ------------------- LOAD LINK VOUCHER FORMATS -------------------
 async function loadLinkVoucherFormats() {
-    try {
+    try{
         const res = await fetch('/api/voucher/formats/LINK_FORMAT');
         const data = await res.json();
         if(!data.success) return;
-
         const select = document.getElementById('linkVoucherFormatSelect');
-        data.data.forEach(format => {
-            const option = document.createElement('option');
-            option.value = format.id;
-            option.textContent = format.name;
-            select.appendChild(option);
+        data.data.forEach(f=>{
+            const o=document.createElement('option');
+            o.value=f.id; o.textContent=f.name;
+            select.appendChild(o);
         });
-
-        select.addEventListener('change', function() {
-            const formatId = this.value;
-            if (!formatId) return;
-            window.open(`/api/voucher/template/${formatId}`, '_blank');
+        select.addEventListener('change', function(){
+            const id=this.value;
+            if(!id) return;
+            window.open(`/api/voucher/template/${id}`,'_blank');
         });
-
-    } catch(err) { console.error(err); }
+    } catch(err){console.error(err);}
 }
 
 // ------------------- LOAD AGENCIES -------------------
-async function loadCustomAgencies(type, dropdownId, hiddenInputId) {
+async function loadCustomAgencies(type, dropdownId, hiddenInputId){
     const res = await fetch(`/api/agencies/${type}`);
     const data = await res.json();
-    if (!data.success) return;
-
+    if(!data.success) return;
     const dropdown = document.getElementById(dropdownId);
     const selected = dropdown.querySelector('.dropdown-selected');
     const optionsContainer = dropdown.querySelector('.dropdown-options');
     const hiddenInput = document.getElementById(hiddenInputId);
-
-    data.data.forEach(agency => {
-        const option = document.createElement('div');
-        option.className = 'dropdown-option';
-        option.innerHTML = `<img src="${agency.image}" /><span>${agency.name}</span>`;
-        option.addEventListener('click', () => {
-            selected.innerHTML = `<img src="${agency.image}" style="height:20px; vertical-align:middle; margin-right:6px;">${agency.name}`;
+    data.data.forEach(agency=>{
+        const option=document.createElement('div');
+        option.className='dropdown-option';
+        option.innerHTML=`<img src="${agency.image}" /><span>${agency.name}</span>`;
+        option.addEventListener('click', ()=>{
+            selected.innerHTML=`<img src="${agency.image}" style="height:20px;vertical-align:middle;margin-right:6px;">${agency.name}`;
             hiddenInput.value = agency.id;
-            optionsContainer.style.display = 'none';
+            optionsContainer.style.display='none';
         });
         optionsContainer.appendChild(option);
     });
-
-    selected.addEventListener('click', () => {
-        optionsContainer.style.display = optionsContainer.style.display === 'block' ? 'none' : 'block';
+    selected.addEventListener('click', ()=>{
+        optionsContainer.style.display = optionsContainer.style.display==='block'?'none':'block';
     });
-
-    document.addEventListener('click', (e) => {
-        if (!dropdown.contains(e.target)) optionsContainer.style.display = 'none';
+    document.addEventListener('click',(e)=>{
+        if(!dropdown.contains(e.target)) optionsContainer.style.display='none';
     });
 }
 
-// ------------------- DYNAMIC ADD ROWS -------------------
+// ------------------- DYNAMIC ROWS -------------------
 let customerCount=0, hotelCount=0, transportCount=0;
 
-function addCustomer() {
+function addCustomer(){
     customerCount++;
-    const div = document.createElement('div');
+    const div=document.createElement('div');
     div.className='customerRow';
     div.innerHTML=`
         <span class="removeBtn" onclick="removeRow(this)">❌</span>
@@ -434,14 +406,24 @@ function addCustomer() {
     document.getElementById('customersContainer').appendChild(div);
 }
 
-function addHotel() {
+// ------------------- HOTELS -------------------
+function addHotel(){
     hotelCount++;
     const div = document.createElement('div');
     div.className='hotelRow';
-    div.innerHTML=`
+    
+    div.innerHTML = `
         <span class="removeBtn" onclick="removeRow(this)">❌</span>
-        <label>Hotel Name</label><input type="text" name="hotelName[]" required>
-        <label>City</label><input type="text" name="hotelCity[]" required>
+        <label>City</label>
+        <select name="hotelCity[]" required class="hotelCitySelect">
+            <option value="">Select City</option>
+            <option value="MAKKAH">MAKKAH</option>
+            <option value="MADINAH">MADINAH</option>
+            <option value="RIYADH">RIYADH</option>
+            <option value="JEDDAH">JEDDAH</option>
+        </select>
+        <label>Hotel Name</label>
+        <input type="text" name="hotelName[]" required class="hotelNameInput">
         <label>Room Type</label>
         <select name="hotelRoomType[]" required>
             <option value="">Select</option>
@@ -459,60 +441,131 @@ function addHotel() {
             <option value="AP">AP</option>
             <option value="AI">AI</option>
         </select>
-        <label>Check-in</label><input type="date" name="hotelCheckin[]" required>
-        <label>Check-out</label><input type="date" name="hotelCheckout[]" required>
-        <label>No of Nights</label><input type="number" name="hotelNoOfNights[]" min="0" value="0">
+        <label>Check-in</label><input type="date" name="hotelCheckin[]" required class="hotelCheckin">
+        <label>Check-out</label><input type="date" name="hotelCheckout[]" required class="hotelCheckout">
+        <label>No of Nights</label><input type="number" name="hotelNoOfNights[]" min="0" value="0" class="hotelNoOfNights">
     `;
+    
     document.getElementById('hotelsContainer').appendChild(div);
+    
+    const citySelect = div.querySelector('.hotelCitySelect');
+    let hotelInput = div.querySelector('.hotelNameInput');
+    const checkinInput = div.querySelector('.hotelCheckin');
+    const checkoutInput = div.querySelector('.hotelCheckout');
+    const nightsInput = div.querySelector('.hotelNoOfNights');
+
+    // ------------------- CITY SELECT -------------------
+    citySelect.addEventListener('change', async function(){
+        if(this.value === 'MAKKAH' || this.value === 'MADINAH'){
+            try{
+                const res = await fetch(`/api/list/hotels`);
+                const data = await res.json();
+                if(!data.success) return;
+                const filteredHotels = data.data.filter(h => h.city === this.value);
+                
+                const select = document.createElement('select');
+                select.name = hotelInput.name;
+                select.required = true;
+                select.className = hotelInput.className;
+                filteredHotels.forEach(h=>{
+                    const o = document.createElement('option');
+                    o.value = h.name;
+                    o.textContent = h.name;
+                    select.appendChild(o);
+                });
+                hotelInput.replaceWith(select);
+                hotelInput = select; // update reference
+            }catch(err){console.error(err);}
+        }else{
+            if(hotelInput.tagName.toLowerCase() !== 'input'){
+                const input = document.createElement('input');
+                input.type='text';
+                input.name='hotelName[]';
+                input.required=true;
+                input.className='hotelNameInput';
+                hotelInput.replaceWith(input);
+                hotelInput = input; // update reference
+            }
+        }
+    });
+
+    // ------------------- AUTO CALCULATE NIGHTS -------------------
+    function calculateNights(){
+        const checkin = new Date(checkinInput.value);
+        const checkout = new Date(checkoutInput.value);
+        if(checkin && checkout && checkout > checkin){
+            const diffTime = Math.abs(checkout - checkin);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            nightsInput.value = diffDays;
+        } else {
+            nightsInput.value = 0;
+        }
+    }
+    checkinInput.addEventListener('change', calculateNights);
+    checkoutInput.addEventListener('change', calculateNights);
 }
 
-function addTransport() {
+// ------------------- TRANSPORTS -------------------
+async function loadTransportList(){
+    try{
+        const res = await fetch('/api/list/transports');
+        const data = await res.json();
+        if(!data.success) return;
+        window.transportListData = data.data;
+    }catch(err){console.error(err);}
+}
+
+function addTransport(){
     transportCount++;
     const div = document.createElement('div');
     div.className='transportRow';
-    div.innerHTML=`
+    
+    const transportOptions = window.transportListData?.map(t=>{
+        return `<option value="${t.route}" data-type="${t.type}">${t.route} - ${t.type}</option>`;
+    }).join('') || '';
+    
+    div.innerHTML = `
         <span class="removeBtn" onclick="removeRow(this)">❌</span>
-        <label>Route / Description</label><input type="text" name="transportRoute[]" required>
-        <label>Transport Type</label>
-        <select name="transportType[]" required>
-            <option value="">Select</option>
-            <option value="Private Car">Private Car</option>
-            <option value="Economy Bus">Economy Bus</option>
+        <label>Route / Description</label>
+        <select name="transportRoute[]" required class="transportRouteSelect">
+            <option value="">Select Route</option>
+            ${transportOptions}
         </select>
+        <label>Transport Type</label>
+        <input type="text" name="transportType[]" required class="transportTypeInput" readonly>
     `;
+    
     document.getElementById('transportContainer').appendChild(div);
+    
+    const routeSelect = div.querySelector('.transportRouteSelect');
+    const typeInput = div.querySelector('.transportTypeInput');
+    
+    routeSelect.addEventListener('change', function(){
+        const selectedOption = this.selectedOptions[0];
+        typeInput.value = selectedOption?.dataset.type || '';
+    });
 }
 
-function removeRow(el){ el.parentElement.remove(); }
-
-function formatBullets(textarea){
-    let lines = textarea.value.split(/\r?\n/);
-    textarea.value = lines.map(l=>l.startsWith('• ')?l:'• '+l).join('\n');
+// ------------------- UTILS -------------------
+function removeRow(el){el.parentElement.remove();}
+function formatBullets(el){
+    const lines = el.value.split('\n').map(l=>l.trim()).filter(Boolean);
+    el.value = lines.map(l=>'• '+l).join('\n');
 }
-
-// ------------------- FORM SUBMIT -------------------
-form.addEventListener('submit', async (e)=>{
+// --- Form Submit ---
+form.addEventListener('submit', async e=>{
     e.preventDefault();
 
-    const linkVoucherFormatsId = document.getElementById('linkVoucherFormatSelect').value;
-    const voucherFormatsId = document.getElementById('voucherFormatSelect').value;
-    const companyId = document.getElementById('companySelect').value;
-    const foreignCompanyId = document.getElementById('foreignCompanySelect').value;
-
-    if(!voucherFormatsId || !companyId || !foreignCompanyId){
-        return alert('Please select Voucher Format, Local & Foreign Agencies.');
-    }
-
-    const payload={
-        linkVoucherFormatsId,
-        voucherFormatsId,
-        companyId,
-        foreignCompanyId,
+    const payload = {
+        linkVoucherFormatsId: document.getElementById('linkVoucherFormatSelect').value,
+        voucherFormatsId: document.getElementById('voucherFormatSelect').value,
+        companyId: document.getElementById('companySelect').value,
+        foreignCompanyId: document.getElementById('foreignCompanySelect').value,
         departureFlightDate: document.getElementById('departureFlightDate').value,
-        departureFlightNo:document.getElementById('departureFlightNo').value,
+        departureFlightNo: document.getElementById('departureFlightNo').value,
         departureFlightFromCity: document.getElementById('departureFlightFromCity').value,
         departureFlightToCity: document.getElementById('departureFlightToCity').value,
-        departureFlightTakeOffTime:document.getElementById('departureFlightTakeOffTime').value,
+        departureFlightTakeOffTime: document.getElementById('departureFlightTakeOffTime').value,
         departureFlightLandingTime: document.getElementById('departureFlightLandingTime').value,
         arrivalFlightNo: document.getElementById('arrivalFlightNo').value,
         arrivalFlightDate: document.getElementById('arrivalFlightDate').value,
@@ -537,68 +590,40 @@ form.addEventListener('submit', async (e)=>{
         vouchernotes:document.getElementById('vouchernotes').value
     };
 
-    // 👇 show status message
     const statusDiv = document.createElement('div');
-    statusDiv.id = 'voucher-status';
-    statusDiv.style.position = 'fixed';
-    statusDiv.style.top = '20px';
-    statusDiv.style.left = '50%';
-    statusDiv.style.transform = 'translateX(-50%)';
-    statusDiv.style.background = '#333';
-    statusDiv.style.color = '#fff';
-    statusDiv.style.padding = '10px 20px';
-    statusDiv.style.borderRadius = '5px';
-    statusDiv.style.zIndex = 1000;
-    statusDiv.textContent = 'Generating voucher...';
+    statusDiv.style.position='fixed';
+    statusDiv.style.top='20px';
+    statusDiv.style.left='50%';
+    statusDiv.style.transform='translateX(-50%)';
+    statusDiv.style.background='#333';
+    statusDiv.style.color='#fff';
+    statusDiv.style.padding='10px 20px';
+    statusDiv.style.borderRadius='5px';
+    statusDiv.style.zIndex=1000;
+    statusDiv.textContent='Generating voucher...';
     document.body.appendChild(statusDiv);
 
-    try {
-        const response = await fetch('/api/voucher/create', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+    try{
+        const response = await fetch('/api/voucher/create',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
             body: JSON.stringify(payload)
         });
-
-        if (!response.ok) throw new Error('Failed to generate PDF');
-
+        if(!response.ok) throw new Error('Failed to generate PDF');
         const blob = await response.blob();
-
-        // ✅ Get filename from backend header
-        const disposition = response.headers.get('Content-Disposition');
-        let filename = 'voucher.pdf';
-        if (disposition && disposition.includes('filename=')) {
-            filename = disposition.split('filename=')[1].replace(/['"]/g, '');
-        }
-
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
+        a.href=url;
+        a.download='voucher.pdf';
         document.body.appendChild(a);
         a.click();
-
-        setTimeout(() => {
-            URL.revokeObjectURL(url);
-            a.remove();
-        }, 1000);
-
-    } catch (err) {
-        alert(err.message);
-    } finally {
-        statusDiv?.remove();
-    }
+        setTimeout(()=>{URL.revokeObjectURL(url); a.remove();},1000);
+    }catch(err){alert(err.message);}
+    finally{statusDiv?.remove();}
 });
 
-// Home button
-function goHome() {
-    window.location.href = '/dashboard';
-}
-
-// Logout button
-function logout() {
-    window.location.href = '/logout';
-}
-
+function goHome(){window.location.href='/dashboard';}
+function logout(){window.location.href='/logout';}
 </script>
 
 </body>

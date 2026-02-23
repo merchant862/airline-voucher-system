@@ -53,10 +53,12 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 20px;
+    gap: 20px;
 }
 
 .voucher-info {
     text-align: left;
+    flex: 1;
 }
 
 .voucher-title {
@@ -80,11 +82,6 @@ body {
 }
 
 /* Logo & Verified */
-/* .center-logo img,
-.right-logo img {
-    object-fit: contain;
-} */
-
 .center-logo img {
     object-fit: contain;
     max-height: 90px;
@@ -92,30 +89,45 @@ body {
     margin-top: 10px;
 }
 
+.middle-verified {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    min-width: 180px;
+    margin-top: 8px;
+}
+
 .right-logo {
     display: flex;
-    flex-direction: column;   /* top se niche stack */
-    align-items: center;      /* horizontally center children */
-    justify-content: flex-start; /* top se start */
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 1;
 }
 
 .right-logo img {
     object-fit: contain;
-    max-height: 120px; /* Foreign company logo bada kiya */
+    max-height: 120px;
     max-width: 200px;
     margin-top: 10px;
 }
 
 .verified-box {
-    border: 3px solid #0b6fa4;
-    padding: 12px 25px;
+    /* border: 3px solid #0b6fa4; */
+    padding: 18px 34px;
     font-weight: bold;
     color: #0b6fa4;
-    background: #e0f0ff;
-    border-radius: 8px;
-    font-size: 18px;
+    /* background: #e0f0ff; */
+    border-radius: 10px;
+    font-size: 28px;
     text-align: center;
-    margin-bottom: 10px;     /* thodi spacing niche logo ke liye */
+    min-width: 170px;
+
+    /* Tilt text box */
+    display: inline-block;
+    transform: rotate(-35deg); /* -35deg ya -40deg try kar lo */
+    transform-origin: center;
 }
 
 /* Divider */
@@ -196,12 +208,12 @@ table th {
 .notes {
     white-space: pre-line;
     margin-top: 20px;
-    font-weight: 600; /* thoda bold */
+    font-weight: 600;
     line-height: 1.4;
 }
 
 .notes a {
-    font-weight: 500; /* halki bold */
+    font-weight: 500;
     color: #0b6fa4;
     text-decoration: underline;
 }
@@ -246,6 +258,7 @@ table th {
     <!-- Voucher Info & Logos -->
     <div class="top-header">
 
+        <!-- Left: Voucher + Company Logo -->
         <div class="voucher-info">
             <div class="voucher-title">HOTEL VOUCHER</div>
             <div class="voucher-id">
@@ -257,8 +270,13 @@ table th {
             <% } %>
         </div>
 
-        <div class="right-logo">
+        <!-- Middle: Verified -->
+        <div class="middle-verified">
             <div class="verified-box">VERIFIED</div>
+        </div>
+
+        <!-- Right: Foreign Company Logo -->
+        <div class="right-logo">
             <% if(foreignCompany.logo){ %>
                 <img src="<%= foreignCompany.logo %>" />
             <% } %>
@@ -401,20 +419,19 @@ table th {
         <button onclick="window.print()">Print</button>
     </div>
 
-    <p id="pageUrl" style="text-decoration:underline; word-break:break-word;"></p>
+    <p id="pageUrl" style="text-decoration: underline; word-break: break-word; font-size: 11px; font-family: Arial, Helvetica, sans-serif; font-weight: 400; color: #666; margin-top: 8px;"></p>
     <script>
         document.getElementById('pageUrl').textContent = window.location.href;
     </script>
-
+    
     <style>
     .notes a{
-        font-weight: bold; /* links ko bhi bold kiya */
+        font-weight: bold;
         color: #0b6fa4;
         text-decoration: underline;
     }
     </style>
 
-    
 </div>
 
 </body>
