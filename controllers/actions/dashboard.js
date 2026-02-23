@@ -27,7 +27,10 @@ const listVouchersController = async (req, res, next) => {
 
     const voucherList = await vouchers.findAll({
       attributes: ['id', 'voucherNo', 'status', 'createdAt'],
-      order: [['createdAt', 'DESC']],
+      order: [
+        ['status', 'ASC'],        // active pehle aayega
+        ['createdAt', 'DESC']     // phir latest date
+      ],
       limit: pageSize,
       offset
     });
