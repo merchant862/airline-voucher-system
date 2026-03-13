@@ -552,8 +552,8 @@ function formatBullets(el){
     const lines = el.value.split('\n').map(l=>l.trim()).filter(Boolean);
     el.value = lines.map(l=>'• '+l).join('\n');
 }
-// --- Form Submit ---
-form.addEventListener('submit', async e=>{
+// ------------------- FORM SUBMIT -------------------
+form.addEventListener('submit', async e => {
     e.preventDefault();
 
     const payload = {
@@ -573,53 +573,84 @@ form.addEventListener('submit', async e=>{
         arrivalFlightToCity: document.getElementById('arrivalFlightToCity').value,
         arrivalFlightTakeOffTime: document.getElementById('arrivalFlightTakeOffTime').value,
         arrivalFlightLandingTime: document.getElementById('arrivalFlightLandingTime').value,
-        customerName:[...document.getElementsByName('customerName[]')].map(i=>i.value),
-        customerGender:[...document.getElementsByName('customerGender[]')].map(i=>i.value),
-        customerPassport:[...document.getElementsByName('customerPassport[]')].map(i=>i.value),
-        customerVisa:[...document.getElementsByName('customerVisa[]')].map(i=>i.value),
-        customerPNR:[...document.getElementsByName('customerPNR[]')].map(i=>i.value),
-        hotelName:[...document.getElementsByName('hotelName[]')].map(i=>i.value),
-        hotelCity:[...document.getElementsByName('hotelCity[]')].map(i=>i.value),
-        hotelRoomType:[...document.getElementsByName('hotelRoomType[]')].map(i=>i.value),
-        hotelMealPlan:[...document.getElementsByName('hotelMealPlan[]')].map(i=>i.value),
-        hotelCheckin:[...document.getElementsByName('hotelCheckin[]')].map(i=>i.value),
-        hotelCheckout:[...document.getElementsByName('hotelCheckout[]')].map(i=>i.value),
-        hotelNoOfNights:[...document.getElementsByName('hotelNoOfNights[]')].map(i=>i.value),
-        transportRoute:[...document.getElementsByName('transportRoute[]')].map(i=>i.value),
-        transportType:[...document.getElementsByName('transportType[]')].map(i=>i.value),
-        vouchernotes:document.getElementById('vouchernotes').value
+        customerName: [...document.getElementsByName('customerName[]')].map(i => i.value),
+        customerGender: [...document.getElementsByName('customerGender[]')].map(i => i.value),
+        customerPassport: [...document.getElementsByName('customerPassport[]')].map(i => i.value),
+        customerVisa: [...document.getElementsByName('customerVisa[]')].map(i => i.value),
+        customerPNR: [...document.getElementsByName('customerPNR[]')].map(i => i.value),
+        hotelName: [...document.getElementsByName('hotelName[]')].map(i => i.value),
+        hotelCity: [...document.getElementsByName('hotelCity[]')].map(i => i.value),
+        hotelRoomType: [...document.getElementsByName('hotelRoomType[]')].map(i => i.value),
+        hotelMealPlan: [...document.getElementsByName('hotelMealPlan[]')].map(i => i.value),
+        hotelCheckin: [...document.getElementsByName('hotelCheckin[]')].map(i => i.value),
+        hotelCheckout: [...document.getElementsByName('hotelCheckout[]')].map(i => i.value),
+        hotelNoOfNights: [...document.getElementsByName('hotelNoOfNights[]')].map(i => i.value),
+        transportRoute: [...document.getElementsByName('transportRoute[]')].map(i => i.value),
+        transportType: [...document.getElementsByName('transportType[]')].map(i => i.value),
+        vouchernotes: document.getElementById('vouchernotes').value
     };
 
+    const submitBtn = document.querySelector('.submitBtn');
+    const originalBtnText = submitBtn.textContent;
+
     const statusDiv = document.createElement('div');
-    statusDiv.style.position='fixed';
-    statusDiv.style.top='20px';
-    statusDiv.style.left='50%';
-    statusDiv.style.transform='translateX(-50%)';
-    statusDiv.style.background='#333';
-    statusDiv.style.color='#fff';
-    statusDiv.style.padding='10px 20px';
-    statusDiv.style.borderRadius='5px';
-    statusDiv.style.zIndex=1000;
-    statusDiv.textContent='Generating voucher...';
+    statusDiv.style.position = 'fixed';
+    statusDiv.style.top = '20px';
+    statusDiv.style.left = '50%';
+    statusDiv.style.transform = 'translateX(-50%)';
+    statusDiv.style.background = '#333';
+    statusDiv.style.color = '#fff';
+    statusDiv.style.padding = '10px 20px';
+    statusDiv.style.borderRadius = '5px';
+    statusDiv.style.zIndex = 1000;
+    statusDiv.textContent = 'Generating voucher...';
     document.body.appendChild(statusDiv);
 
-    try{
-        const response = await fetch('/api/voucher/create',{
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = '0.7';
+    submitBtn.style.cursor = 'not-allowed';
+    submitBtn.textContent = 'Generating...';
+
+    try {
+        const response = await fetch('/api/voucher/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
-        if(!response.ok) throw new Error('Failed to generate PDF');
+
+        if (!response.ok) {
+            throw new Error('Failed to generate PDF');
+        }
+
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
+
         const a = document.createElement('a');
-        a.href=url;
-        a.download='voucher.pdf';
+        a.href = url;
+        a.download = 'voucher.pdf';
         document.body.appendChild(a);
         a.click();
-        setTimeout(()=>{URL.revokeObjectURL(url); a.remove();},1000);
-    }catch(err){alert(err.message);}
-    finally{statusDiv?.remove();}
+        a.remove();
+
+        localStorage.removeItem('voucherFormData');
+
+        setTimeout(() => {
+            window.URL.revokeObjectURL(url);
+        }, 3000);
+
+        setTimeout(() => {
+            goHome()
+        }, 800);
+
+    } catch (err) {
+        alert(err.message);
+    } finally {
+        statusDiv?.remove();
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+        submitBtn.style.cursor = 'pointer';
+        submitBtn.textContent = originalBtnText;
+    }
 });
 
 function goHome(){window.location.href='/dashboard';}

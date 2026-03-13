@@ -111,9 +111,11 @@
 
 <!-- Table Container + Search -->
 <div style="width:95%; max-width:1000px; margin:20px auto;">
-    <!-- Search Input -->
     <div style="margin-bottom:12px; display:flex; justify-content:flex-end;">
-        <input type="text" id="voucherSearch" placeholder="Search Voucher (UB-123456)" 
+        <input 
+            type="text" 
+            id="voucherSearch" 
+            placeholder="Search Voucher (UB-123456)" 
             style="
                 padding:8px 12px; 
                 border-radius:8px; 
@@ -136,9 +138,7 @@
                     <th style="padding:12px; border:1px solid #444; text-align:left;">Action</th>
                 </tr>
             </thead>
-            <tbody id="voucherTableBody">
-                <!-- Rows populated dynamically -->
-            </tbody>
+            <tbody id="voucherTableBody"></tbody>
         </table>
     </div>
 </div>
@@ -158,20 +158,29 @@ let totalActiveVouchers = 0;
 let totalInactiveVouchers = 0;
 
 // --------------------- FETCH VOUCHERS ---------------------
-async function fetchVouchers(page = 1) {
+async function fetchVouchers(page = 1, search = '') {
     try {
-        const res = await fetch(`/api/dashboard?page=${page}`, {
+        const query = new URLSearchParams({
+            page: page,
+            search: search
+        });
+
+        const res = await fetch(`/api/dashboard?${query.toString()}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
+
         const data = await res.json();
-        if (!data.success) return alert('Failed to fetch vouchers');
+
+        if (!data.success) {
+            return alert('Failed to fetch vouchers');
+        }
 
         totalVouchers = data.totalVouchers;
         totalActiveVouchers = data.activeCount;
         totalInactiveVouchers = data.inactiveCount;
-        renderTable(data.vouchers);
 
+        renderTable(data.vouchers);
     } catch (err) {
         console.error(err);
         alert("Server error fetching vouchers");
@@ -179,23 +188,15 @@ async function fetchVouchers(page = 1) {
 }
 
 // --------------------- RENDER TABLE ---------------------
-
 function renderTable(vouchers) {
     const tbody = document.getElementById('voucherTableBody');
     tbody.innerHTML = '';
 
-    // --------------------- SORT ACTIVE FIRST ---------------------
-    vouchers.sort((a, b) => {
-        if(a.status === 'active' && b.status !== 'active') return -1;
-        if(a.status !== 'active' && b.status === 'active') return 1;
-        return 0;
-    });
-
     vouchers.forEach(v => {
         const tr = document.createElement('tr');
 
-        let statusColor = v.status === 'active' ? '#00e676' : '#ff5252';
-        let statusText  = v.status === 'active' ? 'ACTIVE' : 'INACTIVE';
+        const statusColor = v.status === 'active' ? '#00e676' : '#ff5252';
+        const statusText = v.status === 'active' ? 'ACTIVE' : 'INACTIVE';
 
         tr.innerHTML = `
             <td style="padding:12px; border:1px solid #444;">${v.voucherNo}</td>
@@ -213,51 +214,61 @@ function renderTable(vouchers) {
                 </div>
             </td>
         `;
+
         tbody.appendChild(tr);
     });
 
-    // --------------------- USE API TOTALS ---------------------
     document.getElementById('totalVouchers').textContent = totalVouchers;
     document.getElementById('totalActiveVouchers').textContent = totalActiveVouchers;
     document.getElementById('totalInactiveVouchers').textContent = totalInactiveVouchers;
 
-    // --------------------- SEARCH FILTER ---------------------
-    const searchInput = document.getElementById('voucherSearch');
-    if (searchInput && searchInput.value.trim() !== '') {
-        const search = searchInput.value.trim().toUpperCase();
-        Array.from(tbody.querySelectorAll('tr')).forEach(tr => {
-            const voucherNo = tr.cells[0].textContent.toUpperCase();
-            tr.style.display = voucherNo.includes(search) ? '' : 'none';
-        });
+    if (vouchers.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td colspan="4" style="padding:16px; border:1px solid #444; text-align:center; color:#bbb;">
+                No vouchers found
+            </td>
+        `;
+        tbody.appendChild(tr);
     }
 }
+
 // --------------------- SEARCH VOUCHER ---------------------
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('voucherSearch');
-    if(searchInput){
+
+    if (searchInput) {
+        let debounceTimer;
+
         searchInput.addEventListener('input', function() {
-            const search = this.value.trim().toUpperCase();
-            const tbody = document.getElementById('voucherTableBody');
-            Array.from(tbody.querySelectorAll('tr')).forEach(tr => {
-                const voucherNo = tr.cells[0].textContent.toUpperCase();
-                tr.style.display = voucherNo.includes(search) ? '' : 'none';
-            });
+            clearTimeout(debounceTimer);
+
+            debounceTimer = setTimeout(() => {
+                currentPage = 1;
+                fetchVouchers(currentPage, this.value.trim());
+            }, 300);
         });
     }
+
+    fetchVouchers(currentPage, '');
 });
 
 // --------------------- PAGINATION ---------------------
 function prevPage() {
+    const search = document.getElementById('voucherSearch').value.trim();
+
     if (currentPage > 1) {
         currentPage--;
-        fetchVouchers(currentPage);
+        fetchVouchers(currentPage, search);
     }
 }
 
 function nextPage() {
+    const search = document.getElementById('voucherSearch').value.trim();
+
     if (currentPage * pageSize < totalVouchers) {
         currentPage++;
-        fetchVouchers(currentPage);
+        fetchVouchers(currentPage, search);
     }
 }
 
@@ -269,9 +280,6 @@ function generateVoucher() {
 function logout() {
     window.location.href = '/logout';
 }
-
-// --------------------- INITIAL FETCH ---------------------
-fetchVouchers(currentPage);
 </script>
 
 </body>
