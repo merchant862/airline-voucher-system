@@ -7,132 +7,133 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <style>
 body {
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #141426, #1c1c3c);
-    color:#fff;
+    color: #fff;
 }
 .custom-dropdown {
     position: relative;
-    background:#2a2a50;
-    border:1px solid #444;
-    border-radius:8px;
-    cursor:pointer;
+    background: #2a2a50;
+    border: 1px solid #444;
+    border-radius: 8px;
+    cursor: pointer;
 }
 .dropdown-selected {
-    padding:10px;
-    color:#fff;
+    padding: 10px;
+    color: #fff;
 }
 .dropdown-options {
-    display:none;
-    position:absolute;
-    width:100%;
-    background:#1a1a35;
-    border:1px solid #444;
-    border-radius:8px;
-    max-height:200px;
-    overflow-y:auto;
-    z-index:999;
+    display: none;
+    position: absolute;
+    width: 100%;
+    background: #1a1a35;
+    border: 1px solid #444;
+    border-radius: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 999;
 }
 .dropdown-option {
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:8px;
-    color:#fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    color: #fff;
 }
 .dropdown-option:hover {
-    background:#7b2ff7;
+    background: #7b2ff7;
 }
 .dropdown-option img {
-    height:30px;
-    width:30px;
-    object-fit:cover;
-    border-radius:6px;
+    height: 30px;
+    width: 30px;
+    object-fit: cover;
+    border-radius: 6px;
 }
 .customerRow, .hotelRow, .transportRow {
-    border:1px solid #444;
-    padding:12px;
-    margin-bottom:12px;
-    border-radius:8px;
-    background:#1a1a35;
-    position:relative;
+    border: 1px solid #444;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    background: #1a1a35;
+    position: relative;
 }
 .removeBtn {
-    position:absolute;
-    top:6px; right:6px;
-    cursor:pointer;
-    color:#ff6b6b;
-    font-weight:bold;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    cursor: pointer;
+    color: #ff6b6b;
+    font-weight: bold;
 }
 input, select, textarea {
-    width:100%;
-    padding:8px;
-    margin:6px 0;
-    border-radius:6px;
-    border:1px solid #333;
-    background:#2a2a50;
-    color:#fff;
-    box-sizing:border-box;
+    width: 100%;
+    padding: 8px;
+    margin: 6px 0;
+    border-radius: 6px;
+    border: 1px solid #333;
+    background: #2a2a50;
+    color: #fff;
+    box-sizing: border-box;
 }
 button.addBtn {
-    padding:10px 16px;
-    background:#7b2ff7;
-    border:none;
-    border-radius:8px;
-    color:#fff;
-    cursor:pointer;
-    margin-top:6px;
+    padding: 10px 16px;
+    background: #7b2ff7;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 6px;
 }
 button.submitBtn {
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:10px;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
     background: linear-gradient(90deg, #7b2ff7, #a855f7);
-    color:#fff;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-    margin-top:12px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 12px;
 }
 .form-section {
-    padding:20px; 
-    background:#1a1a35; 
-    border-radius:10px; 
-    border:1px solid #333; 
-    margin-bottom:24px;
+    padding: 20px;
+    background: #1a1a35;
+    border-radius: 10px;
+    border: 1px solid #333;
+    margin-bottom: 24px;
 }
 .form-section h3 {
-    color:#c77dff;
-    margin-bottom:12px;
+    color: #c77dff;
+    margin-bottom: 12px;
 }
 .flex-row {
-    display:flex;
-    flex-wrap:wrap;
-    gap:16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
 }
 .flex-col {
-    flex:1 1 200px;
-    min-width:200px;
+    flex: 1 1 200px;
+    min-width: 200px;
 }
 .flight-grid {
-    display:grid;
+    display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap:12px;
+    gap: 12px;
 }
 .header-buttons {
-    display:flex;
-    gap:10px;
+    display: flex;
+    gap: 10px;
 }
 .header-buttons button {
-    padding:8px 16px;
-    border:none;
-    border-radius:8px;
-    font-weight:bold;
-    cursor:pointer;
-    color:#fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #fff;
 }
 .logoutBtn {
     background: linear-gradient(90deg, #7b2ff7, #a855f7);
@@ -144,148 +145,158 @@ button.submitBtn {
 </head>
 <body>
 
-<div style="width:100%; max-width:1200px; margin:0 auto; padding:16px 24px; 
-background:#1e1e3d; border-bottom:3px solid #7b2ff7; font-size:20px; 
-font-weight:bold; color:#b388ff; display:flex; justify-content:space-between; align-items:center; box-sizing:border-box;">
-<span>Voucher Entry Form</span>
-<div class="header-buttons">
-    <button class="homeBtn" onclick="goHome()">Home</button>
-    <button class="logoutBtn" onclick="logout()">Logout</button>
-</div>
+<div style="width:100%; max-width:1200px; margin:0 auto; padding:16px 24px; background:#1e1e3d; border-bottom:3px solid #7b2ff7; font-size:20px; font-weight:bold; color:#b388ff; display:flex; justify-content:space-between; align-items:center; box-sizing:border-box;">
+    <span>Voucher Entry Form</span>
+    <div class="header-buttons">
+        <button class="homeBtn" onclick="goHome()">Home</button>
+        <button class="logoutBtn" onclick="logout()">Logout</button>
+    </div>
 </div>
 
 <form id="voucherForm" style="width:100%; max-width:900px; margin:20px auto; padding:20px; box-sizing:border-box;">
 
-<!-- Selection Section -->
-<div class="form-section">
-    <h3>Voucher Configuration</h3>
+    <!-- Selection Section -->
+    <div class="form-section">
+        <h3>Voucher Configuration</h3>
 
-    <label>Local Agency *</label>
-    <div class="custom-dropdown" id="localAgencyDropdown">
-        <div class="dropdown-selected">Select Local Agency</div>
-        <div class="dropdown-options"></div>
-    </div>
-    <input type="hidden" id="companySelect" name="companyId">
-
-    <label>Foreign Agency *</label>
-    <div class="custom-dropdown" id="foreignAgencyDropdown">
-        <div class="dropdown-selected">Select Foreign Agency</div>
-        <div class="dropdown-options"></div>
-    </div>
-    <input type="hidden" id="foreignCompanySelect" name="foreignCompanyId">
-
-    <div class="flex-row" style="margin-top:16px;">
-        <div class="flex-col">
-            <label>Download Voucher Format</label>
-            <select id="voucherFormatSelect">
-                <option value="">Select Download Voucher Format</option>
-            </select>
+        <label>Local Agency *</label>
+        <div class="custom-dropdown" id="localAgencyDropdown">
+            <div class="dropdown-selected">Select Local Agency</div>
+            <div class="dropdown-options"></div>
         </div>
-        <div class="flex-col">
-            <label>Link Voucher Format</label>
-            <select id="linkVoucherFormatSelect">
-                <option value="">Select Link Voucher Format</option>
-            </select>
+        <input type="hidden" id="companySelect" name="companyId">
+
+        <label>Foreign Agency *</label>
+        <div class="custom-dropdown" id="foreignAgencyDropdown">
+            <div class="dropdown-selected">Select Foreign Agency</div>
+            <div class="dropdown-options"></div>
+        </div>
+        <input type="hidden" id="foreignCompanySelect" name="foreignCompanyId">
+
+        <div class="flex-row" style="margin-top:16px;">
+            <div class="flex-col">
+                <label>Download Voucher Format</label>
+                <select id="voucherFormatSelect" name="voucherFormatsId">
+                    <option value="">Select Download Voucher Format</option>
+                </select>
+            </div>
+            <div class="flex-col">
+                <label>Link Voucher Format</label>
+                <select id="linkVoucherFormatSelect" name="linkVoucherFormatsId">
+                    <option value="">Select Link Voucher Format</option>
+                </select>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Customers Section -->
-<div class="form-section">
-    <h3>Passenger(s)</h3>
-    <div id="customersContainer"></div>
-    <button type="button" class="addBtn" onclick="addCustomer()">+ Add Customer</button>
-</div>
+    <!-- Customers Section -->
+    <div class="form-section">
+        <h3>Passenger(s)</h3>
+        <div id="customersContainer"></div>
+        <button type="button" class="addBtn" onclick="addCustomer()">+ Add Customer</button>
+    </div>
 
-<!-- Hotels Section -->
-<div class="form-section">
-    <h3>Hotel(s)</h3>
-    <div id="hotelsContainer"></div>
-    <button type="button" class="addBtn" onclick="addHotel()">+ Add Hotel</button>
-</div>
+    <!-- Hotels Section -->
+    <div class="form-section">
+        <h3>Hotel(s)</h3>
+        <div id="hotelsContainer"></div>
+        <button type="button" class="addBtn" onclick="addHotel()">+ Add Hotel</button>
+    </div>
 
-<!-- Transport Section -->
-<div class="form-section">
-    <h3>Transport(s)</h3>
-    <div id="transportContainer"></div>
-    <button type="button" class="addBtn" onclick="addTransport()">+ Add Transport</button>
-</div>
+    <!-- Transport Section -->
+    <div class="form-section">
+        <h3>Transport(s)</h3>
+        <div id="transportContainer"></div>
+        <button type="button" class="addBtn" onclick="addTransport()">+ Add Transport</button>
+    </div>
 
-<!-- Flights Section -->
-<div class="form-section">
-<h3>Departure Flight</h3>
-<div class="flight-grid">
-  <div>
-    <label>Flight No</label>
-    <input type="text" id="departureFlightNo" placeholder="Flight Code" required>
-  </div>
-  <div>
-    <label>Date</label>
-    <input type="date" id="departureFlightDate" required>
-  </div>
-  <div>
-    <label>From City</label>
-    <input type="text" id="departureFlightFromCity" placeholder="City" required>
-  </div>
-  <div>
-    <label>To City</label>
-    <input type="text" id="departureFlightToCity" placeholder="City" required>
-  </div>
-  <div>
-    <label>Takeoff Time (24h)</label>
-    <input type="text" id="departureFlightTakeOffTime" placeholder="HH:MM" required>
-  </div>
-  <div>
-    <label>Landing Time (24h)</label>
-    <input type="text" id="departureFlightLandingTime" placeholder="HH:MM" required>
-  </div>
-</div>
-</div>
+    <!-- Flights Section -->
+    <div class="form-section">
+        <h3>Departure Flight</h3>
+        <div class="flight-grid">
+            <div>
+                <label>Flight No</label>
+                <input type="text" id="departureFlightNo" name="departureFlightNo" placeholder="Flight Code" required>
+            </div>
+            <div>
+                <label>Date</label>
+                <input type="date" id="departureFlightDate" name="departureFlightDate" required>
+            </div>
+            <div>
+                <label>From City</label>
+                <input type="text" id="departureFlightFromCity" name="departureFlightFromCity" placeholder="City" required>
+            </div>
+            <div>
+                <label>To City</label>
+                <input type="text" id="departureFlightToCity" name="departureFlightToCity" placeholder="City" required>
+            </div>
+            <div>
+                <label>Takeoff Time (24h)</label>
+                <input type="text" id="departureFlightTakeOffTime" name="departureFlightTakeOffTime" placeholder="HH:MM" required>
+            </div>
+            <div>
+                <label>Landing Time (24h)</label>
+                <input type="text" id="departureFlightLandingTime" name="departureFlightLandingTime" placeholder="HH:MM" required>
+            </div>
+        </div>
+    </div>
 
-<div class="form-section">
-<h3>Arrival Flight</h3>
-<div class="flight-grid">
-  <div>
-    <label>Flight No</label>
-    <input type="text" id="arrivalFlightNo" placeholder="Flight Code" required>
-  </div>
-  <div>
-    <label>Date</label>
-    <input type="date" id="arrivalFlightDate" required>
-  </div>
-  <div>
-    <label>From City</label>
-    <input type="text" id="arrivalFlightFromCity" placeholder="City" required>
-  </div>
-  <div>
-    <label>To City</label>
-    <input type="text" id="arrivalFlightToCity" placeholder="City" required>
-  </div>
-  <div>
-    <label>Takeoff Time (24h)</label>
-    <input type="text" id="arrivalFlightTakeOffTime" placeholder="HH:MM" required>
-  </div>
-  <div>
-    <label>Landing Time (24h)</label>
-    <input type="text" id="arrivalFlightLandingTime" placeholder="HH:MM" required>
-  </div>
-</div>
-</div>
+    <div class="form-section">
+        <h3>Arrival Flight</h3>
+        <div class="flight-grid">
+            <div>
+                <label>Flight No</label>
+                <input type="text" id="arrivalFlightNo" name="arrivalFlightNo" placeholder="Flight Code" required>
+            </div>
+            <div>
+                <label>Date</label>
+                <input type="date" id="arrivalFlightDate" name="arrivalFlightDate" required>
+            </div>
+            <div>
+                <label>From City</label>
+                <input type="text" id="arrivalFlightFromCity" name="arrivalFlightFromCity" placeholder="City" required>
+            </div>
+            <div>
+                <label>To City</label>
+                <input type="text" id="arrivalFlightToCity" name="arrivalFlightToCity" placeholder="City" required>
+            </div>
+            <div>
+                <label>Takeoff Time (24h)</label>
+                <input type="text" id="arrivalFlightTakeOffTime" name="arrivalFlightTakeOffTime" placeholder="HH:MM" required>
+            </div>
+            <div>
+                <label>Landing Time (24h)</label>
+                <input type="text" id="arrivalFlightLandingTime" name="arrivalFlightLandingTime" placeholder="HH:MM" required>
+            </div>
+        </div>
+    </div>
 
-<!-- Notes Section -->
-<div class="form-section">
-    <h3>Notes</h3>
-    <textarea id="vouchernotes" rows="5" placeholder="Type your notes here..." oninput="formatBullets(this)"></textarea>
-</div>
+    <!-- Notes Section -->
+    <div class="form-section">
+        <h3>Notes</h3>
+        <textarea id="vouchernotes" name="vouchernotes" rows="5" placeholder="Type your notes here..." oninput="formatBullets(this)"></textarea>
+    </div>
 
-<button type="submit" class="submitBtn">Save Voucher</button>
+    <button type="submit" class="submitBtn">Save Voucher</button>
 </form>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-document.addEventListener("DOMContentLoaded", async function() {
-    ['departureFlightTakeOffTime','departureFlightLandingTime','arrivalFlightTakeOffTime','arrivalFlightLandingTime'].forEach(id=>{
-        flatpickr("#"+id, {enableTime:true,noCalendar:true,dateFormat:"H:i",time_24hr:true});
+const form = document.getElementById('voucherForm');
+
+let customerCount = 0;
+let hotelCount = 0;
+let transportCount = 0;
+window.transportListData = [];
+
+document.addEventListener("DOMContentLoaded", async function () {
+    ['departureFlightTakeOffTime', 'departureFlightLandingTime', 'arrivalFlightTakeOffTime', 'arrivalFlightLandingTime'].forEach(id => {
+        flatpickr("#" + id, {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            time_24hr: true
+        });
     });
 
     await loadCustomAgencies('local', 'localAgencyDropdown', 'companySelect');
@@ -296,234 +307,426 @@ document.addEventListener("DOMContentLoaded", async function() {
     restoreFormData();
 });
 
-// ------------------- FORM STATE -------------------
-const form = document.getElementById('voucherForm');
 form.addEventListener('input', saveFormData);
+form.addEventListener('change', saveFormData);
+
 function saveFormData() {
     const data = {};
-    new FormData(form).forEach((value, key)=>data[key]=value);
+
+    new FormData(form).forEach((value, key) => {
+        if (Object.prototype.hasOwnProperty.call(data, key)) {
+            if (!Array.isArray(data[key])) {
+                data[key] = [data[key]];
+            }
+            data[key].push(value);
+        } else {
+            data[key] = value;
+        }
+    });
+
     localStorage.setItem('voucherFormData', JSON.stringify(data));
 }
-function restoreFormData() {
-    const saved = localStorage.getItem('voucherFormData');
-    if(saved){
-        const data = JSON.parse(saved);
-        Object.keys(data).forEach(key=>{
-            const input = form.querySelector(`[name="${key}"]`);
-            if(input) input.value=data[key];
-        });
+
+function setDropdownSelected(dropdownId, image, name) {
+    const dropdown = document.getElementById(dropdownId);
+    const selected = dropdown.querySelector('.dropdown-selected');
+
+    if (image) {
+        selected.innerHTML = `<img src="${image}" style="height:20px; width:20px; object-fit:cover; vertical-align:middle; margin-right:6px; border-radius:4px;">${name}`;
+    } else {
+        selected.textContent = name;
     }
 }
 
-// ------------------- VOUCHER FORMATS -------------------
+function restoreFormData() {
+    const saved = localStorage.getItem('voucherFormData');
+    if (!saved) return;
+
+    const data = JSON.parse(saved);
+
+    // Restore static/simple fields
+    const simpleFieldIds = [
+        'companySelect',
+        'foreignCompanySelect',
+        'voucherFormatSelect',
+        'linkVoucherFormatSelect',
+        'departureFlightNo',
+        'departureFlightDate',
+        'departureFlightFromCity',
+        'departureFlightToCity',
+        'departureFlightTakeOffTime',
+        'departureFlightLandingTime',
+        'arrivalFlightNo',
+        'arrivalFlightDate',
+        'arrivalFlightFromCity',
+        'arrivalFlightToCity',
+        'arrivalFlightTakeOffTime',
+        'arrivalFlightLandingTime',
+        'vouchernotes'
+    ];
+
+    simpleFieldIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && typeof data[el.name || id] !== 'undefined') {
+            el.value = data[el.name || id];
+        }
+    });
+
+    // Restore customers
+    const customerNames = normalizeArray(data['customerName[]']);
+    const customerGenders = normalizeArray(data['customerGender[]']);
+    const customerPassports = normalizeArray(data['customerPassport[]']);
+    const customerVisas = normalizeArray(data['customerVisa[]']);
+    const customerPNRs = normalizeArray(data['customerPNR[]']);
+
+    for (let i = 0; i < customerNames.length; i++) {
+        addCustomer({
+            customerName: customerNames[i] || '',
+            customerGender: customerGenders[i] || '',
+            customerPassport: customerPassports[i] || '',
+            customerVisa: customerVisas[i] || '',
+            customerPNR: customerPNRs[i] || ''
+        });
+    }
+
+    // Restore hotels
+    const hotelCities = normalizeArray(data['hotelCity[]']);
+    const hotelNames = normalizeArray(data['hotelName[]']);
+    const hotelRoomTypes = normalizeArray(data['hotelRoomType[]']);
+    const hotelMealPlans = normalizeArray(data['hotelMealPlan[]']);
+    const hotelCheckins = normalizeArray(data['hotelCheckin[]']);
+    const hotelCheckouts = normalizeArray(data['hotelCheckout[]']);
+    const hotelNights = normalizeArray(data['hotelNoOfNights[]']);
+
+    for (let i = 0; i < hotelCities.length; i++) {
+        addHotel({
+            hotelCity: hotelCities[i] || '',
+            hotelName: hotelNames[i] || '',
+            hotelRoomType: hotelRoomTypes[i] || '',
+            hotelMealPlan: hotelMealPlans[i] || 'RO',
+            hotelCheckin: hotelCheckins[i] || '',
+            hotelCheckout: hotelCheckouts[i] || '',
+            hotelNoOfNights: hotelNights[i] || 0
+        });
+    }
+
+    // Restore transports
+    const transportRoutes = normalizeArray(data['transportRoute[]']);
+    const transportTypes = normalizeArray(data['transportType[]']);
+
+    for (let i = 0; i < transportRoutes.length; i++) {
+        addTransport({
+            transportRoute: transportRoutes[i] || '',
+            transportType: transportTypes[i] || ''
+        });
+    }
+
+    // Restore agency dropdown labels
+    restoreAgencySelection('localAgencyDropdown', 'companySelect', 'localAgencyOptions');
+    restoreAgencySelection('foreignAgencyDropdown', 'foreignCompanySelect', 'foreignAgencyOptions');
+}
+
+function normalizeArray(value) {
+    if (typeof value === 'undefined') return [];
+    return Array.isArray(value) ? value : [value];
+}
+
 async function loadVoucherFormats() {
-    try{
+    try {
         const res = await fetch('/api/voucher/formats/DOWNLOAD_FORMAT');
         const data = await res.json();
-        if(!data.success) return;
+        if (!data.success) return;
+
         const select = document.getElementById('voucherFormatSelect');
-        data.data.forEach(f=>{
-            const o=document.createElement('option');
-            o.value=f.id; o.textContent=f.name;
+        data.data.forEach(f => {
+            const o = document.createElement('option');
+            o.value = f.id;
+            o.textContent = f.name;
             select.appendChild(o);
         });
-        select.addEventListener('change', function(){
-            const id=this.value;
-            if(!id) return;
-            window.open(`/api/voucher/template/${id}`,'_blank');
+
+        select.addEventListener('change', function () {
+            if (!this.value) return;
+            saveFormData();
+            window.open(`/api/voucher/template/${this.value}`, '_blank');
         });
-    } catch(err){console.error(err);}
+    } catch (err) {
+        console.error(err);
+    }
 }
+
 async function loadLinkVoucherFormats() {
-    try{
+    try {
         const res = await fetch('/api/voucher/formats/LINK_FORMAT');
         const data = await res.json();
-        if(!data.success) return;
+        if (!data.success) return;
+
         const select = document.getElementById('linkVoucherFormatSelect');
-        data.data.forEach(f=>{
-            const o=document.createElement('option');
-            o.value=f.id; o.textContent=f.name;
+        data.data.forEach(f => {
+            const o = document.createElement('option');
+            o.value = f.id;
+            o.textContent = f.name;
             select.appendChild(o);
         });
-        select.addEventListener('change', function(){
-            const id=this.value;
-            if(!id) return;
-            window.open(`/api/voucher/template/${id}`,'_blank');
+
+        select.addEventListener('change', function () {
+            if (!this.value) return;
+            saveFormData();
+            window.open(`/api/voucher/template/${this.value}`, '_blank');
         });
-    } catch(err){console.error(err);}
+    } catch (err) {
+        console.error(err);
+    }
 }
 
-// ------------------- LOAD AGENCIES -------------------
-async function loadCustomAgencies(type, dropdownId, hiddenInputId){
-    const res = await fetch(`/api/agencies/${type}`);
-    const data = await res.json();
-    if(!data.success) return;
-    const dropdown = document.getElementById(dropdownId);
-    const selected = dropdown.querySelector('.dropdown-selected');
-    const optionsContainer = dropdown.querySelector('.dropdown-options');
+async function loadCustomAgencies(type, dropdownId, hiddenInputId) {
+    try {
+        const res = await fetch(`/api/agencies/${type}`);
+        const data = await res.json();
+        if (!data.success) return;
+
+        const dropdown = document.getElementById(dropdownId);
+        const selected = dropdown.querySelector('.dropdown-selected');
+        const optionsContainer = dropdown.querySelector('.dropdown-options');
+        const hiddenInput = document.getElementById(hiddenInputId);
+
+        const cacheKey = type === 'local' ? 'localAgencyOptions' : 'foreignAgencyOptions';
+        window[cacheKey] = data.data;
+
+        data.data.forEach(agency => {
+            const option = document.createElement('div');
+            option.className = 'dropdown-option';
+            option.innerHTML = `<img src="${agency.image}" /><span>${agency.name}</span>`;
+            option.addEventListener('click', () => {
+                selected.innerHTML = `<img src="${agency.image}" style="height:20px; width:20px; object-fit:cover; vertical-align:middle; margin-right:6px; border-radius:4px;">${agency.name}`;
+                hiddenInput.value = agency.id;
+                optionsContainer.style.display = 'none';
+                saveFormData();
+            });
+            optionsContainer.appendChild(option);
+        });
+
+        selected.addEventListener('click', () => {
+            optionsContainer.style.display = optionsContainer.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!dropdown.contains(e.target)) {
+                optionsContainer.style.display = 'none';
+            }
+        });
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+function restoreAgencySelection(dropdownId, hiddenInputId, cacheKey) {
     const hiddenInput = document.getElementById(hiddenInputId);
-    data.data.forEach(agency=>{
-        const option=document.createElement('div');
-        option.className='dropdown-option';
-        option.innerHTML=`<img src="${agency.image}" /><span>${agency.name}</span>`;
-        option.addEventListener('click', ()=>{
-            selected.innerHTML=`<img src="${agency.image}" style="height:20px;vertical-align:middle;margin-right:6px;">${agency.name}`;
-            hiddenInput.value = agency.id;
-            optionsContainer.style.display='none';
-        });
-        optionsContainer.appendChild(option);
-    });
-    selected.addEventListener('click', ()=>{
-        optionsContainer.style.display = optionsContainer.style.display==='block'?'none':'block';
-    });
-    document.addEventListener('click',(e)=>{
-        if(!dropdown.contains(e.target)) optionsContainer.style.display='none';
-    });
+    const selectedId = hiddenInput.value;
+    if (!selectedId || !window[cacheKey]) return;
+
+    const agency = window[cacheKey].find(a => String(a.id) === String(selectedId));
+    if (agency) {
+        setDropdownSelected(dropdownId, agency.image, agency.name);
+    }
 }
 
-// ------------------- DYNAMIC ROWS -------------------
-let customerCount=0, hotelCount=0, transportCount=0;
-
-function addCustomer(){
+function addCustomer(prefill = {}) {
     customerCount++;
-    const div=document.createElement('div');
-    div.className='customerRow';
-    div.innerHTML=`
+
+    const div = document.createElement('div');
+    div.className = 'customerRow';
+    div.innerHTML = `
         <span class="removeBtn" onclick="removeRow(this)">❌</span>
-        <label>Customer Name</label><input type="text" name="customerName[]" required>
+        <label>Customer Name</label>
+        <input type="text" name="customerName[]" required value="${escapeHtml(prefill.customerName || '')}">
+        
         <label>Gender</label>
         <select name="customerGender[]" required>
             <option value="">Select Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="infant">Infant</option>
-            <option value="children">Children</option>
+            <option value="male" ${prefill.customerGender === 'male' ? 'selected' : ''}>Male</option>
+            <option value="female" ${prefill.customerGender === 'female' ? 'selected' : ''}>Female</option>
+            <option value="infant" ${prefill.customerGender === 'infant' ? 'selected' : ''}>Infant</option>
+            <option value="children" ${prefill.customerGender === 'children' ? 'selected' : ''}>Children</option>
         </select>
-        <label>Passport No</label><input type="text" name="customerPassport[]" required>
-        <label>Visa No</label><input type="text" name="customerVisa[]">
-        <label>PNR</label><input type="text" name="customerPNR[]">
+
+        <label>Passport No</label>
+        <input type="text" name="customerPassport[]" required value="${escapeHtml(prefill.customerPassport || '')}">
+
+        <label>Visa No</label>
+        <input type="text" name="customerVisa[]" value="${escapeHtml(prefill.customerVisa || '')}">
+
+        <label>PNR</label>
+        <input type="text" name="customerPNR[]" value="${escapeHtml(prefill.customerPNR || '')}">
     `;
+
     document.getElementById('customersContainer').appendChild(div);
+    saveFormData();
 }
 
-// ------------------- HOTELS -------------------
-function addHotel(){
+function addHotel(prefill = {}) {
     hotelCount++;
+
     const div = document.createElement('div');
-    div.className='hotelRow';
-    
+    div.className = 'hotelRow';
     div.innerHTML = `
         <span class="removeBtn" onclick="removeRow(this)">❌</span>
         <label>City</label>
         <select name="hotelCity[]" required class="hotelCitySelect">
             <option value="">Select City</option>
-            <option value="MAKKAH">MAKKAH</option>
-            <option value="MADINAH">MADINAH</option>
-            <option value="RIYADH">RIYADH</option>
-            <option value="JEDDAH">JEDDAH</option>
+            <option value="MAKKAH" ${prefill.hotelCity === 'MAKKAH' ? 'selected' : ''}>MAKKAH</option>
+            <option value="MADINAH" ${prefill.hotelCity === 'MADINAH' ? 'selected' : ''}>MADINAH</option>
+            <option value="RIYADH" ${prefill.hotelCity === 'RIYADH' ? 'selected' : ''}>RIYADH</option>
+            <option value="JEDDAH" ${prefill.hotelCity === 'JEDDAH' ? 'selected' : ''}>JEDDAH</option>
         </select>
+
         <label>Hotel Name</label>
-        <input type="text" name="hotelName[]" required class="hotelNameInput">
+        <input type="text" name="hotelName[]" required class="hotelNameInput" value="${escapeHtml(prefill.hotelName || '')}">
+
         <label>Room Type</label>
         <select name="hotelRoomType[]" required>
             <option value="">Select</option>
-            <option value="sharing">Sharing</option>
-            <option value="quint">Quint</option>
-            <option value="quad">Quad</option>
-            <option value="triple">Triple</option>
-            <option value="double">Double</option>
+            <option value="sharing" ${prefill.hotelRoomType === 'sharing' ? 'selected' : ''}>Sharing</option>
+            <option value="quint" ${prefill.hotelRoomType === 'quint' ? 'selected' : ''}>Quint</option>
+            <option value="quad" ${prefill.hotelRoomType === 'quad' ? 'selected' : ''}>Quad</option>
+            <option value="triple" ${prefill.hotelRoomType === 'triple' ? 'selected' : ''}>Triple</option>
+            <option value="double" ${prefill.hotelRoomType === 'double' ? 'selected' : ''}>Double</option>
         </select>
+
         <label>Meal Plan</label>
         <select name="hotelMealPlan[]">
-            <option value="RO">RO</option>
-            <option value="CP">CP</option>
-            <option value="MAP">MAP</option>
-            <option value="AP">AP</option>
-            <option value="AI">AI</option>
+            <option value="RO" ${prefill.hotelMealPlan === 'RO' ? 'selected' : ''}>RO</option>
+            <option value="CP" ${prefill.hotelMealPlan === 'CP' ? 'selected' : ''}>CP</option>
+            <option value="MAP" ${prefill.hotelMealPlan === 'MAP' ? 'selected' : ''}>MAP</option>
+            <option value="AP" ${prefill.hotelMealPlan === 'AP' ? 'selected' : ''}>AP</option>
+            <option value="AI" ${prefill.hotelMealPlan === 'AI' ? 'selected' : ''}>AI</option>
         </select>
-        <label>Check-in</label><input type="date" name="hotelCheckin[]" required class="hotelCheckin">
-        <label>Check-out</label><input type="date" name="hotelCheckout[]" required class="hotelCheckout">
-        <label>No of Nights</label><input type="number" name="hotelNoOfNights[]" min="0" value="0" class="hotelNoOfNights">
+
+        <label>Check-in</label>
+        <input type="date" name="hotelCheckin[]" required class="hotelCheckin" value="${escapeHtml(prefill.hotelCheckin || '')}">
+
+        <label>Check-out</label>
+        <input type="date" name="hotelCheckout[]" required class="hotelCheckout" value="${escapeHtml(prefill.hotelCheckout || '')}">
+
+        <label>No of Nights</label>
+        <input type="number" name="hotelNoOfNights[]" min="0" value="${escapeHtml(String(prefill.hotelNoOfNights ?? 0))}" class="hotelNoOfNights">
     `;
-    
+
     document.getElementById('hotelsContainer').appendChild(div);
-    
+
     const citySelect = div.querySelector('.hotelCitySelect');
     let hotelInput = div.querySelector('.hotelNameInput');
     const checkinInput = div.querySelector('.hotelCheckin');
     const checkoutInput = div.querySelector('.hotelCheckout');
     const nightsInput = div.querySelector('.hotelNoOfNights');
 
-    // ------------------- CITY SELECT -------------------
-    citySelect.addEventListener('change', async function(){
-        if(this.value === 'MAKKAH' || this.value === 'MADINAH'){
-            try{
-                const res = await fetch(`/api/list/hotels`);
-                const data = await res.json();
-                if(!data.success) return;
-                const filteredHotels = data.data.filter(h => h.city === this.value);
-                
-                const select = document.createElement('select');
-                select.name = hotelInput.name;
-                select.required = true;
-                select.className = hotelInput.className;
-                filteredHotels.forEach(h=>{
-                    const o = document.createElement('option');
-                    o.value = h.name;
-                    o.textContent = h.name;
-                    select.appendChild(o);
-                });
-                hotelInput.replaceWith(select);
-                hotelInput = select; // update reference
-            }catch(err){console.error(err);}
-        }else{
-            if(hotelInput.tagName.toLowerCase() !== 'input'){
-                const input = document.createElement('input');
-                input.type='text';
-                input.name='hotelName[]';
-                input.required=true;
-                input.className='hotelNameInput';
-                hotelInput.replaceWith(input);
-                hotelInput = input; // update reference
-            }
-        }
+    citySelect.addEventListener('change', async function () {
+        await swapHotelInputByCity(this.value, div, prefill.hotelName || '');
+        saveFormData();
     });
 
-    // ------------------- AUTO CALCULATE NIGHTS -------------------
-    function calculateNights(){
+    async function calculateNights() {
+        if (!checkinInput.value || !checkoutInput.value) {
+            nightsInput.value = 0;
+            saveFormData();
+            return;
+        }
+
         const checkin = new Date(checkinInput.value);
         const checkout = new Date(checkoutInput.value);
-        if(checkin && checkout && checkout > checkin){
-            const diffTime = Math.abs(checkout - checkin);
+
+        if (!isNaN(checkin.getTime()) && !isNaN(checkout.getTime()) && checkout > checkin) {
+            const diffTime = checkout - checkin;
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             nightsInput.value = diffDays;
         } else {
             nightsInput.value = 0;
         }
+
+        saveFormData();
     }
+
     checkinInput.addEventListener('change', calculateNights);
     checkoutInput.addEventListener('change', calculateNights);
+
+    if (prefill.hotelCity === 'MAKKAH' || prefill.hotelCity === 'MADINAH') {
+        swapHotelInputByCity(prefill.hotelCity, div, prefill.hotelName || '');
+    }
+
+    saveFormData();
 }
 
-// ------------------- TRANSPORTS -------------------
-async function loadTransportList(){
-    try{
+async function swapHotelInputByCity(city, div, selectedHotelName = '') {
+    let hotelInput = div.querySelector('[name="hotelName[]"]');
+
+    if (city === 'MAKKAH' || city === 'MADINAH') {
+        try {
+            const res = await fetch('/api/list/hotels');
+            const data = await res.json();
+            if (!data.success) return;
+
+            const filteredHotels = data.data.filter(h => h.city === city);
+            const select = document.createElement('select');
+            select.name = 'hotelName[]';
+            select.required = true;
+            select.className = 'hotelNameInput';
+
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = 'Select Hotel';
+            select.appendChild(defaultOption);
+
+            filteredHotels.forEach(h => {
+                const o = document.createElement('option');
+                o.value = h.name;
+                o.textContent = h.name;
+                if (h.name === selectedHotelName) {
+                    o.selected = true;
+                }
+                select.appendChild(o);
+            });
+
+            hotelInput.replaceWith(select);
+            select.addEventListener('change', saveFormData);
+        } catch (err) {
+            console.error(err);
+        }
+    } else {
+        if (hotelInput.tagName.toLowerCase() !== 'input') {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'hotelName[]';
+            input.required = true;
+            input.className = 'hotelNameInput';
+            input.value = selectedHotelName || '';
+            hotelInput.replaceWith(input);
+            input.addEventListener('input', saveFormData);
+        }
+    }
+}
+
+async function loadTransportList() {
+    try {
         const res = await fetch('/api/list/transports');
         const data = await res.json();
-        if(!data.success) return;
+        if (!data.success) return;
         window.transportListData = data.data;
-    }catch(err){console.error(err);}
+    } catch (err) {
+        console.error(err);
+    }
 }
 
-function addTransport(){
+function addTransport(prefill = {}) {
     transportCount++;
+
     const div = document.createElement('div');
-    div.className='transportRow';
-    
-    const transportOptions = window.transportListData?.map(t=>{
-        return `<option value="${t.route}" data-type="${t.type}">${t.route} - ${t.type}</option>`;
-    }).join('') || '';
-    
+    div.className = 'transportRow';
+
+    const transportOptions = (window.transportListData || []).map(t => {
+        const selected = prefill.transportRoute === t.route ? 'selected' : '';
+        return `<option value="${escapeAttr(t.route)}" data-type="${escapeAttr(t.type)}" ${selected}>${escapeHtml(t.route)} - ${escapeHtml(t.type)}</option>`;
+    }).join('');
+
     div.innerHTML = `
         <span class="removeBtn" onclick="removeRow(this)">❌</span>
         <label>Route / Description</label>
@@ -532,27 +735,74 @@ function addTransport(){
             ${transportOptions}
         </select>
         <label>Transport Type</label>
-        <input type="text" name="transportType[]" required class="transportTypeInput" readonly>
+        <input type="text" name="transportType[]" required class="transportTypeInput" readonly value="${escapeAttr(prefill.transportType || '')}">
     `;
-    
+
     document.getElementById('transportContainer').appendChild(div);
-    
+
     const routeSelect = div.querySelector('.transportRouteSelect');
     const typeInput = div.querySelector('.transportTypeInput');
-    
-    routeSelect.addEventListener('change', function(){
+
+    routeSelect.addEventListener('change', function () {
         const selectedOption = this.selectedOptions[0];
         typeInput.value = selectedOption?.dataset.type || '';
+        saveFormData();
     });
+
+    if (prefill.transportRoute) {
+        const selectedOption = routeSelect.selectedOptions[0];
+        if (selectedOption?.dataset.type) {
+            typeInput.value = selectedOption.dataset.type;
+        }
+    }
+
+    saveFormData();
 }
 
-// ------------------- UTILS -------------------
-function removeRow(el){el.parentElement.remove();}
-function formatBullets(el){
-    const lines = el.value.split('\n').map(l=>l.trim()).filter(Boolean);
-    el.value = lines.map(l=>'• '+l).join('\n');
+function removeRow(el) {
+    el.parentElement.remove();
+    saveFormData();
 }
-// ------------------- FORM SUBMIT -------------------
+
+function formatBullets(el) {
+    const lines = el.value.split('\n').map(l => l.trim()).filter(Boolean);
+    el.value = lines.map(l => '• ' + l.replace(/^•\s*/, '')).join('\n');
+    saveFormData();
+}
+
+function clearPassengersOnly() {
+    document.getElementById('customersContainer').innerHTML = '';
+    customerCount = 0;
+}
+
+function clearPassengersFromStorage() {
+    const saved = localStorage.getItem('voucherFormData');
+    if (!saved) return;
+
+    const data = JSON.parse(saved);
+
+    delete data['customerName[]'];
+    delete data['customerGender[]'];
+    delete data['customerPassport[]'];
+    delete data['customerVisa[]'];
+    delete data['customerPNR[]'];
+
+    localStorage.setItem('voucherFormData', JSON.stringify(data));
+}
+
+function escapeHtml(value) {
+    return String(value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+}
+
+function escapeAttr(value) {
+    return escapeHtml(value);
+}
+
 form.addEventListener('submit', async e => {
     e.preventDefault();
 
@@ -622,25 +872,35 @@ form.addEventListener('submit', async e => {
             throw new Error('Failed to generate PDF');
         }
 
+        const disposition = response.headers.get('Content-Disposition') || '';
+        let filename = 'voucher.pdf';
+
+        const utf8Match = disposition.match(/filename\*=UTF-8''([^;]+)/i);
+        const normalMatch = disposition.match(/filename="?([^"]+)"?/i);
+
+        if (utf8Match && utf8Match[1]) {
+            filename = decodeURIComponent(utf8Match[1]);
+        } else if (normalMatch && normalMatch[1]) {
+            filename = normalMatch[1];
+        }
+
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
 
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'voucher.pdf';
+        a.download = filename;
         document.body.appendChild(a);
         a.click();
         a.remove();
 
-        localStorage.removeItem('voucherFormData');
+        clearPassengersOnly();
+        clearPassengersFromStorage();
+        saveFormData();
 
         setTimeout(() => {
             window.URL.revokeObjectURL(url);
         }, 3000);
-
-        setTimeout(() => {
-            goHome()
-        }, 800);
 
     } catch (err) {
         alert(err.message);
@@ -653,8 +913,13 @@ form.addEventListener('submit', async e => {
     }
 });
 
-function goHome(){window.location.href='/dashboard';}
-function logout(){window.location.href='/logout';}
+function goHome() {
+    window.location.href = '/dashboard';
+}
+
+function logout() {
+    window.location.href = '/logout';
+}
 </script>
 
 </body>

@@ -290,9 +290,10 @@ const pdfBuffer = await page.pdf({
 await browser.close();
 
 // Send PDF response
+
 res.set({
     'Content-Type': 'application/pdf',
-    'Content-Disposition': `attachment; filename=voucher_${voucher.voucherNo}.pdf`,
+    'Content-Disposition': `attachment; filename="voucher_${voucher.voucherNo}.pdf"`,
     'Content-Length': pdfBuffer.length
 });
 
