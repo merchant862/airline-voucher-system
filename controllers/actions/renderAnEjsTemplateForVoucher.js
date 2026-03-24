@@ -64,9 +64,9 @@ async function getVoucherTemplate(req, res, next) {
         // ======= Render EJS =======
         res.render(path.join(__dirname, '../../', format[0].ejsPath), {
             company: {
-                name: "Safr-e-hijaaz Travels and Tours",
+                name: "MEEM TRAVELS",
                 address:'',
-                logo: "/images/safr-e-hijaaz.png"
+                logo: "/images/meem_travels.png"
             },
             foreignCompany:{
                 name: "Daleel Alzowar",

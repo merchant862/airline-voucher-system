@@ -49,7 +49,10 @@ app.use(compression({ level: 9 }));
 
 // Static files with caching
 const oneWeek = 7 * 24 * 60 * 60 * 1000;
-app.use('/', express.static(path.join(__dirname, '..', 'public'), { maxAge: oneWeek }));
+const oneSec = 60 * 1000;
+let caching = (process.env.NODE_ENV == 'production') ? oneWeek : oneSec;
+app.use('/', express.static(path.join(__dirname, '..', 'public'), { maxAge: caching }));
+
 // CORS
 app.use(cors({ origin: true, credentials: true }));
 

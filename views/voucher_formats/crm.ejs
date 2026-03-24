@@ -12,6 +12,10 @@
     margin: 12mm;
 }
 
+*{
+    box-sizing:border-box;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #e9ecef;
@@ -40,12 +44,14 @@ body {
     font-size: 26px;
     font-weight: bold;
     color: #0b6fa4;
+    letter-spacing: 1px;
 }
 
 .header .company-address {
     font-size: 14px;
     color: #555;
     margin-top: 4px;
+    line-height: 1.45;
 }
 
 .top-header {
@@ -56,9 +62,11 @@ body {
     gap: 20px;
 }
 
+/* LEFT BLOCK */
 .voucher-info {
     text-align: left;
     flex: 1;
+    min-width: 210px;
 }
 
 .voucher-title {
@@ -66,38 +74,68 @@ body {
     letter-spacing: 2px;
     font-weight: bold;
     color: #333;
+    line-height: 1.02;
 }
 
 .voucher-id {
     font-size: 18px;
-    margin-top: 5px;
+    margin-top: 8px;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
 }
 
 .voucher-id span {
     background: #1abc9c;
     color: #fff;
-    padding: 3px 8px;
+    padding: 3px 10px;
     border-radius: 4px;
+    display: inline-block;
 }
 
-/* Logo & Verified */
+.left-logo-box{
+    width: 120px;
+    height: 120px;
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .center-logo img {
     object-fit: contain;
-    max-height: 90px;
-    max-width: 150px;
-    margin-top: 10px;
+    width: 100%;
+    height: 100%;
+    display: block;
 }
 
+/* MIDDLE VERIFIED */
 .middle-verified {
     display: flex;
     align-items: center;
     justify-content: center;
     flex: 0 0 auto;
     min-width: 180px;
-    margin-top: 8px;
+    margin-top: 18px;
 }
 
+.verified-box {
+    padding: 18px 34px;
+    font-weight: bold;
+    color: #0b6fa4;
+    border-radius: 10px;
+    font-size: 28px;
+    text-align: center;
+    min-width: 170px;
+    display: inline-block;
+    transform: rotate(-35deg);
+    transform-origin: center;
+    letter-spacing: 1px;
+}
+
+/* RIGHT LOGO */
 .right-logo {
     display: flex;
     flex-direction: column;
@@ -111,23 +149,7 @@ body {
     max-height: 120px;
     max-width: 200px;
     margin-top: 10px;
-}
-
-.verified-box {
-    /* border: 3px solid #0b6fa4; */
-    padding: 18px 34px;
-    font-weight: bold;
-    color: #0b6fa4;
-    /* background: #e0f0ff; */
-    border-radius: 10px;
-    font-size: 28px;
-    text-align: center;
-    min-width: 170px;
-
-    /* Tilt text box */
-    display: inline-block;
-    transform: rotate(-35deg); /* -35deg ya -40deg try kar lo */
-    transform-origin: center;
+    display: block;
 }
 
 /* Divider */
@@ -142,6 +164,7 @@ body {
     justify-content: space-between;
     font-size: 14px;
     margin-bottom: 15px;
+    gap: 20px;
 }
 
 .info-left div,
@@ -192,6 +215,7 @@ table th {
     display: flex;
     justify-content: space-between;
     margin-top: 15px;
+    gap: 20px;
 }
 
 .flight-box {
@@ -209,7 +233,8 @@ table th {
     white-space: pre-line;
     margin-top: 20px;
     font-weight: 600;
-    line-height: 1.4;
+    line-height: 1.5;
+    font-size: 14px;
 }
 
 .notes a {
@@ -260,13 +285,17 @@ table th {
 
         <!-- Left: Voucher + Company Logo -->
         <div class="voucher-info">
-            <div class="voucher-title">HOTEL VOUCHER</div>
+            <div class="voucher-title">HOTEL<br>VOUCHER</div>
+
             <div class="voucher-id">
                 <% const parts = voucher.voucherNo.split('-'); %>
                 <span><%= parts[0] %></span>-<%= parts[1] %>
             </div>
+
             <% if(company.logo){ %>
-                <div class="center-logo"><img src="<%= company.logo %>" /></div>
+                <div class="center-logo left-logo-box">
+                    <img src="<%= company.logo %>" alt="Company Logo" />
+                </div>
             <% } %>
         </div>
 
@@ -278,7 +307,7 @@ table th {
         <!-- Right: Foreign Company Logo -->
         <div class="right-logo">
             <% if(foreignCompany.logo){ %>
-                <img src="<%= foreignCompany.logo %>" />
+                <img src="<%= foreignCompany.logo %>" alt="Foreign Company Logo" />
             <% } %>
         </div>
     </div>
@@ -353,6 +382,7 @@ table th {
         </tr>
         <% }) %>
     </table>
+
     <div class="total-nights">
         <strong>Total Nights:</strong> <%= hotels.reduce((sum, h) => sum + h.nights, 0) %>
     </div>
@@ -378,7 +408,10 @@ table th {
             <div class="section-title">Departure (PAK → KSA)</div>
             <table>
                 <tr>
-                    <th>Flight</th><th>Sector</th><th>Departure</th><th>Arrival</th>
+                    <th>Flight</th>
+                    <th>Sector</th>
+                    <th>Departure</th>
+                    <th>Arrival</th>
                 </tr>
                 <tr>
                     <td><%= departureFlight.flightNo %></td>
@@ -393,7 +426,10 @@ table th {
             <div class="section-title">Arrival (KSA → PAK)</div>
             <table>
                 <tr>
-                    <th>Flight</th><th>Sector</th><th>Departure</th><th>Arrival</th>
+                    <th>Flight</th>
+                    <th>Sector</th>
+                    <th>Departure</th>
+                    <th>Arrival</th>
                 </tr>
                 <tr>
                     <td><%= arrivalFlight.flightNo %></td>
@@ -406,9 +442,9 @@ table th {
     </div>
 
     <!-- Notes -->
-    <div class="notes" style="white-space: pre-line; margin-top:20px; font-weight: bold; line-height:1.5; font-size:14px;">
+    <div class="notes">
         <strong>Note:</strong><br>
-        MAKKAH HOTEL:- Uzair 0548335007 (Day) Tariq 0549306332 (Night)\
+        MAKKAH HOTEL:- Uzair 0548335007 (Day) Tariq 0549306332 (Night)
         MEDINAH HOTEL:- MR. ARSALAN +966544809146
         Transport Contact: +966500000000
         <%= notes %>
@@ -420,10 +456,11 @@ table th {
     </div>
 
     <p id="pageUrl" style="text-decoration: underline; word-break: break-word; font-size: 11px; font-family: Arial, Helvetica, sans-serif; font-weight: 400; color: #666; margin-top: 8px;"></p>
+
     <script>
         document.getElementById('pageUrl').textContent = window.location.href;
     </script>
-    
+
     <style>
     .notes a{
         font-weight: bold;

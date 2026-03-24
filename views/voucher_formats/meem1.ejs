@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Service Voucher</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    padding:24px 0;
+    font-family: Arial, "Noto Naskh Arabic", "Amiri", Tahoma, sans-serif;
+    background:#eef2f7;
+    color:#1f2937;
+}
+
+.wrapper{
+    width:1020px;
+    margin:0 auto;
+    background:#ffffff;
+    padding:24px;
+    border:1px solid #dbe3ec;
+    border-radius:18px;
+    box-shadow:0 14px 40px rgba(15,23,42,0.08);
+}
+
+/* HEADER */
+.header-table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    margin-bottom:18px;
+    background:linear-gradient(135deg,#0f172a,#1e293b 55%, #334155);
+    border-radius:16px;
+    overflow:hidden;
+    border:1px solid #1e293b;
+}
+
+.header-table td{
+    border:none !important;
+    vertical-align:middle;
+    padding:20px 16px;
+    background:transparent !important;
+}
+
+.header-table .logo-cell{
+    width:22%;
+    text-align:center;
+}
+
+.header-table .title-cell{
+    width:56%;
+    text-align:center;
+}
+
+.logo-box{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:#ffffff;
+    border:1px solid rgba(255,255,255,0.18);
+    border-radius:14px;
+    box-shadow:0 10px 24px rgba(0,0,0,0.18);
+}
+
+.logo-left-box{
+    width:130px;
+    height:130px;
+    padding:10px;
+}
+
+.logo-right-box{
+    width:210px;
+    height:110px;
+    padding:10px 14px;
+}
+
+.logo-left{
+    max-width:100%;
+    max-height:100%;
+    width:auto;
+    height:auto;
+    object-fit:contain;
+    display:block;
+}
+
+.logo-right{
+    max-width:100%;
+    max-height:100%;
+    width:auto;
+    height:auto;
+    object-fit:contain;
+    display:block;
+}
+
+.center-title{
+    text-align:center;
+    color:#ffffff;
+}
+
+.center-title h2{
+    margin:0;
+    font-size:28px;
+    font-weight:800;
+    letter-spacing:1px;
+    color:#ffffff;
+    text-transform:uppercase;
+}
+
+.center-title .subline{
+    width:90px;
+    height:3px;
+    background:#fbbf24;
+    margin:10px auto 12px;
+    border-radius:999px;
+}
+
+.center-title p{
+    margin:0;
+    font-size:12px;
+    line-height:1.7;
+    color:#dbe4ee;
+}
+
+.service-title{
+    display:inline-block;
+    margin-top:14px;
+    padding:8px 18px;
+    border-radius:999px;
+    background:rgba(251,191,36,0.14);
+    border:1px solid rgba(251,191,36,0.35);
+    color:#fbbf24;
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:2.5px;
+}
+
+/* GENERIC TABLES */
+table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    font-size:12px;
+    margin-top:10px;
+    border:1px solid #d7dee8;
+    border-radius:12px;
+    overflow:hidden;
+}
+
+th, td{
+    padding:9px 10px;
+    text-align:center;
+    border-right:1px solid #d7dee8;
+    border-bottom:1px solid #d7dee8;
+}
+
+tr:last-child td{
+    border-bottom:none;
+}
+
+th:last-child, td:last-child{
+    border-right:none;
+}
+
+th{
+    background:linear-gradient(180deg,#f8fafc,#eef2f7);
+    color:#0f172a;
+    font-weight:700;
+    font-size:12px;
+    letter-spacing:0.3px;
+}
+
+td{
+    background:#ffffff;
+    color:#1f2937;
+}
+
+tr:nth-child(even) td{
+    background:#fbfdff;
+}
+
+.info-table td{
+    font-size:12px;
+    padding:10px 10px;
+}
+
+.info-table strong{
+    color:#111827;
+}
+
+.summary-row td{
+    background:#f8fafc !important;
+    font-weight:700;
+    color:#0f172a;
+}
+
+.total-row td{
+    background:#f8fafc !important;
+    font-weight:700;
+    color:#0f172a;
+}
+
+/* SECTION HEADINGS */
+.section-heading{
+    margin-top:18px;
+    margin-bottom:8px;
+    text-align:center;
+    font-weight:800;
+    letter-spacing:1.8px;
+    background:linear-gradient(135deg,#7c2d12,#c2410c);
+    color:#ffffff;
+    padding:10px 14px;
+    border-radius:10px;
+    font-size:13px;
+    box-shadow:0 6px 14px rgba(124,45,18,0.16);
+}
+
+/* ALIGNMENT HELPERS */
+.center{
+    text-align:center;
+}
+
+.right{
+    text-align:right;
+}
+
+/* QR / NOTES AREA */
+.qr-wrapper{
+    margin-top:14px;
+    border-radius:14px;
+    overflow:hidden;
+}
+
+.qr-wrapper td{
+    vertical-align:top;
+}
+
+.notes-box{
+    text-align:left;
+    background:#ffffff;
+}
+
+.notes-box strong{
+    display:block;
+    margin-bottom:8px;
+    font-size:13px;
+    color:#111827;
+}
+
+.notes-box ul{
+    margin:0 0 0 18px;
+    padding:0;
+}
+
+.notes-box li{
+    margin-bottom:6px;
+    line-height:1.55;
+    color:#374151;
+}
+
+.qr-card{
+    background:linear-gradient(180deg,#f8fafc,#eef4f9) !important;
+    padding:16px 12px;
+}
+
+.qr-card img{
+    width:145px;
+    height:145px;
+    object-fit:contain;
+    background:#ffffff;
+    padding:8px;
+    border-radius:12px;
+    border:1px solid #d1d5db;
+    box-shadow:0 6px 16px rgba(15,23,42,0.08);
+    margin-bottom:10px;
+}
+
+.qr-card strong{
+    display:block;
+    font-size:13px;
+    line-height:1.6;
+    color:#0f172a;
+    letter-spacing:0.4px;
+}
+
+/* NOTE BOXES */
+.note{
+    font-size:11.5px;
+    margin-top:14px;
+    white-space:pre-line;
+    background:#fffaf0;
+    border:1px solid #f7d68a;
+    border-left:5px solid #d97706;
+    border-radius:12px;
+    padding:14px 16px;
+    color:#78350f;
+    line-height:1.75;
+    box-shadow:0 4px 10px rgba(217,119,6,0.07);
+}
+
+.note strong{
+    font-size:12.5px;
+}
+
+.arabic-block{
+    direction:rtl;
+    text-align:right;
+    font-size:14px;
+    margin-top:12px;
+    font-family:"Noto Naskh Arabic","Amiri",Tahoma,Arial,sans-serif;
+    background:#ecfdf5;
+    border:1px solid #a7f3d0;
+    border-right:5px solid #059669;
+    border-radius:12px;
+    padding:14px 16px;
+    color:#065f46;
+    line-height:2;
+    box-shadow:0 4px 10px rgba(5,150,105,0.06);
+}
+
+.important{
+    margin-top:12px;
+    font-size:12px;
+    color:#7f1d1d;
+    background:#fef2f2;
+    border:1px solid #fecaca;
+    border-left:5px solid #dc2626;
+    border-radius:12px;
+    padding:14px 16px;
+    line-height:1.75;
+    box-shadow:0 4px 10px rgba(220,38,38,0.06);
+}
+
+.important strong{
+    font-size:12.5px;
+    display:block;
+    margin-bottom:4px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <!-- HEADER -->
+    <table class="header-table">
+        <tr>
+            <td class="logo-cell">
+                <% if(company.logo){ %>
+                    <div class="logo-box logo-left-box">
+                        <img src="<%= company.logo %>" class="logo-left" alt="Company Logo">
+                    </div>
+                <% } %>
+            </td>
+
+            <td class="title-cell center-title">
+                <h2 style="
+                    font-family: 'Montserrat', sans-serif;
+                    font-size: 34px;
+                    font-weight: 800;
+                    letter-spacing: 4px;
+                    word-spacing: 8px;
+                    color: red;
+                    margin-bottom: 10px;
+                ">
+                    <%= company.name %>
+                </h2>
+                <div class="subline"></div>
+                <p>
+                    Office Unit: 727, Block-14, Al-Mashriq Shopping Centre, Gulshan-e-Iqbal, Karachi
+                </p>
+                <div class="service-title">SERVICE VOUCHER</div>
+            </td>
+
+            <td class="logo-cell">
+                <% if(foreignCompany.logo){ %>
+                    <div class="logo-box logo-right-box">
+                        <img src="<%= foreignCompany.logo %>" class="logo-right" alt="Foreign Company Logo">
+                    </div>
+                <% } %>
+            </td>
+        </tr>
+    </table>
+
+    <!-- VOUCHER INFO -->
+    <table class="info-table">
+        <tr>
+            <td><strong>UMRAH COMPANY</strong></td>
+            <td><%= foreignCompany.name %></td>
+            <td><strong>HOTEL VOUCHER#</strong></td>
+            <td><%= voucher.voucherNo %></td>
+            <td><strong>V-DATE</strong></td>
+            <td><%= voucher.date %></td>
+        </tr>
+        <tr>
+            <td><strong>EXECUTIVE AGENT</strong></td>
+            <td colspan="5">PKG CATEGORY / DAZ 0%</td>
+        </tr>
+    </table>
+
+    <!-- PARTY DETAILS -->
+    <div class="section-heading">PARTY DETAILS</div>
+
+    <table>
+        <tr>
+            <th>SR</th>
+            <th>PAX NAME(S)</th>
+            <th>PASSPORT NO.</th>
+            <th>GROUP</th>
+            <th>VISA NO.</th>
+        </tr>
+
+        <% customers.forEach((c,i)=>{ %>
+        <tr>
+            <td class="center"><%= i+1 %></td>
+            <td><%= c.name %></td>
+            <td><%= c.passport %></td>
+            <td>901052165</td>
+            <td><%= c.visaNumber %></td>
+        </tr>
+        <% }) %>
+
+        <tr class="summary-row">
+            <td colspan="5" class="center">
+                GENTS: <%= customers.filter(c=>c.gender==='male').length %>
+                &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                LADIES: <%= customers.filter(c=>c.gender==='female').length %>
+                &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                CHILDREN: <%= customers.filter(c=>c.paxType==='children').length %>
+                &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                INFANT: <%= customers.filter(c=>c.paxType==='infant').length %>
+                &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                TOTAL PAX: <%= customers.length %>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ACCOMMODATION -->
+    <div class="section-heading">ACCOMMODATION DETAILS</div>
+
+    <table>
+        <tr>
+            <th>CITY</th>
+            <th>HOTEL NAME</th>
+            <th>ROOM</th>
+            <th>ROOM TYPE</th>
+            <th>CHECK IN</th>
+            <th>CHECK OUT</th>
+            <th>NIGHTS</th>
+        </tr>
+
+        <% hotels.forEach(h=>{ %>
+        <tr>
+            <td><%= h.city %></td>
+            <td><%= h.name %></td>
+            <td class="center">1</td>
+            <td><%= h.roomType %></td>
+            <td><%= h.checkIn %></td>
+            <td><%= h.checkOut %></td>
+            <td class="center"><%= h.nights %></td>
+        </tr>
+        <% }) %>
+
+        <tr class="total-row">
+            <td colspan="6" class="right"><strong>Total Nights</strong></td>
+            <td class="center"><%= hotels.reduce((sum,h)=>sum+h.nights,0) %></td>
+        </tr>
+    </table>
+
+    <!-- TRANSPORT -->
+    <div class="section-heading">TRANSPORTATION DETAILS</div>
+
+    <table>
+        <tr>
+            <th>TYPE</th>
+            <th>ROUTE</th>
+        </tr>
+
+        <% transports.forEach(t=>{ %>
+        <tr>
+            <td><%= t.type %></td>
+            <td><%= t.route %></td>
+        </tr>
+        <% }) %>
+    </table>
+
+    <!-- FLIGHT DETAILS -->
+    <div class="section-heading">FLIGHT DETAILS</div>
+
+    <table>
+        <tr>
+            <th>FLIGHT</th>
+            <th>FROM</th>
+            <th>TO</th>
+            <th>DEPARTURE</th>
+            <th>ARRIVAL</th>
+        </tr>
+        <tr>
+            <td><%= departureFlight.flightNo %></td>
+            <td><%= departureFlight.fromCity %></td>
+            <td><%= departureFlight.toCity %></td>
+            <td><%= departureFlight.date %> - <%= departureFlight.takeoff %></td>
+            <td><%= departureFlight.date %> - <%= departureFlight.landing %></td>
+        </tr>
+        <tr>
+            <td><%= arrivalFlight.flightNo %></td>
+            <td><%= arrivalFlight.fromCity %></td>
+            <td><%= arrivalFlight.toCity %></td>
+            <td><%= arrivalFlight.date %> - <%= arrivalFlight.takeoff %></td>
+            <td><%= arrivalFlight.date %> - <%= arrivalFlight.landing %></td>
+        </tr>
+    </table>
+
+    <!-- QR + CONTACT -->
+    <table class="qr-wrapper">
+        <tr>
+            <td width="70%" class="notes-box">
+                <strong>Notes</strong>
+                <ul>
+                    <li>MAKKAH HOTEL: Uzair 0548335007 (Day) Tariq 0549306332 (Night)</li>
+                    <li>MEDINAH HOTEL: MR. ARSALAN +966544809146</li>
+                    <li>Transport Contact: +966500000000</li>
+
+                    <% if (notes) { %>
+                        <% notes.split('\n').forEach(n => { %>
+                            <li><%= n %></li>
+                        <% }) %>
+                    <% } %>
+                </ul>
+            </td>
+
+            <td width="30%" class="center qr-card qr-cell">
+                <img src="<%= qrImage %>" alt="QR Code"><br>
+                <strong>AUTHORIZED<br><%= company.name.toUpperCase() %></strong>
+            </td>
+            <style>
+                .qr-cell{
+                    border: none !important;
+                    background: transparent !important;
+                }
+            </style>
+        </tr>
+    </table>
+
+    <!-- NOTES -->
+    <div class="note">
+<strong>Note:</strong><br>
+- Please contact Makkah/Madinah operations 24 hours before the scheduled transportation and notify them accordingly.
+- Room sharing means 4-6 beds per room.
+- Separate room will incur extra cost.
+- If the above mentioned hotel is unavailable in that case a similar category hotel will be provided.
+- In case of any transport related delays, our esteemed passengers are advised to observe patience at airports and hotels.
+- Each and every Pax has to wear wrist band or company badge. If anybody fails to follow directions SAR 2,000 will be charged as penalty per Pax.
+- Please when you call for requesting Transportation or any services you must give us the Name of the Agency and the Serial Number above.
+- No service will be provided if the vendor fails to notify us the agency name and the serial number.
+    </div>
+
+    <!-- ARABIC BLOCK -->
+    <div class="arabic-block">
+        تنبيه هام: يمنع تسليم جواز السفر لأي شخص داخل المملكة العربية السعودية سواء وكيل أو شركة نقل.
+        يرجى التواصل مع وكيل السفر الباكستاني في حال حدوث أي مشكلة.
+    </div>
+
+    <div class="important">
+        <strong>IMPORTANT NOTICE:</strong>
+        Passengers are requested not to hand over their passport to anyone in Saudi Arabia, whether agent or transport provider.
+    </div>
+
+</div>
+
+</body>
+
+<!-- <script>
+function toFancy(str) {
+    const normal = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    const fancy  = "𝓐𝓑𝓒𝓓𝓔𝓕𝓖𝓗𝓘𝓙𝓚𝓛𝓜𝓝𝓞𝓟𝓠𝓡𝓢𝓣𝓤𝓥𝓦𝓧𝓨𝓩𝓪𝓫𝓬𝓭𝓮𝓯𝓰𝓱𝓲𝓳𝓴𝓵𝓶𝓷𝓸𝓹𝓺𝓻𝓼𝓽𝓾𝓿𝔀𝔁𝔂𝔃";
+
+    return str.split('').map(c => {
+        const i = normal.indexOf(c);
+        return i !== -1 ? fancy[i] : c;
+    }).join('');
+}
+
+const el = document.getElementById("companyName");
+el.innerText = toFancy(el.innerText);
+</script> -->
+
+</html>
