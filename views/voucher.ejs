@@ -433,7 +433,7 @@ function normalizeArray(value) {
 
 async function loadVoucherFormats() {
     try {
-        const res = await fetch('/api/voucher/formats/DOWNLOAD_FORMAT');
+        /* const res = await fetch('/api/voucher/formats/DOWNLOAD_FORMAT');
         const data = await res.json();
         if (!data.success) return;
 
@@ -442,6 +442,24 @@ async function loadVoucherFormats() {
             const o = document.createElement('option');
             o.value = f.id;
             o.textContent = f.name;
+            select.appendChild(o);
+        }); */
+
+        const res = await fetch('/api/voucher/formats/DOWNLOAD_FORMAT');
+        const data = await res.json();
+        if (!data.success) return;
+
+        const select = document.getElementById('voucherFormatSelect');
+        data.data.forEach(f => {
+            const o = document.createElement('option');
+            o.value = f.id;
+
+            let name = f.name;
+            if (f.ejsPath.toLowerCase().includes('meem')) {
+                name += ' (MEEM TRAVELS)';
+            }
+
+            o.textContent = name;
             select.appendChild(o);
         });
 
@@ -465,7 +483,13 @@ async function loadLinkVoucherFormats() {
         data.data.forEach(f => {
             const o = document.createElement('option');
             o.value = f.id;
-            o.textContent = f.name;
+
+            let name = f.name;
+            if (f.ejsPath.toLowerCase().includes('meem')) {
+                name += ' (MEEM TRAVELS)';
+            }
+
+            o.textContent = name;
             select.appendChild(o);
         });
 
