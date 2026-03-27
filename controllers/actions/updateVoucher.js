@@ -166,7 +166,12 @@ async function updateVoucherController(req, res, next) {
 
         const ejsData = {
             voucher: { voucherNo: voucherData.voucherNo, date: formatDate(voucherData.departureFlightDate) },
-            company: { name: voucherData.company?.name, logo: await getBase64Image(voucherData.company?.image) },
+            company: {
+                name: voucherData.company.name,
+                email: voucherData.company.email,
+                address: voucherData.company.address,
+                logo: await getBase64Image(voucherData.company?.image),
+            },
             foreignCompany: { logo: await getBase64Image(voucherData.foreignCompany?.image) },
             transports: voucherData.transports.map(t => ({ type: t.type, route: t.route })),
             familyHead: voucherData.customers[0]?.customerName || '',

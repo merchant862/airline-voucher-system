@@ -196,6 +196,8 @@ async function addVoucherController(req, res, next) {
     },
     company: {
         name: voucherData.company.name,
+        email: voucherData.company.email,
+        address: voucherData.company.address,
         logo: await getBase64Image(voucherData.company?.image),
     },
     foreignCompany: {

@@ -65,7 +65,8 @@ async function getVoucherTemplate(req, res, next) {
         res.render(path.join(__dirname, '../../', format[0].ejsPath), {
             company: {
                 name: "MEEM TRAVELS",
-                address:'',
+                email: "Meemtravels110@gmail.com",
+                address:"Suite 210, 2nd Floor, Business Arcade, Street 12, Block 5, Gulshan-e-Iqbal, Karachi, Sindh, Pakistan",
                 logo: "/images/meem_travels.png"
             },
             foreignCompany:{
