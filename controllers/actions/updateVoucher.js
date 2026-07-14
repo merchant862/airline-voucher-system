@@ -2,8 +2,8 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const ejs = require('ejs');
-const puppeteer = require('puppeteer');
 const { generateVoucherQr } = require('./helpers/qrCode');
+const { renderPdfFromHtml } = require('./helpers/pdf');
 const { vouchers, customers, hotels, transports, notes, agencies, foreignAgencies, voucherFormats } = require('./../../database/models');
 
 async function updateVoucherController(req, res, next) {
@@ -197,13 +197,7 @@ async function updateVoucherController(req, res, next) {
         };
 
         const html = await ejs.renderFile(path.join(__dirname, '../..', voucherData.voucherFormat.ejsPath), ejsData, { async: true });
-        const browser = await puppeteer.launch({ executablePath: process.env.CHROMIUM_PATH, headless: true, args: ['--no-sandbox','--disable-setuid-sandbox'] });
-        const page = await browser.newPage();
-        await page.setViewport({ width: 1200, height: 1600 });
-        await page.setContent(html, { waitUntil: 'networkidle2' });
-        await page.evaluate(async () => { const imgs = Array.from(document.images); await Promise.all(imgs.map(img => img.complete ? null : new Promise(r => { img.onload = img.onerror = r; }))); await document.fonts.ready; });
-        const pdfBuffer = await page.pdf({ format: 'A4', printBackground: true, margin: { top:'10mm', bottom:'10mm', left:'10mm', right:'10mm' } });
-        await browser.close();
+        const pdfBuffer = await renderPdfFromHtml(html);
 
         res.set({ 'Content-Type':'application/pdf', 'Content-Disposition': `attachment; filename=voucher_${voucher.voucherNo}.pdf`, 'Content-Length': pdfBuffer.length });
         return res.end(Buffer.from(pdfBuffer), 'binary');
