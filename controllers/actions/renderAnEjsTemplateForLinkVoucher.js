@@ -60,12 +60,12 @@ async function getVoucherTemplate(req, res, next) {
                 {
                     model: agencies,
                     as: 'company',
-                    attributes: ['name', 'image', 'address']
+                    attributes: ['name', 'image', 'address', 'phone', 'email']
                 },
                 {
                     model: foreignAgencies,
                     as: 'foreignCompany',
-                    attributes: ['name', 'image', 'address']
+                    attributes: ['name', 'image', 'address', 'phone', 'email']
                 },
                 {
                     model: voucherFormats,
@@ -192,6 +192,8 @@ async function getVoucherTemplate(req, res, next) {
             company: {
                 name: voucher.company?.name,
                 address: voucher.company?.address,
+                phone: voucher.company?.phone,
+                email: voucher.company?.email,
                 logo: voucher.company?.image
                     ? '/' + voucher.company.image.replace('public/', '')
                     : ''
@@ -200,6 +202,8 @@ async function getVoucherTemplate(req, res, next) {
             foreignCompany: {
                 name: voucher.foreignCompany?.name,
                 address: voucher.foreignCompany?.address,
+                phone: voucher.foreignCompany?.phone,
+                email: voucher.foreignCompany?.email,
                 logo: voucher.foreignCompany?.image
                     ? '/' + voucher.foreignCompany.image.replace('public/', '')
                     : ''
