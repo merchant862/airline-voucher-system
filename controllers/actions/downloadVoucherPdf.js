@@ -2,8 +2,8 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const ejs = require('ejs');
+const puppeteer = require('puppeteer');
 const { generateVoucherQr } = require('./helpers/qrCode');
-const { renderPdfFromHtml } = require('./helpers/pdf');
 
 const {
   vouchers,
@@ -184,7 +184,46 @@ async function downloadVoucherPdfController(req, res, next) {
       { async: true }
     );
 
-    const pdfBuffer = await renderPdfFromHtml(html);
+    // ==============================
+    // 5️⃣ GENERATE PDF
+    // ==============================
+
+    const browser = await puppeteer.launch({
+      executablePath: process.env.CHROMIUM_PATH,
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+
+    const page = await browser.newPage();
+    await page.setViewport({ width: 1200, height: 1600 });
+    await page.setContent(html, { waitUntil: 'networkidle2' });
+
+    await page.evaluate(async () => {
+      const imgs = Array.from(document.images);
+      await Promise.all(
+        imgs.map(img =>
+          img.complete
+            ? null
+            : new Promise(resolve => {
+                img.onload = img.onerror = resolve;
+              })
+        )
+      );
+      await document.fonts.ready;
+    });
+
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      printBackground: true,
+      margin: {
+        top: '10mm',
+        bottom: '10mm',
+        left: '10mm',
+        right: '10mm'
+      }
+    });
+
+    await browser.close();
 
     // ==============================
     // 6️⃣ SEND DOWNLOAD

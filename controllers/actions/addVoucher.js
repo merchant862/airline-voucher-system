@@ -3,9 +3,9 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const ejs = require('ejs');
+const puppeteer = require('puppeteer'); // instead of puppeteer-core
 //const puppeteer = require('puppeteer-core');
 const { generateVoucherQr } = require('./helpers/qrCode');
-const { renderPdfFromHtml } = require('./helpers/pdf');
 
 const { vouchers, 
     customers, 
@@ -255,7 +255,40 @@ if (!html || html.trim().length === 0) {
     throw new Error('Rendered HTML is empty. Check EJS path and data.');
 }
 
-const pdfBuffer = await renderPdfFromHtml(html);
+// Launch Puppeteer
+const browser = await puppeteer.launch({
+    executablePath: process.env.CHROMIUM_PATH, // Ensure correct path
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+});
+
+const page = await browser.newPage();
+
+await page.setViewport({ width: 1200, height: 1600 }); // viewport first
+
+// Set HTML content and wait for network idle
+await page.setContent(html, { waitUntil: 'networkidle2' });
+
+// Wait for all images and fonts to load
+await page.evaluate(async () => {
+    const imgs = Array.from(document.images);
+    await Promise.all(imgs.map(img => img.complete ? null : new Promise(r => { img.onload = img.onerror = r; })));
+    await document.fonts.ready;
+});
+
+// Extra safety wait
+//await page.waitForTimeout(1000); // 1 second
+
+// Optional: save screenshot to debug
+// await page.screenshot({ path: `voucher_debug_${voucherId}.png`, fullPage: true });
+
+const pdfBuffer = await page.pdf({
+    format: 'A4',
+    printBackground: true,
+    margin: { top: '10mm', bottom: '10mm', left: '10mm', right: '10mm' }
+});
+
+await browser.close();
 
 // Send PDF response
 
