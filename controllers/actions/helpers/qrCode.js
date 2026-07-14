@@ -3,7 +3,7 @@
 const QRCode = require('qrcode');
 
 const QR_OPTIONS = {
-  errorCorrectionLevel: 'H',
+  errorCorrectionLevel: 'M',
   margin: 4,
   type: 'svg',
   color: {

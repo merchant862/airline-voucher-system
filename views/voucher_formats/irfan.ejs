@@ -100,6 +100,93 @@ th, td{
     padding-top:5px;
     font-size:12px;
 }
+
+.qr-image{
+    width:260px;
+    height:260px;
+    background:#fff;
+}
+
+@media print {
+    body{
+        background:#fff;
+    }
+
+    .wrapper{
+        width:760px;
+        margin:0 auto;
+        padding:8px;
+    }
+
+    .logo{
+        height:52px;
+    }
+
+    .center-title h2{
+        font-size:18px;
+    }
+
+    .center-title p{
+        margin:2px 0;
+        font-size:10px;
+        line-height:1.25;
+    }
+
+    .service-title{
+        margin-top:3px;
+        font-size:11px;
+        letter-spacing:1.5px;
+    }
+
+    table{
+        margin-top:4px;
+        font-size:10px;
+    }
+
+    th, td{
+        padding:3px 4px;
+        font-size:10px;
+    }
+
+    .section-heading{
+        margin-top:6px;
+        font-size:10px;
+        letter-spacing:1px;
+    }
+
+    .qr-wrapper{
+        margin-top:6px;
+    }
+
+    .qr-wrapper ul{
+        margin:4px 0 0 14px;
+        padding:0;
+    }
+
+    .qr-wrapper li{
+        margin-bottom:2px;
+        font-size:9.5px;
+        line-height:1.2;
+    }
+
+    .qr-image{
+        width:210px;
+        height:210px;
+    }
+
+    .note,
+    .arabic-block,
+    .important{
+        margin-top:4px;
+        font-size:8.5px;
+        line-height:1.15;
+    }
+
+    .arabic-block{
+        font-size:9px;
+        line-height:1.25;
+    }
+}
 </style>
 </head>
 
@@ -276,7 +363,7 @@ TOTAL PAX: <%= customers.length %>
 </td>
 
 <td width="30%" class="center">
-<img src="<%= qrImage %>" width="180" height="180" style="background:#fff;"><br>
+<img src="<%= qrImage %>" class="qr-image"><br>
 <strong>AUTHORIZED<br><%= company.name.toUpperCase() %></strong>
 </td>
 </tr>

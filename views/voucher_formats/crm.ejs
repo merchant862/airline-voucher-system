@@ -9,7 +9,7 @@
 /* Force A4 Portrait */
 @page {
     size: A4 portrait;
-    margin: 12mm;
+    margin: 5mm;
 }
 
 *{
@@ -228,6 +228,12 @@ table th {
     margin-top: 20px;
 }
 
+.qr-box img {
+    width: 260px;
+    height: 260px;
+    background: #fff;
+}
+
 /* Notes / Links */
 .notes {
     white-space: pre-line;
@@ -260,8 +266,130 @@ table th {
 
 /* Hide Print Button in PDF */
 @media print {
+    body{
+        background:#fff;
+    }
+
+    .wrapper{
+        max-width:760px;
+        margin:0 auto;
+        padding:10px 12px;
+        border-radius:0;
+        border:0;
+    }
+
+    .header{
+        margin-bottom:6px;
+    }
+
+    .header .company-name{
+        font-size:20px;
+    }
+
+    .header .company-address{
+        font-size:10px;
+        line-height:1.2;
+    }
+
+    .top-header{
+        margin-bottom:8px;
+        gap:8px;
+    }
+
+    .voucher-title{
+        font-size:22px;
+    }
+
+    .voucher-id{
+        font-size:14px;
+        margin-top:4px;
+    }
+
+    .left-logo-box{
+        width:74px;
+        height:74px;
+        margin-top:6px;
+    }
+
+    .middle-verified{
+        min-width:120px;
+        margin-top:8px;
+    }
+
+    .verified-box{
+        padding:10px 18px;
+        min-width:110px;
+        font-size:18px;
+    }
+
+    .right-logo img{
+        max-height:74px;
+        max-width:140px;
+        margin-top:4px;
+    }
+
+    .divider{
+        margin:8px 0;
+    }
+
+    .info-row{
+        font-size:10px;
+        margin-bottom:6px;
+    }
+
+    .info-left div,
+    .info-right div{
+        margin-bottom:3px;
+    }
+
+    .section-title{
+        padding:4px 6px;
+        margin:7px 0 4px;
+        font-size:10px;
+        border-radius:3px;
+    }
+
+    table{
+        font-size:9px;
+    }
+
+    table th,
+    table td{
+        padding:3px 4px;
+        font-size:9px;
+    }
+
+    .total-nights{
+        margin-top:4px;
+        font-size:10px;
+    }
+
+    .flight-wrapper{
+        margin-top:6px;
+        gap:8px;
+    }
+
+    .notes{
+        margin-top:6px;
+        font-size:8.5px;
+        line-height:1.15;
+    }
+
+    .qr-box{
+        margin-top:6px;
+    }
+
+    .qr-box img{
+        width:210px;
+        height:210px;
+    }
+
     .print-btn {
         display: none;
+    }
+
+    #pageUrl{
+        display:none;
     }
 }
 
@@ -448,6 +576,10 @@ table th {
         MEDINAH HOTEL:- MR. ARSALAN +966544809146
         Transport Contact: +966500000000
         <%= notes %>
+    </div>
+
+    <div class="qr-box">
+        <img src="<%= qrImage %>" alt="QR Code">
     </div>
 
     <!-- Print Button -->

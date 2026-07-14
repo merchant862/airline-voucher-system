@@ -9,7 +9,7 @@
 /* Force A4 Portrait */
 @page {
     size: A4 portrait;
-    margin: 12mm;
+    margin: 5mm;
 }
 
 body {
@@ -133,6 +133,12 @@ td {
     margin-top: 20px;
 }
 
+.qr-box img {
+    width: 260px;
+    height: 260px;
+    background: #fff;
+}
+
 .print-btn {
     text-align: right;
     margin-top: 30px;
@@ -140,6 +146,26 @@ td {
 
 /* Hide Print Button in PDF */
 @media print {
+    body { background:#fff; }
+    .wrapper { max-width:760px; margin:0 auto; padding:10px 12px; border-radius:0; }
+    #pageUrl { display:none; }
+    .top-header { gap:8px; }
+    .voucher-title { font-size:22px; }
+    .voucher-id { font-size:15px; margin-top:3px; }
+    .center-logo img,
+    .right-logo img { height:62px; max-width:110px; }
+    .top-header > img { width:120px !important; }
+    .divider { margin:8px 0; }
+    .info-row { font-size:10px; margin-bottom:5px; gap:8px; }
+    .info-left div,
+    .info-right div { margin-bottom:3px; }
+    .section-title { padding:4px 6px; margin:7px 0 4px; font-size:10px; }
+    table { font-size:9px; }
+    th, td { padding:3px 4px; font-size:9px; }
+    .total-nights { margin-top:4px; font-size:10px; }
+    .flight-wrapper { margin-top:6px; gap:8px; }
+    .qr-box { margin-top:6px; }
+    .qr-box img { width:210px; height:210px; }
     .print-btn {
         display: none;
     }
@@ -331,6 +357,10 @@ td {
     <div style="white-space: pre-line; margin-top:20px;">
         <strong>Note:</strong><br>
         <%= notes %>
+    </div>
+
+    <div class="qr-box">
+        <img src="<%= qrImage %>" alt="QR Code">
     </div>
 
     <div class="print-btn">
