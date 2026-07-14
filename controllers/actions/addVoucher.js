@@ -196,10 +196,15 @@ async function addVoucherController(req, res, next) {
     company: {
         name: voucherData.company.name,
         email: voucherData.company.email,
+        phone: voucherData.company.phone,
         address: voucherData.company.address,
         logo: await getBase64Image(voucherData.company?.image),
     },
     foreignCompany: {
+        name: voucherData.foreignCompany?.name,
+        email: voucherData.foreignCompany?.email,
+        phone: voucherData.foreignCompany?.phone,
+        address: voucherData.foreignCompany?.address,
         logo: await getBase64Image(voucherData.foreignCompany?.image),
     },
     transports: voucherData.transports.map(t => ({
