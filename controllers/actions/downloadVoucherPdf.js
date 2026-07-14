@@ -1,9 +1,9 @@
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
-const QRCode = require('qrcode');
 const ejs = require('ejs');
 const puppeteer = require('puppeteer');
+const { generateVoucherQr } = require('./helpers/qrCode');
 
 const {
   vouchers,
@@ -104,10 +104,7 @@ async function downloadVoucherPdfController(req, res, next) {
       }
     };
 
-    const qrImage = await QRCode.toDataURL(
-      `${process.env.URL}${voucherData.id}`,
-      { width: 120, margin: 1 }
-    );
+    const qrImage = await generateVoucherQr(voucherData.id);
 
     // ==============================
     // 3️⃣ PREPARE EJS DATA

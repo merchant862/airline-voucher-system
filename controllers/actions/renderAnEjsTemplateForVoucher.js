@@ -3,7 +3,7 @@
 const { voucherFormats } = require('../../database/models');
 
 const path = require('path');
-const QRCode = require('qrcode');
+const { generateQr } = require('./helpers/qrCode');
 
 async function getVoucherTemplate(req, res, next) {
     try {
@@ -54,12 +54,7 @@ async function getVoucherTemplate(req, res, next) {
         const qrData = `Voucher: ${Date.now()}`;
 
         // Base64 QR generate
-        const qrImage = await QRCode.toDataURL(qrData, {
-            errorCorrectionLevel: 'L',   // 👈 Low = zyada data = zyada dense
-            version: 8,                 // 👈 Higher version = zyada modules
-            margin: 1,                   // 👈 Kam white border
-            scale: 4                     // 👈 Image clarity control
-        });
+        const qrImage = await generateQr(qrData);
 
         // ======= Render EJS =======
         res.render(path.join(__dirname, '../../', format[0].ejsPath), {

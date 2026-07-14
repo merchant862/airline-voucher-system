@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const path = require('path');
-const QRCode = require('qrcode');
+const { generateVoucherQr } = require('./helpers/qrCode');
 
 const {
     vouchers,
@@ -175,11 +175,7 @@ async function getVoucherTemplate(req, res, next) {
 
         // ================= QR Code =================
 
-        const qrData = `${process.env.URL}${voucher.id}`;
-        const qrImage = await QRCode.toDataURL(qrData, {
-            width: 120,
-            margin: 1
-        });
+        const qrImage = await generateVoucherQr(voucher.id);
 
         // ================= Template Path =================
 
