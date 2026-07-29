@@ -24,6 +24,13 @@ const titleCase = (value) =>
 
 const formatDate = (date) => date ? new Date(date).toISOString().split('T')[0] : '';
 
+function singlePassengerName(value) {
+  return String(value || '')
+    .split(/[\n,;|]+/)
+    .map(name => name.trim())
+    .filter(Boolean)[0] || '';
+}
+
 function receiptNo(voucherNo) {
   const input = String(voucherNo || '');
   let hash = 0;
@@ -57,7 +64,7 @@ async function downloadPaymentSlipPdfController(req, res, next) {
     const voucherData = await vouchers.findOne({
       where: { id: req.params.id },
       include: [
-        { model: customers, as: 'customers', attributes: ['customerName', 'customerGender'] },
+        { model: customers, as: 'customers', attributes: ['id', 'customerName', 'customerGender'] },
         { model: hotels, as: 'hotels', attributes: ['hotelName', 'city', 'roomType', 'noOfNights'] },
         { model: transports, as: 'transports', attributes: ['type', 'route'] },
         { model: notes, as: 'notes', attributes: ['content'] },
@@ -65,7 +72,8 @@ async function downloadPaymentSlipPdfController(req, res, next) {
         { model: foreignAgencies, as: 'foreignCompany', attributes: ['name', 'image', 'address', 'phone', 'email'] },
         { model: voucherFormats, as: 'voucherFormat', attributes: ['ejsPath'] },
         { model: voucherFormats, as: 'linkVoucherFormat', attributes: ['ejsPath'] }
-      ]
+      ],
+      order: [[{ model: customers, as: 'customers' }, 'id', 'ASC']]
     });
 
     if (!voucherData) {
@@ -76,7 +84,7 @@ async function downloadPaymentSlipPdfController(req, res, next) {
     const priceMap = new Map(prices.map(price => [price.roomType, Number(price.price || 0)]));
 
     const maleCustomer = voucherData.customers.find(customer => customer.customerGender?.toLowerCase() === 'male');
-    const passengerName = maleCustomer?.customerName || voucherData.customers[0]?.customerName || '';
+    const passengerName = singlePassengerName(maleCustomer?.customerName || voucherData.customers[0]?.customerName);
 
     const items = voucherData.hotels.map(hotel => {
       const nights = Number(hotel.noOfNights || 0);
