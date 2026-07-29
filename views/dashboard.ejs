@@ -46,6 +46,16 @@
         font-weight:bold;
         cursor:pointer;
     ">Generate New Voucher</button>
+
+    <button onclick="roomTypePrices()" style="
+        padding:8px 16px;
+        border:none;
+        border-radius:8px;
+        background: linear-gradient(90deg, #7b2ff7, #a855f7);
+        color:#fff;
+        font-weight:bold;
+        cursor:pointer;
+    ">Room Type Prices</button>
 </div>
 
 <!-- Stats Boxes -->
@@ -208,6 +218,7 @@ function renderTable(vouchers) {
                 <div style="display:flex; flex-direction:column; gap:4px;">
                     <a href="/voucher/update/${v.id}" style="color:#7b2ff7; font-weight:bold; font-size:13px;">Edit</a>
                     <a href="/voucher/download/${v.id}" style="color:#7b2ff7; font-weight:bold; font-size:13px;">Download</a>
+                    <a href="/voucher/payment-slip/${v.id}" style="color:#7b2ff7; font-weight:bold; font-size:13px;">Download Payment Slip</a>
                     <a target="_blank" href="/crm/data/voucher/hotel/travel/c=930390289898889s9ddcc0X9d0d90nsnwxweeddd&q=1909cnkxcjdsdudd9d9sd9sd9si9sdsdd/crm/data/voucher/hotel/travel/c=930390289898889s9ddcc0X9d0d90nsnwxweeddd&q=1909cnkxcjdsdudd9d9sd9sd9si9sdsdd/${v.id}" style="color:#7b2ff7; font-weight:bold; font-size:13px;">Link Voucher</a>
                     <a href="/api/voucher/update/active/${v.id}" style="color:#7b2ff7; font-weight:bold; font-size:13px;">Set active</a>
                     <a href="/api/voucher/update/inactive/${v.id}" style="color:#7b2ff7; font-weight:bold; font-size:13px;">Set inactive</a>
@@ -275,6 +286,10 @@ function nextPage() {
 // --------------------- BUTTON ACTIONS ---------------------
 function generateVoucher() {
     window.location.assign('/voucher/create');
+}
+
+function roomTypePrices() {
+    window.location.assign('/room-type-prices');
 }
 
 function logout() {

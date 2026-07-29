@@ -6,6 +6,7 @@ const loginViewController     = require('../controllers/views/login');
 const dashboardViewController = require('../controllers/views/dashboard');
 const createVoucherController = require('../controllers/views/create_voucher');
 const voucherUpdateController = require('../controllers/views/voucher_update');
+const roomTypePricesViewController = require('../controllers/views/room_type_prices');
 
 const loginController      = require('../controllers/actions/login');
 const logoutController     = require('../controllers/actions/logout');
@@ -22,8 +23,13 @@ const renderAnEJSTemplateForLinkVoucherController = require('../controllers/acti
 const getVoucherDataByIdController = require('../controllers/actions/fetchVoucherDatabyId');
 const updateVoucherController = require('../controllers/actions/updateVoucher');
 const downloadVoucherPdfController = require('../controllers/actions/downloadVoucherPdf');
+const downloadPaymentSlipPdfController = require('../controllers/actions/downloadPaymentSlipPdf');
 const updateVoucherStatusController = require('../controllers/actions/updateVoucherStatus');
 const getTransportsandHotelsController = require('../controllers/actions/getTransportsandHotels');
+const {
+  deleteRoomTypePriceController,
+  upsertRoomTypePriceController
+} = require('../controllers/actions/roomTypePrices');
 
 const auth   = require('../middlewares/auth');
 const deauth = require('../middlewares/deauth');
@@ -33,6 +39,7 @@ router.get('/login',          deauth, loginViewController);
 router.get('/dashboard',      auth(), dashboardViewController);
 router.get('/voucher/create', auth(), createVoucherController)
 router.get('/voucher/update/:id', auth(), voucherUpdateController);
+router.get('/room-type-prices', auth(), roomTypePricesViewController);
 
 router.get('/api/dashboard', auth(), dashboardController);
 router.get('/api/agencies/:type', auth(), getAgenciesController);
@@ -46,9 +53,12 @@ router.get('/crm/data/voucher/hotel/travel/c=930390289898889s9ddcc0X9d0d90nsnwxw
 router.get('/api/voucher/formats/:name', auth(), getVoucherFormatsByVoucherController);
 router.get('/api/voucher/:id', auth(), getVoucherDataByIdController);
 router.get('/voucher/download/:id', downloadVoucherPdfController)
+router.get('/voucher/payment-slip/:id', downloadPaymentSlipPdfController)
 router.post('/api/voucher/create', auth(), addVoucherController);
 router.post('/api/voucher/update/:id', auth(), updateVoucherController);
 router.get('/api/voucher/update/:status/:id', auth(), updateVoucherStatusController);
+router.post('/room-type-prices', auth(), upsertRoomTypePriceController);
+router.post('/room-type-prices/delete/:id', auth(), deleteRoomTypePriceController);
 router.post('/login', loginController);
 router.get('/logout', logoutController);
 

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Payment Slip</title>
+<style>
+@page { size:A4; margin:8mm; }
+*{ box-sizing:border-box; }
+body{ margin:0; font-family:Arial,Helvetica,sans-serif; color:#18212f; background:#fff; }
+.slip{ width:100%; border:1px solid #cfd7e3; padding:18px 22px; }
+.header{ display:grid; grid-template-columns:135px 1fr 170px; align-items:center; gap:16px; padding:16px; border-radius:12px; }
+.logoBox{ width:118px; height:118px; background:#fff; border-radius:12px; display:flex; align-items:center; justify-content:center; padding:9px; box-shadow:0 10px 24px rgba(0,0,0,0.18); }
+.logoBox img{ max-width:100%; max-height:100%; object-fit:contain; }
+.brand h1{ margin:0; font-size:24px; line-height:1.15; letter-spacing:.6px; text-transform:uppercase; }
+.brand .bar{ width:86px; height:3px; margin:9px 0 10px; border-radius:999px; }
+.brand p{ margin:4px 0 0; font-size:11px; line-height:1.4; }
+.receipt{ text-align:right; font-size:12px; line-height:1.9; }
+.title{ text-align:center; margin:18px 0 14px; font-size:22px; font-weight:800; letter-spacing:2px; color:#111827; }
+.meta{ display:grid; grid-template-columns:1fr 1fr; gap:10px 24px; border:1px solid #d8e0eb; background:#f8fafc; padding:12px 14px; font-size:13px; }
+.meta div{ display:flex; gap:8px; }
+.meta span{ min-width:120px; font-weight:700; }
+table{ width:100%; border-collapse:collapse; margin-top:16px; font-size:12px; }
+th{ color:#fff; text-align:left; padding:9px 8px; }
+td{ padding:9px 8px; border:1px solid #d6dee9; }
+td.num, th.num{ text-align:right; }
+tbody tr:nth-child(even) td{ background:#fbfdff; }
+.total{ margin-top:12px; display:flex; justify-content:flex-end; }
+.totalBox{ width:300px; }
+.totalRow{ display:flex; justify-content:space-between; padding:10px 12px; font-size:13px; border-bottom:1px solid #d6dee9; }
+.totalRow:last-child{ border-bottom:0; font-size:16px; font-weight:800; }
+.signatures{ display:grid; grid-template-columns:1fr 1fr; gap:60px; margin-top:56px; font-size:12px; }
+.line{ border-top:1px solid #111827; padding-top:8px; text-align:center; }
+
+.theme-meem .header{ background:linear-gradient(135deg,#0f172a,#1e293b 55%,#334155); border:1px solid #1e293b; }
+.theme-meem .brand h1{ color:#fff; }
+.theme-meem .brand p,.theme-meem .receipt{ color:#dbe4ee; }
+.theme-meem .brand .bar{ background:#fbbf24; }
+.theme-meem .receipt strong{ color:#fbbf24; }
+.theme-meem .meta span{ color:#1e293b; }
+.theme-meem th{ background:linear-gradient(135deg,#7c2d12,#c2410c); border:1px solid #7c2d12; }
+.theme-meem .totalBox{ border:1px solid #7c2d12; }
+.theme-meem .totalRow:last-child{ background:#fff7ed; color:#7c2d12; }
+
+.theme-irfan .header{ border-bottom:3px solid #000; border-radius:0; }
+.theme-irfan .brand h1,.theme-irfan .receipt strong,.theme-irfan .meta span{ color:#000; }
+.theme-irfan .brand p,.theme-irfan .receipt{ color:#222; }
+.theme-irfan .brand .bar,.theme-irfan th{ background:#000; }
+.theme-irfan th{ border:1px solid #000; }
+.theme-irfan .totalBox{ border:1px solid #000; }
+.theme-irfan .totalRow:last-child{ background:#f4f4f4; color:#000; }
+
+.theme-sudais .header{ border-bottom:3px solid #1f2937; border-radius:0; }
+.theme-sudais .brand h1,.theme-sudais .receipt strong,.theme-sudais .meta span{ color:#1f2937; }
+.theme-sudais .brand p,.theme-sudais .receipt{ color:#333; }
+.theme-sudais .brand .bar,.theme-sudais th{ background:#1f2937; }
+.theme-sudais th{ border:1px solid #1f2937; }
+.theme-sudais .totalBox{ border:1px solid #1f2937; }
+.theme-sudais .totalRow:last-child{ background:#f3f4f6; color:#1f2937; }
+
+.theme-crm .header{ border-bottom:3px solid #0b6fa4; border-radius:8px; }
+.theme-crm .brand h1,.theme-crm .receipt strong,.theme-crm .meta span{ color:#0b6fa4; }
+.theme-crm .brand p,.theme-crm .receipt{ color:#4b5563; }
+.theme-crm .brand .bar,.theme-crm th{ background:#0b6fa4; }
+.theme-crm th{ border:1px solid #0b6fa4; }
+.theme-crm .totalBox{ border:1px solid #0b6fa4; }
+.theme-crm .totalRow:last-child{ background:#eef7fc; color:#0b6fa4; }
+</style>
+</head>
+<body>
+<div class="slip theme-<%= slip.theme %>">
+  <div class="header">
+    <div class="logoBox">
+      <% if (company.logo) { %><img src="<%= company.logo %>" alt="Company Logo"><% } %>
+    </div>
+    <div class="brand">
+      <h1><%= company.name %></h1>
+      <div class="bar"></div>
+      <% if (company.address) { %><p><%= company.address %></p><% } %>
+      <% if (company.email) { %><p>Email: <%= company.email %></p><% } %>
+      <% if (company.phone) { %><p>Phone: <%= company.phone %></p><% } %>
+    </div>
+    <div class="receipt">
+      <div><strong>Receipt No:</strong> <%= slip.receiptNo %></div>
+      <div><strong>Date:</strong> <%= slip.date %></div>
+    </div>
+  </div>
+
+  <div class="title">PAYMENT SLIP</div>
+
+  <div class="meta">
+    <div><span>Voucher No:</span> <%= slip.voucherNo %></div>
+    <div><span>Passenger Name:</span> <%= slip.passengerName %></div>
+    <div><span>Saudi Company:</span> <%= foreignCompany.name %></div>
+    <div><span>Currency:</span> <%= slip.currency %></div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>City</th>
+        <th>Hotel Name</th>
+        <th>Room Type</th>
+        <th class="num">Nights</th>
+        <th class="num">Rate</th>
+        <th class="num">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% slip.items.forEach(item => { %>
+        <tr>
+          <td><%= item.city %></td>
+          <td><%= item.hotelName %></td>
+          <td><%= item.roomType %></td>
+          <td class="num"><%= item.nights %></td>
+          <td class="num"><%= slip.currency %> <%= Number(item.rate).toLocaleString() %></td>
+          <td class="num"><%= slip.currency %> <%= Number(item.amount).toLocaleString() %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <div class="total">
+    <div class="totalBox">
+      <div class="totalRow"><span>Subtotal</span><span><%= slip.currency %> <%= Number(slip.totalAmount).toLocaleString() %></span></div>
+      <div class="totalRow"><span>Total Amount</span><span><%= slip.currency %> <%= Number(slip.totalAmount).toLocaleString() %></span></div>
+    </div>
+  </div>
+
+  <div class="signatures">
+    <div class="line">Received By</div>
+    <div class="line">Customer Signature</div>
+  </div>
+</div>
+</body>
+</html>
