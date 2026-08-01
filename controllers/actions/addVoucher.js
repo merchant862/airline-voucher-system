@@ -20,6 +20,21 @@ async function addVoucherController(req, res, next) {
     const t = await vouchers.sequelize.transaction();
 
     try {
+        const selectedVoucherFormat = await voucherFormats.findOne({
+            where: { id: req.body.voucherFormatsId, name: 'DOWNLOAD_FORMAT' },
+            transaction: t
+        });
+
+        const selectedLinkVoucherFormat = await voucherFormats.findOne({
+            where: { id: req.body.linkVoucherFormatsId, name: 'LINK_FORMAT' },
+            transaction: t
+        });
+
+        if (!selectedVoucherFormat || !selectedLinkVoucherFormat) {
+            await t.rollback();
+            return res.status(400).json({ error: 'Invalid voucher format selected' });
+        }
+
         // ==============================
         // 1️⃣ CREATE VOUCHER
         // ==============================

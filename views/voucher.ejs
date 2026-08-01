@@ -289,6 +289,10 @@ let hotelCount = 0;
 let transportCount = 0;
 window.transportListData = [];
 
+function formatDisplayName(format, index, labelPrefix) {
+    return `${labelPrefix} ${index + 1}`;
+}
+
 document.addEventListener("DOMContentLoaded", async function () {
     ['departureFlightTakeOffTime', 'departureFlightLandingTime', 'arrivalFlightTakeOffTime', 'arrivalFlightLandingTime'].forEach(id => {
         flatpickr("#" + id, {
@@ -369,6 +373,9 @@ function restoreFormData() {
         const el = document.getElementById(id);
         if (el && typeof data[el.name || id] !== 'undefined') {
             el.value = data[el.name || id];
+            if (el.tagName === 'SELECT' && data[el.name || id] && el.value !== String(data[el.name || id])) {
+                el.value = '';
+            }
         }
     });
 
@@ -450,16 +457,11 @@ async function loadVoucherFormats() {
         if (!data.success) return;
 
         const select = document.getElementById('voucherFormatSelect');
-        data.data.forEach(f => {
+        select.innerHTML = '<option value="">Select Download Voucher Format</option>';
+        data.data.forEach((f, index) => {
             const o = document.createElement('option');
             o.value = f.id;
-
-            let name = f.name;
-            if (f.ejsPath.toLowerCase().includes('meem')) {
-                name += ' (MEEM TRAVELS)';
-            }
-
-            o.textContent = name;
+            o.textContent = formatDisplayName(f, index, 'Download Format');
             select.appendChild(o);
         });
 
@@ -480,16 +482,11 @@ async function loadLinkVoucherFormats() {
         if (!data.success) return;
 
         const select = document.getElementById('linkVoucherFormatSelect');
-        data.data.forEach(f => {
+        select.innerHTML = '<option value="">Select Link Voucher Format</option>';
+        data.data.forEach((f, index) => {
             const o = document.createElement('option');
             o.value = f.id;
-
-            let name = f.name;
-            if (f.ejsPath.toLowerCase().includes('meem')) {
-                name += ' (MEEM TRAVELS)';
-            }
-
-            o.textContent = name;
+            o.textContent = formatDisplayName(f, index, 'Link Format');
             select.appendChild(o);
         });
 
@@ -830,9 +827,24 @@ function escapeAttr(value) {
 form.addEventListener('submit', async e => {
     e.preventDefault();
 
+    const voucherFormatSelect = document.getElementById('voucherFormatSelect');
+    const linkVoucherFormatSelect = document.getElementById('linkVoucherFormatSelect');
+
+    if (!voucherFormatSelect.value) {
+        alert('Please select Download Voucher Format');
+        voucherFormatSelect.focus();
+        return;
+    }
+
+    if (!linkVoucherFormatSelect.value) {
+        alert('Please select Link Voucher Format');
+        linkVoucherFormatSelect.focus();
+        return;
+    }
+
     const payload = {
-        linkVoucherFormatsId: document.getElementById('linkVoucherFormatSelect').value,
-        voucherFormatsId: document.getElementById('voucherFormatSelect').value,
+        linkVoucherFormatsId: linkVoucherFormatSelect.value,
+        voucherFormatsId: voucherFormatSelect.value,
         companyId: document.getElementById('companySelect').value,
         foreignCompanyId: document.getElementById('foreignCompanySelect').value,
         departureFlightDate: document.getElementById('departureFlightDate').value,
