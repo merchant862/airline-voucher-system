@@ -181,6 +181,10 @@ async function addVoucherController(req, res, next) {
             ]
         });
 
+        if (!voucherData?.voucherFormat?.ejsPath) {
+            return res.status(400).json({ error: 'Selected download voucher format is not available' });
+        }
+
 
         const formatDate = (date) => date ? new Date(date).toISOString().split('T')[0] : '';
 

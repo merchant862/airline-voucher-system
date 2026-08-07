@@ -352,8 +352,6 @@ function restoreFormData() {
     const simpleFieldIds = [
         'companySelect',
         'foreignCompanySelect',
-        'voucherFormatSelect',
-        'linkVoucherFormatSelect',
         'departureFlightNo',
         'departureFlightDate',
         'departureFlightFromCity',
@@ -378,6 +376,9 @@ function restoreFormData() {
             }
         }
     });
+
+    document.getElementById('voucherFormatSelect').value = '';
+    document.getElementById('linkVoucherFormatSelect').value = '';
 
     // Restore customers
     const customerNames = normalizeArray(data['customerName[]']);

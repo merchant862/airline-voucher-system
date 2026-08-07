@@ -80,6 +80,10 @@ async function downloadVoucherPdfController(req, res, next) {
       return res.status(404).json({ error: 'Voucher not found' });
     }
 
+    if (!voucherData.voucherFormat?.ejsPath) {
+      return res.status(400).json({ error: 'Selected download voucher format is not available' });
+    }
+
     // ==============================
     // 2️⃣ HELPER FUNCTIONS
     // ==============================

@@ -8,10 +8,8 @@ const { generateQr } = require('./helpers/qrCode');
 async function getVoucherTemplate(req, res, next) {
     try {
 
-        let format = await voucherFormats.findAll({where: { id : req.params.id }});
-        if(!format) return res.status(404).send('Format not found');
-
-        format = JSON.parse(JSON.stringify(format));
+        const format = await voucherFormats.findOne({ where: { id: req.params.id } });
+        if (!format) return res.status(404).send('Format not found');
 
         // ======= Static Data =======
         const departureFlight = {
@@ -57,7 +55,7 @@ async function getVoucherTemplate(req, res, next) {
         const qrImage = await generateQr(qrData);
 
         // ======= Render EJS =======
-        res.render(path.join(__dirname, '../../', format[0].ejsPath), {
+        res.render(path.join(__dirname, '../../', format.ejsPath), {
             company: {
                 name: "MEEM TRAVELS",
                 email: "Meemtravels110@gmail.com",

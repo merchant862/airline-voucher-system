@@ -86,8 +86,12 @@ async function getVoucherTemplate(req, res, next) {
 
         console.log(voucher.status)
 
-        if(voucher.status == 'inactive'){
-            next();
+        if (voucher.status == 'inactive') {
+            return next();
+        }
+
+        if (!voucher.linkVoucherFormat?.ejsPath) {
+            return res.status(400).send('Selected link voucher format is not available');
         }
 
         // ================= Flight Data =================
