@@ -6,6 +6,23 @@ const puppeteer = require('puppeteer');
 const { generateVoucherQr } = require('./helpers/qrCode');
 const { vouchers, customers, hotels, transports, notes, agencies, foreignAgencies, voucherFormats } = require('./../../database/models');
 
+function getFamilyHeadName(customerList = []) {
+    const familyHead = customerList.find(
+        (customer) => customer.customerGender?.toLowerCase() === 'male'
+    );
+
+    return (familyHead || customerList[0])?.customerName || 'voucher';
+}
+
+function buildVoucherPdfFilename(customerList = []) {
+    const passengerName = getFamilyHeadName(customerList)
+        .trim()
+        .replace(/\s+/g, '_')
+        .replace(/[^a-zA-Z0-9_-]/g, '');
+
+    return `${passengerName || 'passenger'}.pdf`;
+}
+
 async function updateVoucherController(req, res, next) {
     const t = await vouchers.sequelize.transaction();
     try {
@@ -212,7 +229,11 @@ async function updateVoucherController(req, res, next) {
         const pdfBuffer = await page.pdf({ format: 'A4', printBackground: true, margin: { top:'5mm', bottom:'5mm', left:'5mm', right:'5mm' } });
         await browser.close();
 
-        res.set({ 'Content-Type':'application/pdf', 'Content-Disposition': `attachment; filename=voucher_${voucher.voucherNo}.pdf`, 'Content-Length': pdfBuffer.length });
+        res.set({
+            'Content-Type':'application/pdf',
+            'Content-Disposition': `attachment; filename="${buildVoucherPdfFilename(voucherData.customers)}"`,
+            'Content-Length': pdfBuffer.length
+        });
         return res.end(Buffer.from(pdfBuffer), 'binary');
 
     } catch (err) {
