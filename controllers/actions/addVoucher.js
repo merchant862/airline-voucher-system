@@ -16,6 +16,23 @@ const { vouchers,
     foreignAgencies, 
     voucherFormats  } = require('./../../database/models');
 
+function getFamilyHeadName(customerList = []) {
+    const familyHead = customerList.find(
+        (customer) => customer.customerGender?.toLowerCase() === 'male'
+    );
+
+    return (familyHead || customerList[0])?.customerName || 'voucher';
+}
+
+function buildVoucherPdfFilename(customerList = []) {
+    const passengerName = getFamilyHeadName(customerList)
+        .trim()
+        .replace(/\s+/g, '_')
+        .replace(/[^a-zA-Z0-9_-]/g, '');
+
+    return `${passengerName || 'passenger'}.pdf`;
+}
+
 async function addVoucherController(req, res, next) {
     const t = await vouchers.sequelize.transaction();
 
@@ -318,7 +335,7 @@ await browser.close();
 
 res.set({
     'Content-Type': 'application/pdf',
-    'Content-Disposition': `attachment; filename="voucher_${voucher.voucherNo}.pdf"`,
+    'Content-Disposition': `attachment; filename="${buildVoucherPdfFilename(voucherData.customers)}"`,
     'Content-Length': pdfBuffer.length
 });
 

@@ -16,6 +16,23 @@ const {
   voucherFormats
 } = require('./../../database/models');
 
+function getFamilyHeadName(customerList = []) {
+  const familyHead = customerList.find(
+    (customer) => customer.customerGender?.toLowerCase() === 'male'
+  );
+
+  return (familyHead || customerList[0])?.customerName || 'voucher';
+}
+
+function buildVoucherPdfFilename(customerList = []) {
+  const passengerName = getFamilyHeadName(customerList)
+    .trim()
+    .replace(/\s+/g, '_')
+    .replace(/[^a-zA-Z0-9_-]/g, '');
+
+  return `${passengerName || 'passenger'}.pdf`;
+}
+
 async function downloadVoucherPdfController(req, res, next) {
   try {
 
@@ -242,7 +259,7 @@ async function downloadVoucherPdfController(req, res, next) {
 
     res.set({
       'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename=voucher_${voucherData.voucherNo}.pdf`,
+      'Content-Disposition': `attachment; filename="${buildVoucherPdfFilename(voucherData.customers)}"`,
       'Content-Length': pdfBuffer.length
     });
 

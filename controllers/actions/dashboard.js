@@ -1,5 +1,15 @@
 const { Op } = require('sequelize');
-const { vouchers } = require('../../database/models');
+const { vouchers, customers } = require('../../database/models');
+
+function getPassengerName(customerList = []) {
+  if (!customerList.length) return '';
+
+  const familyHead = customerList.find(
+    (customer) => customer.customerGender?.toLowerCase() === 'male'
+  );
+
+  return (familyHead || customerList[0]).customerName || '';
+}
 
 const listVouchersController = async (req, res, next) => {
   try {
@@ -12,9 +22,32 @@ const listVouchersController = async (req, res, next) => {
     const where = {};
 
     if (search) {
-      where.voucherNo = {
-        [Op.like]: `%${search}%`
-      };
+      const matchingCustomers = await customers.findAll({
+        attributes: ['voucherId'],
+        where: {
+          customerName: {
+            [Op.like]: `%${search}%`
+          }
+        },
+        raw: true
+      });
+
+      const matchingVoucherIds = [
+        ...new Set(matchingCustomers.map((customer) => customer.voucherId).filter(Boolean))
+      ];
+
+      where[Op.or] = [
+        {
+          voucherNo: {
+            [Op.like]: `%${search}%`
+          }
+        },
+        {
+          id: {
+            [Op.in]: matchingVoucherIds.length ? matchingVoucherIds : [0]
+          }
+        }
+      ];
     }
 
     // ==============================
@@ -41,6 +74,16 @@ const listVouchersController = async (req, res, next) => {
     // ==============================
     const voucherList = await vouchers.findAll({
       attributes: ['id', 'voucherNo', 'status', 'createdAt'],
+      include: [
+        {
+          model: customers,
+          as: 'customers',
+          attributes: ['id', 'customerName', 'customerGender'],
+          required: false,
+          separate: true,
+          order: [['id', 'ASC']]
+        }
+      ],
       where,
       order: [
         ['status', 'ASC'],
@@ -53,6 +96,7 @@ const listVouchersController = async (req, res, next) => {
     const formatted = voucherList.map((v) => ({
       id: v.id,
       voucherNo: v.voucherNo,
+      passengerName: getPassengerName(v.customers),
       status: v.status,
       voucherDate: v.createdAt.toISOString().split('T')[0]
     }));
