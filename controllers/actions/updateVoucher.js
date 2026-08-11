@@ -30,6 +30,20 @@ async function updateVoucherController(req, res, next) {
         const voucher = await vouchers.findByPk(id, { transaction: t });
         if (!voucher) return res.status(404).json({ error: 'Voucher not found' });
 
+        const selectedVoucherFormat = await voucherFormats.findOne({
+            where: { id: req.body.voucherFormatsId, name: 'DOWNLOAD_FORMAT' },
+            transaction: t
+        });
+        const selectedLinkVoucherFormat = await voucherFormats.findOne({
+            where: { id: req.body.linkVoucherFormatsId, name: 'LINK_FORMAT' },
+            transaction: t
+        });
+
+        if (!selectedVoucherFormat || !selectedLinkVoucherFormat) {
+            await t.rollback();
+            return res.status(400).json({ error: 'Invalid voucher format selected' });
+        }
+
         // ==============================
         // 1️⃣ UPDATE VOUCHER FIELDS
         // ==============================
@@ -45,7 +59,9 @@ async function updateVoucherController(req, res, next) {
             arrivalFlightFromCity: req.body.arrivalFlightFromCity,
             arrivalFlightToCity: req.body.arrivalFlightToCity,
             arrivalFlightTakeOffTime: req.body.arrivalFlightTakeOffTime,
-            arrivalFlightLandingTime: req.body.arrivalFlightLandingTime
+            arrivalFlightLandingTime: req.body.arrivalFlightLandingTime,
+            voucherFormatsId: req.body.voucherFormatsId,
+            linkVoucherFormatsId: req.body.linkVoucherFormatsId
         }, { transaction: t });
 
         const voucherId = voucher.id;

@@ -148,6 +148,21 @@
 
   <form id="voucherEditForm" method="POST" action="/voucher/update/<%= voucherData.id %>">
 
+    <!-- Voucher Formats -->
+    <div class="form-section">
+      <h3>Voucher Formats</h3>
+      <div class="flight-grid">
+        <div>
+          <label for="voucherFormatSelect">Download Voucher Format</label>
+          <select id="voucherFormatSelect" name="voucherFormatsId" required></select>
+        </div>
+        <div>
+          <label for="linkVoucherFormatSelect">Link Voucher Format</label>
+          <select id="linkVoucherFormatSelect" name="linkVoucherFormatsId" required></select>
+        </div>
+      </div>
+    </div>
+
     <!-- Departure Flight -->
     <div class="form-section">
       <h3>Departure Flight</h3>
@@ -363,6 +378,8 @@
         });
       });
 
+      await loadVoucherFormats();
+      await loadLinkVoucherFormats();
       await loadTransportList();
       await loadHotelsList();
 
@@ -373,6 +390,61 @@
       bindAddButtons();
       bindDeleteButtons();
     });
+
+    function formatDisplayName(format, index, labelPrefix) {
+      const ejsPath = (format.ejsPath || '').toLowerCase();
+      const names = [
+        ['meem1', 'Meem Travel PDF'],
+        ['meem2', 'Meem Travel Link'],
+        ['irfan', 'Standard PDF'],
+        ['sudais', 'Modern PDF'],
+        ['crm2', 'CRM Link 2'],
+        ['crm', 'CRM Link']
+      ];
+      const match = names.find(([key]) => ejsPath.includes(key));
+      return match ? match[1] : `${labelPrefix} ${index + 1}`;
+    }
+
+    async function loadVoucherFormatSelect(url, selectId, placeholder, selectedId) {
+      const response = await fetch(url);
+      const data = await response.json();
+      if (!data.success) throw new Error(`Unable to load ${placeholder.toLowerCase()}`);
+
+      const select = document.getElementById(selectId);
+      select.innerHTML = `<option value="">${placeholder}</option>`;
+      data.data.forEach((format, index) => {
+        const option = document.createElement('option');
+        option.value = format.id;
+        option.textContent = formatDisplayName(format, index, placeholder.replace('Select ', ''));
+        option.selected = String(format.id) === String(selectedId);
+        select.appendChild(option);
+      });
+      select.addEventListener('change', () => {
+        if (select.value) window.open(`/api/voucher/template/${select.value}`, '_blank');
+      });
+    }
+
+    async function loadVoucherFormats() {
+      try {
+        await loadVoucherFormatSelect(
+          '/api/voucher/formats/DOWNLOAD_FORMAT',
+          'voucherFormatSelect',
+          'Select Download Voucher Format',
+          '<%= voucherData.voucherFormatsId || "" %>'
+        );
+      } catch (err) { console.error(err); }
+    }
+
+    async function loadLinkVoucherFormats() {
+      try {
+        await loadVoucherFormatSelect(
+          '/api/voucher/formats/LINK_FORMAT',
+          'linkVoucherFormatSelect',
+          'Select Link Voucher Format',
+          '<%= voucherData.linkVoucherFormatsId || "" %>'
+        );
+      } catch (err) { console.error(err); }
+    }
 
     function bindAddButtons() {
       document.getElementById('add-passenger-btn').addEventListener('click', addPassengerRow);
@@ -722,7 +794,16 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
+      const voucherFormatId = document.getElementById('voucherFormatSelect').value;
+      const linkVoucherFormatId = document.getElementById('linkVoucherFormatSelect').value;
+      if (!voucherFormatId || !linkVoucherFormatId) {
+        alert('Please select both voucher formats');
+        return;
+      }
+
       const payload = {
+        voucherFormatsId: voucherFormatId,
+        linkVoucherFormatsId: linkVoucherFormatId,
         departureFlightDate: document.getElementById('departureFlightDate').value,
         departureFlightNo: document.getElementById('departureFlightNo').value,
         departureFlightFromCity: document.getElementById('departureFlightFromCity').value,

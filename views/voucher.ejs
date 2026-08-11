@@ -290,7 +290,17 @@ let transportCount = 0;
 window.transportListData = [];
 
 function formatDisplayName(format, index, labelPrefix) {
-    return `${labelPrefix} ${index + 1}`;
+    const ejsPath = (format.ejsPath || '').toLowerCase();
+    const names = [
+        ['meem1', 'Meem Travel PDF'],
+        ['meem2', 'Meem Travel Link'],
+        ['irfan', 'Standard PDF'],
+        ['sudais', 'Modern PDF'],
+        ['crm2', 'CRM Link 2'],
+        ['crm', 'CRM Link']
+    ];
+    const match = names.find(([key]) => ejsPath.includes(key));
+    return match ? match[1] : `${labelPrefix} ${index + 1}`;
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
