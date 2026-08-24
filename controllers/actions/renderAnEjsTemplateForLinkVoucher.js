@@ -14,6 +14,12 @@ const {
     voucherFormats
 } = require('./../../database/models');
 
+function getVerifiedImagePath(ejsPath = '') {
+    if (ejsPath.includes('crm2')) return '/images/verified.jpeg';
+    if (ejsPath.includes('meem2')) return '/images/verified2.png';
+    return '';
+}
+
 async function getVoucherTemplate(req, res, next) {
     try {
 
@@ -217,7 +223,7 @@ async function getVoucherTemplate(req, res, next) {
 
             voucher: {
                 voucherNo: voucher.voucherNo,
-                date: voucher.createdAt?.toISOString().split('T')[0]
+                date: voucher.departureFlightDate?.toISOString().split('T')[0] || voucher.createdAt?.toISOString().split('T')[0]
             },
 
             customers: formattedCustomers,
@@ -226,7 +232,8 @@ async function getVoucherTemplate(req, res, next) {
             notes: formattedNotes,
             departureFlight,
             arrivalFlight,
-            qrImage
+            qrImage,
+            verifiedImage: getVerifiedImagePath(voucher.linkVoucherFormat?.ejsPath)
         });
 
     } catch (err) {

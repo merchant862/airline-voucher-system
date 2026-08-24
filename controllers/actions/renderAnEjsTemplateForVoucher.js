@@ -5,6 +5,12 @@ const { voucherFormats } = require('../../database/models');
 const path = require('path');
 const { generateQr } = require('./helpers/qrCode');
 
+function getVerifiedImagePath(ejsPath = '') {
+    if (ejsPath.includes('crm2')) return '/images/verified.jpeg';
+    if (ejsPath.includes('meem2')) return '/images/verified2.png';
+    return '';
+}
+
 async function getVoucherTemplate(req, res, next) {
     try {
 
@@ -78,7 +84,8 @@ async function getVoucherTemplate(req, res, next) {
             notes,
             departureFlight,
             arrivalFlight,
-            qrImage
+            qrImage,
+            verifiedImage: getVerifiedImagePath(format.ejsPath)
         });
 
     } catch (err) {

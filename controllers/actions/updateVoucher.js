@@ -23,6 +23,12 @@ function buildVoucherPdfFilename(customerList = []) {
     return `${passengerName || 'passenger'}.pdf`;
 }
 
+function getVerifiedImagePath(ejsPath = '') {
+    if (ejsPath.includes('crm2')) return 'images/verified.jpeg';
+    if (ejsPath.includes('meem2')) return 'images/verified2.png';
+    return null;
+}
+
 async function updateVoucherController(req, res, next) {
     const t = await vouchers.sequelize.transaction();
     try {
@@ -88,13 +94,19 @@ async function updateVoucherController(req, res, next) {
         // 3️⃣ HOTELS
         // ==============================
         if (Array.isArray(req.body.hotels)) {
+            const existingHotelRows = await hotels.findAll({
+                where: { voucherId },
+                attributes: ['confirmationNo'],
+                order: [['id', 'ASC']],
+                transaction: t
+            });
             await hotels.destroy({ where: { voucherId }, transaction: t });
             const hotelsData = req.body.hotels.map((h, i) => ({
                 hotelName: h.hotelName?.trim() || `Hotel ${i+1}`,
                 city: h.city?.trim() || null,
                 roomType: h.roomType?.trim() || null,
                 mealPlan: h.mealPlan?.trim() || 'RO',
-                //confirmationNo: h.confirmNo?.trim() || `CONF-${voucherId}-${Date.now()}-${i+1}`,
+                confirmationNo: h.confirmationNo?.trim() || existingHotelRows[i]?.confirmationNo || `CONF-${voucherId}-${Date.now()}-${i+1}`,
                 checkInDate: h.checkInDate || null,
                 checkOutDate: h.checkOutDate || null,
                 noOfNights: Number(h.noOfNights) || 0,
@@ -200,10 +212,10 @@ async function updateVoucherController(req, res, next) {
         const ejsData = {
             voucher: { voucherNo: voucherData.voucherNo, date: formatDate(voucherData.departureFlightDate) },
             company: {
-                name: voucherData.company.name,
-                email: voucherData.company.email,
-                phone: voucherData.company.phone,
-                address: voucherData.company.address,
+                name: voucherData.company?.name,
+                email: voucherData.company?.email,
+                phone: voucherData.company?.phone,
+                address: voucherData.company?.address,
                 logo: await getBase64Image(voucherData.company?.image),
             },
             foreignCompany: {
@@ -233,7 +245,8 @@ async function updateVoucherController(req, res, next) {
                 takeoff: voucherData.arrivalFlightTakeOffTime, landing: voucherData.arrivalFlightLandingTime
             },
             notes: voucherData.notes.map(n => n.content).join('\n'),
-            qrImage
+            qrImage,
+            verifiedImage: await getBase64Image(getVerifiedImagePath(voucherData.voucherFormat.ejsPath))
         };
 
         const html = await ejs.renderFile(path.join(__dirname, '../..', voucherData.voucherFormat.ejsPath), ejsData, { async: true });

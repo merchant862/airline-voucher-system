@@ -33,6 +33,12 @@ function buildVoucherPdfFilename(customerList = []) {
     return `${passengerName || 'passenger'}.pdf`;
 }
 
+function getVerifiedImagePath(ejsPath = '') {
+    if (ejsPath.includes('crm2')) return 'images/verified.jpeg';
+    if (ejsPath.includes('meem2')) return 'images/verified2.png';
+    return null;
+}
+
 async function addVoucherController(req, res, next) {
     const t = await vouchers.sequelize.transaction();
 
@@ -230,10 +236,10 @@ async function addVoucherController(req, res, next) {
         date: formatDate(voucherData.departureFlightDate),
     },
     company: {
-        name: voucherData.company.name,
-        email: voucherData.company.email,
-        phone: voucherData.company.phone,
-        address: voucherData.company.address,
+        name: voucherData.company?.name,
+        email: voucherData.company?.email,
+        phone: voucherData.company?.phone,
+        address: voucherData.company?.address,
         logo: await getBase64Image(voucherData.company?.image),
     },
     foreignCompany: {
@@ -282,7 +288,8 @@ async function addVoucherController(req, res, next) {
         landing: voucherData.arrivalFlightLandingTime
     },
     notes: voucherData.notes.map(n => n.content).join('\n'),
-    qrImage: qrImage
+    qrImage: qrImage,
+    verifiedImage: await getBase64Image(getVerifiedImagePath(voucherData.voucherFormat.ejsPath))
 };
 
         // ==============================

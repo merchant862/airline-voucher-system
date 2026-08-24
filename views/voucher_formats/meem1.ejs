@@ -682,7 +682,7 @@ tr:nth-child(even) td{
 
             <td width="30%" class="center qr-card qr-cell">
                 <img src="<%= qrImage %>" alt="QR Code"><br>
-                <strong>AUTHORIZED<br><%= company.name.toUpperCase() %></strong>
+                <strong>AUTHORIZED<br><%= (company.name || '').toUpperCase() %></strong>
             </td>
             <style>
                 .qr-cell{

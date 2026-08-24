@@ -33,6 +33,12 @@ function buildVoucherPdfFilename(customerList = []) {
   return `${passengerName || 'passenger'}.pdf`;
 }
 
+function getVerifiedImagePath(ejsPath = '') {
+  if (ejsPath.includes('crm2')) return 'images/verified.jpeg';
+  if (ejsPath.includes('meem2')) return 'images/verified2.png';
+  return null;
+}
+
 async function downloadVoucherPdfController(req, res, next) {
   try {
 
@@ -199,7 +205,8 @@ async function downloadVoucherPdfController(req, res, next) {
       },
 
       notes: voucherData.notes.map(n => n.content).join('\n'),
-      qrImage
+      qrImage,
+      verifiedImage: await getBase64Image(getVerifiedImagePath(voucherData.voucherFormat.ejsPath))
     };
 
     // ==============================
