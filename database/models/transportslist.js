@@ -1,41 +1,49 @@
 'use strict';
 
-const { Model } = require('sequelize');
+const {
+  Model
+} = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
+
   class transportsList extends Model {
+
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+
     static associate(models) {
       // define association here
     }
+
   }
 
-  transportsList.init(
-    {
-      type: DataTypes.ENUM('Private Car', 'Economy Bus'),
+  transportsList.init({
 
-      route: DataTypes.ENUM(
-        'JED-MAK',
-        'MAK-MED-MAK',
-        'JED-MAK-MED-MAK-JED',
-        'MAK-JED',
-        'MAK-MED',
-        'MED-MAK',
-        'JED-MED',
-        'MED-JED',
-        'MED-JED-MED',
-        'JED-MED-JED'
-      ),
-    },
-    {
-      sequelize,
-      modelName: 'transportsList',
-    }
-  );
+    type: DataTypes.ENUM('Private Car', 'Economy Bus'),
+
+    route: DataTypes.ENUM(
+      'MAK-MED-MAK-JED',
+      'JED-MAK',
+      'MAK-MED-MAK',
+      'JED-MAK-MED-MAK-JED',
+      'MAK-JED',
+      'MAK-MED',
+      'MED-MAK',
+      'JED-MED',
+      'MED-JED',
+      'MED-JED-MED',
+      'JED-MED-JED'
+    )
+
+  }, {
+
+    sequelize,
+    modelName: 'transportsList',
+
+  });
 
   return transportsList;
 };
