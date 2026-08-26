@@ -3,7 +3,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     const types = ['Private Car', 'Economy Bus'];
-    const routes = ['MED-JED'];
+    const routes = ['MED-JED', 'JED-MED', 'JED-MED-JED', 'MED-JED-MED'];
 
     const data = [];
 
