@@ -1,7 +1,7 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class transportsList extends Model {
     /**
@@ -12,13 +12,30 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-  };
-  transportsList.init({
-    type: DataTypes.ENUM('Private Car', 'Economy Bus'),
-    route: DataTypes.ENUM('JED-MAK','MAK-MED-MAK','JED-MAK-MED-MAK-JED','MAK-JED','MAK-MED','MED-MAK')
-  }, {
-    sequelize,
-    modelName: 'transportsList',
-  });
+  }
+
+  transportsList.init(
+    {
+      type: DataTypes.ENUM('Private Car', 'Economy Bus'),
+
+      route: DataTypes.ENUM(
+        'JED-MAK',
+        'MAK-MED-MAK',
+        'JED-MAK-MED-MAK-JED',
+        'MAK-JED',
+        'MAK-MED',
+        'MED-MAK',
+        'JED-MED',
+        'MED-JED',
+        'MED-JED-MED',
+        'JED-MED-JED'
+      ),
+    },
+    {
+      sequelize,
+      modelName: 'transportsList',
+    }
+  );
+
   return transportsList;
 };
