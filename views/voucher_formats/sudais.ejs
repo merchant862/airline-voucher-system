@@ -53,7 +53,8 @@
   .section-title { color:var(--theme-dark) !important; border-bottom-color:var(--theme-primary) !important; }
   .customer-name, .hotel-name { color:var(--theme-dark) !important; font-weight:700; }
   .agency-name { color:#000 !important; }
-  .urdu-notice-image { display:block; width:100%; height:auto; margin-top:10px; }
+  .urdu-bullets { direction:rtl; text-align:right; margin:8px 0 0; padding:0 20px 0 0; font-family:"Noto Nastaliq Urdu","Noto Naskh Arabic",Tahoma,Arial,sans-serif; font-size:10px; line-height:1.5; }
+  .urdu-bullets li { padding-right:4px; margin:0; }
 </style>
 <body>
 
@@ -233,7 +234,16 @@
     </div>
 
     <!-- URDU BLOCK -->
-    <img class="urdu-notice-image" src="<%= urduNoticeImage %>" alt="Urdu instructions">
+    <ul class="urdu-bullets">
+        <li>آپ کا ہوٹل اور پیکج اس دستاویز میں لکھا گیا ہے۔ اس کے مطابق آپ کو رہائش اور دیگر سہولیات فراہم کی جائیں گی۔</li>
+        <li>سفری سامان سعودی ائیر لائن کی طرف سے جانے والے مسافروں کے لئے مقررہ وزن کے مطابق ہوگا، اضافی سامان کی ادائیگی آپ کے ذمہ ہوگی۔</li>
+        <li>اپنا پاسپورٹ اور ضروری دستاویزات محفوظ رکھیں اور سعودی عرب میں قیام کے دوران تمام ہدایات پر عمل کریں۔</li>
+        <li>حرمین شریفین کے اندر زیارت کے لئے مقررہ اوقات اور گروپ کی ہدایات پر عمل کریں گے۔</li>
+        <li>جدہ ائیرپورٹ پر پرواز کے انتظامات مکمل کرنے کے لئے روانگی سے 3 سے 5 گھنٹے پہلے پہنچیں۔</li>
+        <li>ہوٹل چیک آؤٹ کا وقت دوپہر 2 بجے ہے، جبکہ نائٹ چیک اِن اور دیگر اوقات آپ کے پیکیج کے مطابق ہوں گے۔</li>
+        <li>واپسی فلائٹ سے پہلے اپنے سامان سمیت ہوٹل کے ریسپشن پر موجود رہیں، اپنی معلومات کی ذمہ داری آپ کی ہے۔</li>
+        <li>سعودی حکومت کے قانون اور کمپنی کے قوانین کی خلاف ورزی کی صورت میں ہونے والے نقصان کا ذمہ دار مسافر ہوگا۔</li>
+    </ul>
 
 </div>
 

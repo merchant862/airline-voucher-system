@@ -6,7 +6,7 @@ const ejs = require('ejs');
 const puppeteer = require('puppeteer'); // instead of puppeteer-core
 //const puppeteer = require('puppeteer-core');
 const { generateVoucherQr } = require('./helpers/qrCode');
-const { getVoucherThemeKey, getVoucherTheme, getUrduNoticeImage } = require('./helpers/voucherThemes');
+const { getVoucherThemeKey, getVoucherTheme } = require('./helpers/voucherThemes');
 
 const { vouchers, 
     customers, 
@@ -297,7 +297,6 @@ async function addVoucherController(req, res, next) {
     notes: voucherData.notes.map(n => n.content).join('\n'),
     qrImage: qrImage,
     theme: getVoucherTheme(voucherData.pdfTheme),
-    urduNoticeImage: getUrduNoticeImage(),
     verifiedImage: await getBase64Image(getVerifiedImagePath(voucherData.voucherFormat.ejsPath))
 };
 
