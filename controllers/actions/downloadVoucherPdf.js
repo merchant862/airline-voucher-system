@@ -4,6 +4,7 @@ const path = require('path');
 const ejs = require('ejs');
 const puppeteer = require('puppeteer');
 const { generateVoucherQr } = require('./helpers/qrCode');
+const { getVoucherTheme } = require('./helpers/voucherThemes');
 
 const {
   vouchers,
@@ -206,6 +207,7 @@ async function downloadVoucherPdfController(req, res, next) {
 
       notes: voucherData.notes.map(n => n.content).join('\n'),
       qrImage,
+      theme: getVoucherTheme(voucherData.pdfTheme),
       verifiedImage: await getBase64Image(getVerifiedImagePath(voucherData.voucherFormat.ejsPath))
     };
 

@@ -47,6 +47,12 @@
         
     </style>
 </head>
+<style>
+  :root { --theme-primary:<%= theme.primary %>; --theme-dark:<%= theme.dark %>; --theme-soft:<%= theme.soft %>; }
+  th { background:var(--theme-primary) !important; color:#fff !important; border-color:var(--theme-primary) !important; }
+  .section-title { color:var(--theme-dark) !important; border-bottom-color:var(--theme-primary) !important; }
+  .customer-name, .hotel-name { color:var(--theme-dark) !important; font-weight:700; }
+</style>
 <body>
 
 <div class="page">
@@ -124,7 +130,7 @@
 
         <% customers.forEach(customer => { %>
             <tr>
-                <td><%= customer.name %></td>
+                <td class="customer-name"><%= customer.name %></td>
                 <td><%= customer.gender %></td>
                 <td><%= customer.passport %></td>
                 <td><%= customer.visaNumber %></td>
@@ -151,7 +157,7 @@
 
         <% hotels.forEach(hotel => { %>
             <tr>
-                <td><%= hotel.name %></td>
+                <td class="hotel-name"><%= hotel.name %></td>
                 <td><%= hotel.confirmNo %></td>
                 <td><%= hotel.city %></td>
                 <td><%= hotel.roomType %></td>

@@ -184,6 +184,13 @@ td {
 </style>
 </head>
 
+<style>
+  :root { --theme-primary:<%= theme.primary %>; --theme-dark:<%= theme.dark %>; --theme-soft:<%= theme.soft %>; }
+  .top-header, .voucher-id span { background:var(--theme-primary) !important; }
+  .section-title { background:var(--theme-soft) !important; color:var(--theme-dark) !important; border-color:var(--theme-primary) !important; }
+  th { background:var(--theme-primary) !important; color:#fff !important; border-color:var(--theme-primary) !important; }
+  .customer-name, .hotel-name { color:var(--theme-dark) !important; font-weight:700; }
+</style>
 <body>
 
 <div class="wrapper">
@@ -255,7 +262,7 @@ td {
         <% customers.forEach(c => { %>
         <tr>
             <td><%= c.passport %></td>
-            <td><%= c.name %></td>
+            <td class="customer-name"><%= c.name %></td>
             <td><%= c.gender %></td>
             <td><%= c.paxType %></td>
             <td><%= c.beds %></td>
@@ -281,7 +288,7 @@ td {
 
         <% hotels.forEach(h => { %>
         <tr>
-            <td><%= h.name %></td>
+            <td class="hotel-name"><%= h.name %></td>
             <td><%= h.roomType %></td>
             <td><%= h.confirmNo %></td>
             <td><%= h.checkIn %></td>

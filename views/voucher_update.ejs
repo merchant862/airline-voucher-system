@@ -160,6 +160,14 @@
           <label for="linkVoucherFormatSelect">Link Voucher Format</label>
           <select id="linkVoucherFormatSelect" name="linkVoucherFormatsId" required></select>
         </div>
+        <div>
+          <label for="pdfThemeSelect">PDF Theme Color</label>
+          <select id="pdfThemeSelect" name="pdfTheme" required></select>
+        </div>
+        <div>
+          <label for="linkThemeSelect">Link Theme Color</label>
+          <select id="linkThemeSelect" name="linkTheme" required></select>
+        </div>
       </div>
     </div>
 
@@ -380,6 +388,8 @@
 
       await loadVoucherFormats();
       await loadLinkVoucherFormats();
+      loadThemeSelect('pdfThemeSelect', '<%= voucherData.pdfTheme || "blue" %>');
+      loadThemeSelect('linkThemeSelect', '<%= voucherData.linkTheme || "blue" %>');
       await loadTransportList();
       await loadHotelsList();
 
@@ -405,6 +415,23 @@
       return match ? match[1] : `${labelPrefix} ${index + 1}`;
     }
 
+    const voucherThemes = [
+      ['blue', 'Ocean Blue'], ['teal', 'Professional Teal'], ['green', 'Fresh Green'],
+      ['rose', 'Soft Rose'], ['amber', 'Warm Amber'], ['violet', 'Elegant Violet']
+    ];
+
+    function loadThemeSelect(selectId, selectedValue) {
+      const select = document.getElementById(selectId);
+      select.innerHTML = '<option value="">Select Theme Color</option>';
+      voucherThemes.forEach(([value, text]) => {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = text;
+        option.selected = value === (selectedValue || 'blue');
+        select.appendChild(option);
+      });
+    }
+
     async function loadVoucherFormatSelect(url, selectId, placeholder, selectedId) {
       const response = await fetch(url);
       const data = await response.json();
@@ -420,7 +447,10 @@
         select.appendChild(option);
       });
       select.addEventListener('change', () => {
-        if (select.value) window.open(`/api/voucher/template/${select.value}`, '_blank');
+        if (select.value) {
+          const themeId = selectId === 'voucherFormatSelect' ? 'pdfThemeSelect' : 'linkThemeSelect';
+          window.open(`/api/voucher/template/${select.value}?theme=${document.getElementById(themeId).value || 'blue'}`, '_blank');
+        }
       });
     }
 
@@ -804,6 +834,8 @@
       const payload = {
         voucherFormatsId: voucherFormatId,
         linkVoucherFormatsId: linkVoucherFormatId,
+        pdfTheme: document.getElementById('pdfThemeSelect').value,
+        linkTheme: document.getElementById('linkThemeSelect').value,
         departureFlightDate: document.getElementById('departureFlightDate').value,
         departureFlightNo: document.getElementById('departureFlightNo').value,
         departureFlightFromCity: document.getElementById('departureFlightFromCity').value,

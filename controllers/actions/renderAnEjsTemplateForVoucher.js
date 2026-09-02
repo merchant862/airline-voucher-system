@@ -4,6 +4,7 @@ const { voucherFormats } = require('../../database/models');
 
 const path = require('path');
 const { generateQr } = require('./helpers/qrCode');
+const { getVoucherTheme } = require('./helpers/voucherThemes');
 
 function getVerifiedImagePath(ejsPath = '') {
     if (ejsPath.includes('crm2')) return '/images/verified.jpeg';
@@ -85,6 +86,7 @@ async function getVoucherTemplate(req, res, next) {
             departureFlight,
             arrivalFlight,
             qrImage,
+            theme: getVoucherTheme(req.query.theme),
             verifiedImage: getVerifiedImagePath(format.ejsPath)
         });
 

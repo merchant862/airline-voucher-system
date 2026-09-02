@@ -6,6 +6,7 @@ const ejs = require('ejs');
 const puppeteer = require('puppeteer'); // instead of puppeteer-core
 //const puppeteer = require('puppeteer-core');
 const { generateVoucherQr } = require('./helpers/qrCode');
+const { getVoucherThemeKey, getVoucherTheme } = require('./helpers/voucherThemes');
 
 const { vouchers, 
     customers, 
@@ -64,6 +65,8 @@ async function addVoucherController(req, res, next) {
         const voucher = await vouchers.create({
             linkVoucherFormatsId: req.body.linkVoucherFormatsId,
             voucherFormatsId: req.body.voucherFormatsId,
+            pdfTheme: getVoucherThemeKey(req.body.pdfTheme),
+            linkTheme: getVoucherThemeKey(req.body.linkTheme),
             companyId: req.body.companyId,
             foreignCompanyId: req.body.foreignCompanyId,
             voucherNo: `UB-${Math.floor(100000 + Math.random() * 900000)}`,
@@ -289,6 +292,7 @@ async function addVoucherController(req, res, next) {
     },
     notes: voucherData.notes.map(n => n.content).join('\n'),
     qrImage: qrImage,
+    theme: getVoucherTheme(voucherData.pdfTheme),
     verifiedImage: await getBase64Image(getVerifiedImagePath(voucherData.voucherFormat.ejsPath))
 };
 

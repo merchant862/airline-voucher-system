@@ -186,6 +186,14 @@ button.submitBtn {
                     <option value="">Select Link Voucher Format</option>
                 </select>
             </div>
+            <div class="flex-col">
+                <label>PDF Theme Color</label>
+                <select id="pdfThemeSelect" name="pdfTheme" required></select>
+            </div>
+            <div class="flex-col">
+                <label>Link Theme Color</label>
+                <select id="linkThemeSelect" name="linkTheme" required></select>
+            </div>
         </div>
     </div>
 
@@ -303,6 +311,23 @@ function formatDisplayName(format, index, labelPrefix) {
     return match ? match[1] : `${labelPrefix} ${index + 1}`;
 }
 
+const voucherThemes = [
+    ['blue', 'Ocean Blue'], ['teal', 'Professional Teal'], ['green', 'Fresh Green'],
+    ['rose', 'Soft Rose'], ['amber', 'Warm Amber'], ['violet', 'Elegant Violet']
+];
+
+function loadThemeSelect(selectId, label) {
+    const select = document.getElementById(selectId);
+    select.innerHTML = `<option value="">Select ${label} Theme</option>`;
+    voucherThemes.forEach(([value, text]) => {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = text;
+        select.appendChild(option);
+    });
+    select.value = 'blue';
+}
+
 document.addEventListener("DOMContentLoaded", async function () {
     ['departureFlightTakeOffTime', 'departureFlightLandingTime', 'arrivalFlightTakeOffTime', 'arrivalFlightLandingTime'].forEach(id => {
         flatpickr("#" + id, {
@@ -317,6 +342,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     await loadCustomAgencies('foreign', 'foreignAgencyDropdown', 'foreignCompanySelect');
     await loadVoucherFormats();
     await loadLinkVoucherFormats();
+    loadThemeSelect('pdfThemeSelect', 'PDF Voucher');
+    loadThemeSelect('linkThemeSelect', 'Link Voucher');
     await loadTransportList();
     restoreFormData();
 });
@@ -479,7 +506,7 @@ async function loadVoucherFormats() {
         select.addEventListener('change', function () {
             if (!this.value) return;
             saveFormData();
-            window.open(`/api/voucher/template/${this.value}`, '_blank');
+            window.open(`/api/voucher/template/${this.value}?theme=${document.getElementById('pdfThemeSelect').value || 'blue'}`, '_blank');
         });
     } catch (err) {
         console.error(err);
@@ -504,7 +531,7 @@ async function loadLinkVoucherFormats() {
         select.addEventListener('change', function () {
             if (!this.value) return;
             saveFormData();
-            window.open(`/api/voucher/template/${this.value}`, '_blank');
+            window.open(`/api/voucher/template/${this.value}?theme=${document.getElementById('linkThemeSelect').value || 'blue'}`, '_blank');
         });
     } catch (err) {
         console.error(err);
@@ -856,6 +883,8 @@ form.addEventListener('submit', async e => {
     const payload = {
         linkVoucherFormatsId: linkVoucherFormatSelect.value,
         voucherFormatsId: voucherFormatSelect.value,
+        pdfTheme: document.getElementById('pdfThemeSelect').value,
+        linkTheme: document.getElementById('linkThemeSelect').value,
         companyId: document.getElementById('companySelect').value,
         foreignCompanyId: document.getElementById('foreignCompanySelect').value,
         departureFlightDate: document.getElementById('departureFlightDate').value,

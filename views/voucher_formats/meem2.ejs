@@ -501,6 +501,13 @@ tr:nth-child(even) td{
 </style>
 </head>
 
+<style>
+  :root { --theme-primary:<%= theme.primary %>; --theme-dark:<%= theme.dark %>; --theme-soft:<%= theme.soft %>; }
+  .header-table, .section-heading { background:var(--theme-primary) !important; }
+  .section-heading { color:#fff !important; border-color:var(--theme-primary) !important; }
+  th { background:var(--theme-soft) !important; color:var(--theme-dark) !important; border-color:var(--theme-primary) !important; }
+  .customer-name, .hotel-name { color:var(--theme-dark) !important; font-weight:700; }
+</style>
 <body>
 
 <div class="wrapper">

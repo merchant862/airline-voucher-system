@@ -39,6 +39,8 @@ module.exports = (sequelize, DataTypes) => {
     foreignCompanyId: DataTypes.INTEGER,
     voucherFormatsId: DataTypes.INTEGER,
     linkVoucherFormatsId: DataTypes.INTEGER,
+    pdfTheme: DataTypes.STRING,
+    linkTheme: DataTypes.STRING,
     status: DataTypes.ENUM('active', 'inactive'),
   }, {
     sequelize,
