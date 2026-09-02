@@ -16,6 +16,7 @@ const {
   voucherFormats,
   roomTypePrices
 } = require('../../database/models');
+const { getVoucherTheme, getVoucherThemeKey } = require('./helpers/voucherThemes');
 
 const titleCase = (value) =>
   String(value || '')
@@ -66,7 +67,7 @@ async function downloadPaymentSlipPdfController(req, res, next) {
       include: [
         { model: customers, as: 'customers', attributes: ['id', 'customerName', 'customerGender'] },
         { model: hotels, as: 'hotels', attributes: ['hotelName', 'city', 'roomType', 'noOfNights'] },
-        { model: transports, as: 'transports', attributes: ['type', 'route'] },
+        { model: transports, as: 'transports', attributes: ['type', 'route', 'rate'] },
         { model: notes, as: 'notes', attributes: ['content'] },
         { model: agencies, as: 'company', attributes: ['name', 'image', 'address', 'phone', 'email'] },
         { model: foreignAgencies, as: 'foreignCompany', attributes: ['name', 'image', 'address', 'phone', 'email'] },
@@ -86,21 +87,33 @@ async function downloadPaymentSlipPdfController(req, res, next) {
     const maleCustomer = voucherData.customers.find(customer => customer.customerGender?.toLowerCase() === 'male');
     const passengerName = singlePassengerName(maleCustomer?.customerName || voucherData.customers[0]?.customerName);
 
-    const items = voucherData.hotels.map(hotel => {
+    const hotelItems = voucherData.hotels.map(hotel => {
       const nights = Number(hotel.noOfNights || 0);
       const rate = priceMap.get(hotel.roomType) || 0;
       return {
-        city: hotel.city,
-        hotelName: hotel.hotelName,
-        roomType: titleCase(hotel.roomType),
-        nights,
+        category: 'Hotel',
+        description: `${hotel.city || ''} - ${hotel.hotelName || ''} - ${titleCase(hotel.roomType)}`.replace(/^ - | - $/g, ''),
+        quantity: nights,
+        quantityLabel: 'Nights',
         rate,
         amount: nights * rate
       };
     });
 
+    const transportItems = voucherData.transports
+      .filter(transport => ['private car', 'economy bus'].includes((transport.type || '').trim().toLowerCase()))
+      .map(transport => ({
+        category: 'Transport',
+        description: `${transport.type || 'Transport'} - ${transport.route || ''}`.replace(/ - $/, ''),
+        quantity: 1,
+        quantityLabel: 'Trip',
+        rate: Number(transport.rate || 0),
+        amount: Number(transport.rate || 0)
+      }));
+
+    const items = [...hotelItems, ...transportItems];
     const totalAmount = items.reduce((sum, item) => sum + item.amount, 0);
-    const ejsPath = voucherData.voucherFormat?.ejsPath || voucherData.linkVoucherFormat?.ejsPath || '';
+    const themeKey = getVoucherThemeKey(voucherData.pdfTheme);
 
     const html = await ejs.renderFile(
       path.join(__dirname, '../..', 'views/payment_slip.ejs'),
@@ -123,7 +136,8 @@ async function downloadPaymentSlipPdfController(req, res, next) {
           currency: 'PKR',
           items,
           totalAmount,
-          theme: paymentSlipTheme(ejsPath)
+          themeKey,
+          theme: getVoucherTheme(themeKey)
         }
       },
       { async: true }
@@ -145,9 +159,9 @@ async function downloadPaymentSlipPdfController(req, res, next) {
     });
 
     const pdfBuffer = await page.pdf({
-      format: 'A4',
+    format: 'A4',
       printBackground: true,
-      margin: { top: '8mm', bottom: '8mm', left: '8mm', right: '8mm' }
+      margin: { top: '5mm', bottom: '5mm', left: '5mm', right: '5mm' }
     });
 
     await browser.close();

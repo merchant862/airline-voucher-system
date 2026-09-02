@@ -470,11 +470,13 @@ function restoreFormData() {
     // Restore transports
     const transportRoutes = normalizeArray(data['transportRoute[]']);
     const transportTypes = normalizeArray(data['transportType[]']);
+    const transportRates = normalizeArray(data['transportRate[]']);
 
     for (let i = 0; i < transportRoutes.length; i++) {
         addTransport({
             transportRoute: transportRoutes[i] || '',
-            transportType: transportTypes[i] || ''
+            transportType: transportTypes[i] || '',
+            transportRate: transportRates[i] || ''
         });
     }
 
@@ -807,16 +809,31 @@ function addTransport(prefill = {}) {
         </select>
         <label>Transport Type</label>
         <input type="text" name="transportType[]" required class="transportTypeInput" readonly value="${escapeAttr(prefill.transportType || '')}">
+        <div class="transportRateWrap" style="display:none;">
+            <label>Transport Rate</label>
+            <input type="number" name="transportRate[]" class="transportRateInput" min="0" step="1" placeholder="Rate">
+        </div>
     `;
 
     document.getElementById('transportContainer').appendChild(div);
 
     const routeSelect = div.querySelector('.transportRouteSelect');
     const typeInput = div.querySelector('.transportTypeInput');
+    const rateWrap = div.querySelector('.transportRateWrap');
+    const rateInput = div.querySelector('.transportRateInput');
+
+    function updateTransportRateVisibility() {
+        const type = typeInput.value.trim().toLowerCase();
+        const needsRate = type === 'private car' || type === 'economy bus';
+        rateWrap.style.display = needsRate ? 'block' : 'none';
+        rateInput.required = needsRate;
+        if (!needsRate) rateInput.value = '';
+    }
 
     routeSelect.addEventListener('change', function () {
         const selectedOption = this.selectedOptions[0];
         typeInput.value = selectedOption?.dataset.type || '';
+        updateTransportRateVisibility();
         saveFormData();
     });
 
@@ -826,6 +843,9 @@ function addTransport(prefill = {}) {
             typeInput.value = selectedOption.dataset.type;
         }
     }
+
+    rateInput.value = prefill.transportRate || '';
+    updateTransportRateVisibility();
 
     saveFormData();
 }
@@ -925,6 +945,7 @@ form.addEventListener('submit', async e => {
         hotelNoOfNights: [...document.getElementsByName('hotelNoOfNights[]')].map(i => i.value),
         transportRoute: [...document.getElementsByName('transportRoute[]')].map(i => i.value),
         transportType: [...document.getElementsByName('transportType[]')].map(i => i.value),
+        transportRate: [...document.getElementsByName('transportRate[]')].map(i => i.value),
         vouchernotes: document.getElementById('vouchernotes').value
     };
 

@@ -126,6 +126,9 @@ async function updateVoucherController(req, res, next) {
             const transportsData = req.body.transports.map(tObj => ({
                 route: tObj.route?.trim() || 'Unknown Route',
                 type: tObj.type?.trim() || null,
+                rate: ['private car', 'economy bus'].includes((tObj.type || '').trim().toLowerCase())
+                    ? Math.max(Number(tObj.rate) || 0, 0)
+                    : null,
                 voucherId
             }));
             await transports.bulkCreate(transportsData, { transaction: t });
@@ -164,7 +167,7 @@ async function updateVoucherController(req, res, next) {
                 { 
                     model: transports, 
                     as: 'transports',
-                    attributes: ['id', 'type', 'route', 'voucherId', 'createdAt', 'updatedAt']
+                    attributes: ['id', 'type', 'route', 'rate', 'voucherId', 'createdAt', 'updatedAt']
                 },
                 { 
                     model: notes, 
@@ -228,7 +231,7 @@ async function updateVoucherController(req, res, next) {
                 address: voucherData.foreignCompany?.address,
                 logo: await getBase64Image(voucherData.foreignCompany?.image)
             },
-            transports: voucherData.transports.map(t => ({ type: t.type, route: t.route })),
+            transports: voucherData.transports.map(t => ({ type: t.type, route: t.route, rate: t.rate })),
             familyHead: voucherData.customers[0]?.customerName || '',
             customers: voucherData.customers.map(c => ({
                 name: c.customerName, gender: c.customerGender, passport: c.customerPassport, visaNumber: c.customerVisa, pnr: c.customerPNR

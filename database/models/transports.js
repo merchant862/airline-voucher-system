@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   transports.init({
     type: DataTypes.STRING,
     route: DataTypes.STRING,
+    rate: DataTypes.INTEGER,
     voucherId: DataTypes.INTEGER
   }, {
     sequelize,

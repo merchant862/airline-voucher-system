@@ -133,6 +133,9 @@ async function addVoucherController(req, res, next) {
             const transportData = req.body.transportRoute.map((route, i) => ({
                 route: route?.trim(),
                 type: req.body.transportType?.[i]?.trim() || null,
+                rate: ['private car', 'economy bus'].includes((req.body.transportType?.[i] || '').trim().toLowerCase())
+                    ? Math.max(Number(req.body.transportRate?.[i]) || 0, 0)
+                    : null,
                 voucherId
             }));
             await transports.bulkCreate(transportData, { transaction: t });
@@ -175,7 +178,7 @@ async function addVoucherController(req, res, next) {
                 { 
                     model: transports, 
                     as: 'transports',
-                    attributes: ['id', 'type', 'route', 'voucherId', 'createdAt', 'updatedAt']
+                    attributes: ['id', 'type', 'route', 'rate', 'voucherId', 'createdAt', 'updatedAt']
                 },
                 { 
                     model: notes, 
@@ -255,6 +258,7 @@ async function addVoucherController(req, res, next) {
     transports: voucherData.transports.map(t => ({
         type: t.type,
         route: t.route,
+        rate: t.rate,
     })),
     familyHead: voucherData.customers[0]?.customerName || '',
     customers: voucherData.customers.map(c => ({

@@ -4,31 +4,31 @@
 <meta charset="UTF-8">
 <title>Payment Slip</title>
 <style>
-@page { size:A4; margin:8mm; }
+@page { size:A4; margin:5mm; }
 *{ box-sizing:border-box; }
 body{ margin:0; font-family:Arial,Helvetica,sans-serif; color:#18212f; background:#fff; }
-.slip{ width:100%; border:1px solid #cfd7e3; padding:18px 22px; }
-.header{ display:grid; grid-template-columns:135px 1fr 170px; align-items:center; gap:16px; padding:16px; border-radius:12px; }
-.logoBox{ width:118px; height:118px; background:#fff; border-radius:12px; display:flex; align-items:center; justify-content:center; padding:9px; box-shadow:0 10px 24px rgba(0,0,0,0.18); }
+.slip{ width:100%; border:1px solid #cfd7e3; padding:10px 14px; }
+.header{ display:grid; grid-template-columns:105px 1fr 155px; align-items:center; gap:10px; padding:10px; border-radius:8px; }
+.logoBox{ width:88px; height:88px; background:#fff; border-radius:8px; display:flex; align-items:center; justify-content:center; padding:7px; box-shadow:0 6px 14px rgba(0,0,0,0.14); }
 .logoBox img{ max-width:100%; max-height:100%; object-fit:contain; }
-.brand h1{ margin:0; font-size:24px; line-height:1.15; letter-spacing:.6px; text-transform:uppercase; }
-.brand .bar{ width:86px; height:3px; margin:9px 0 10px; border-radius:999px; }
-.brand p{ margin:4px 0 0; font-size:11px; line-height:1.4; }
-.receipt{ text-align:right; font-size:12px; line-height:1.9; }
-.title{ text-align:center; margin:18px 0 14px; font-size:22px; font-weight:800; letter-spacing:2px; color:#111827; }
-.meta{ display:grid; grid-template-columns:1fr 1fr; gap:10px 24px; border:1px solid #d8e0eb; background:#f8fafc; padding:12px 14px; font-size:13px; }
+.brand h1{ margin:0; font-size:19px; line-height:1.15; letter-spacing:.3px; text-transform:uppercase; }
+.brand .bar{ width:70px; height:3px; margin:6px 0 7px; border-radius:999px; }
+.brand p{ margin:3px 0 0; font-size:9px; line-height:1.25; }
+.receipt{ text-align:right; font-size:10px; line-height:1.6; }
+.title{ text-align:center; margin:10px 0 8px; font-size:18px; font-weight:800; letter-spacing:1px; color:#111827; }
+.meta{ display:grid; grid-template-columns:1fr 1fr; gap:6px 16px; border:1px solid #d8e0eb; background:#f8fafc; padding:8px 10px; font-size:10px; }
 .meta div{ display:flex; gap:8px; }
-.meta span{ min-width:120px; font-weight:700; }
-table{ width:100%; border-collapse:collapse; margin-top:16px; font-size:12px; }
-th{ color:#fff; text-align:left; padding:9px 8px; }
-td{ padding:9px 8px; border:1px solid #d6dee9; }
+.meta span{ min-width:100px; font-weight:700; }
+table{ width:100%; border-collapse:collapse; margin-top:10px; font-size:10px; }
+th{ color:#fff; text-align:left; padding:6px 6px; }
+td{ padding:6px; border:1px solid #d6dee9; }
 td.num, th.num{ text-align:right; }
 tbody tr:nth-child(even) td{ background:#fbfdff; }
-.total{ margin-top:12px; display:flex; justify-content:flex-end; }
-.totalBox{ width:300px; }
-.totalRow{ display:flex; justify-content:space-between; padding:10px 12px; font-size:13px; border-bottom:1px solid #d6dee9; }
-.totalRow:last-child{ border-bottom:0; font-size:16px; font-weight:800; }
-.signatures{ display:grid; grid-template-columns:1fr 1fr; gap:60px; margin-top:92px; font-size:12px; }
+.total{ margin-top:8px; display:flex; justify-content:flex-end; }
+.totalBox{ width:250px; }
+.totalRow{ display:flex; justify-content:space-between; padding:7px 9px; font-size:11px; border-bottom:1px solid #d6dee9; }
+.totalRow:last-child{ border-bottom:0; font-size:13px; font-weight:800; }
+.signatures{ display:grid; grid-template-columns:1fr 1fr; gap:45px; margin-top:38px; font-size:10px; }
 .line{ border-top:1px solid #111827; padding-top:8px; text-align:center; }
 
 .theme-meem .header{ background:linear-gradient(135deg,#0f172a,#1e293b 55%,#334155); border:1px solid #1e293b; }
@@ -67,13 +67,26 @@ tbody tr:nth-child(even) td{ background:#fbfdff; }
 </style>
 </head>
 <body>
-<div class="slip theme-<%= slip.theme %>">
+<style>
+  .slip {
+    --slip-primary:<%= slip.theme.primary %>;
+    --slip-dark:<%= slip.theme.dark %>;
+    --slip-soft:<%= slip.theme.soft %>;
+  }
+  .slip .header { border-bottom:3px solid var(--slip-primary) !important; background:var(--slip-soft) !important; }
+  .slip .brand h1, .slip .receipt strong, .slip .meta span { color:var(--slip-dark) !important; }
+  .slip .brand .bar, .slip th { background:var(--slip-primary) !important; }
+  .slip th, .slip .totalBox { border-color:var(--slip-primary) !important; }
+  .slip .totalRow:last-child { background:var(--slip-soft) !important; color:var(--slip-dark) !important; }
+  .agency-name { color:#000 !important; }
+</style>
+<div class="slip theme-<%= slip.themeKey %>">
   <div class="header">
     <div class="logoBox">
       <% if (company.logo) { %><img src="<%= company.logo %>" alt="Company Logo"><% } %>
     </div>
     <div class="brand">
-      <h1><%= company.name %></h1>
+      <h1 class="agency-name">M/S <%= company.name %></h1>
       <div class="bar"></div>
       <% if (company.address) { %><p><%= company.address %></p><% } %>
       <% if (company.email) { %><p>Email: <%= company.email %></p><% } %>
@@ -90,17 +103,16 @@ tbody tr:nth-child(even) td{ background:#fbfdff; }
   <div class="meta">
     <div><span>Voucher No:</span> <%= slip.voucherNo %></div>
     <div><span>Passenger Name:</span> <%= slip.passengerName %></div>
-    <div><span>Saudi Company:</span> <%= foreignCompany.name %></div>
+    <div><span>Saudi Company:</span> <span class="agency-name">M/S <%= foreignCompany.name %></span></div>
     <div><span>Currency:</span> <%= slip.currency %></div>
   </div>
 
   <table>
     <thead>
       <tr>
-        <th>City</th>
-        <th>Hotel Name</th>
-        <th>Room Type</th>
-        <th class="num">Nights</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th class="num">Qty</th>
         <th class="num">Rate</th>
         <th class="num">Amount</th>
       </tr>
@@ -108,10 +120,9 @@ tbody tr:nth-child(even) td{ background:#fbfdff; }
     <tbody>
       <% slip.items.forEach(item => { %>
         <tr>
-          <td><%= item.city %></td>
-          <td><%= item.hotelName %></td>
-          <td><%= item.roomType %></td>
-          <td class="num"><%= item.nights %></td>
+          <td><%= item.category %></td>
+          <td><%= item.description %></td>
+          <td class="num"><%= item.quantity %> <%= item.quantityLabel %></td>
           <td class="num"><%= slip.currency %> <%= Number(item.rate).toLocaleString() %></td>
           <td class="num"><%= slip.currency %> <%= Number(item.amount).toLocaleString() %></td>
         </tr>

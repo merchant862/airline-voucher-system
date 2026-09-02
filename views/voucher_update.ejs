@@ -355,6 +355,10 @@
               value="<%= trans.type || '' %>"
               readonly
             />
+            <div class="transportRateWrap" style="display:none;">
+              <label>Transport Rate</label>
+              <input type="number" class="transportRateInput" name="transports[<%= index %>][rate]" value="<%= trans.rate || '' %>" min="0" step="1" placeholder="Rate" />
+            </div>
           </div>
         <% }) %>
       </div>
@@ -727,6 +731,10 @@
 
         <label>Transport Type</label>
         <input type="text" class="transportTypeInput" readonly>
+        <div class="transportRateWrap" style="display:none;">
+          <label>Transport Rate</label>
+          <input type="number" class="transportRateInput" min="0" step="1" placeholder="Rate">
+        </div>
       `;
 
       container.appendChild(div);
@@ -737,9 +745,19 @@
     function initTransportRow(div) {
       const routeSelect = div.querySelector('.transportRouteSelect');
       const typeInput = div.querySelector('.transportTypeInput');
+      const rateWrap = div.querySelector('.transportRateWrap');
+      const rateInput = div.querySelector('.transportRateInput');
 
       const initialRoute = routeSelect.dataset.initialRoute || routeSelect.value || '';
       const initialType = typeInput.value || '';
+
+      function updateTransportRateVisibility() {
+        const type = typeInput.value.trim().toLowerCase();
+        const needsRate = type === 'private car' || type === 'economy bus';
+        rateWrap.style.display = needsRate ? 'block' : 'none';
+        rateInput.required = needsRate;
+        if (!needsRate) rateInput.value = '';
+      }
 
       // reset options
       routeSelect.innerHTML = '<option value="">Select Route</option>';
@@ -769,12 +787,16 @@
       // set type on init
       if (routeSelect.selectedOptions[0]) {
         typeInput.value = routeSelect.selectedOptions[0].dataset.type || initialType || '';
+        updateTransportRateVisibility();
       }
 
       routeSelect.addEventListener('change', function () {
         const selectedOption = this.selectedOptions[0];
         typeInput.value = selectedOption?.dataset.type || '';
+        updateTransportRateVisibility();
       });
+
+      updateTransportRateVisibility();
     }
 
     // ------------------- REINDEX -------------------
@@ -819,6 +841,8 @@
 
         if (route) route.name = `transports[${index}][route]`;
         if (type) type.name = `transports[${index}][type]`;
+        const rate = row.querySelector('.transportRateInput');
+        if (rate) rate.name = `transports[${index}][rate]`;
       });
     }
 
@@ -882,7 +906,8 @@
 
         transports: Array.from(document.querySelectorAll('#transports-container .transport-item')).map(el => ({
           route: el.querySelector('.transportRouteSelect')?.value || '',
-          type: el.querySelector('.transportTypeInput')?.value || ''
+          type: el.querySelector('.transportTypeInput')?.value || '',
+          rate: el.querySelector('.transportRateInput')?.value || ''
         })),
 
         notes: (document.getElementById('voucherNotes').value || '')
