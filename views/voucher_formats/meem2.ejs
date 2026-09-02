@@ -313,6 +313,15 @@ tr:nth-child(even) td{
     font-size:12.5px;
 }
 
+.urdu-notice-image{
+    display:block;
+    width:100%;
+    height:auto;
+    margin-top:12px;
+}
+
+.agency-name{ color:#000 !important; }
+
 .arabic-block{
     direction:rtl;
     text-align:right;
@@ -524,7 +533,7 @@ tr:nth-child(even) td{
             </td>
 
             <td class="title-cell center-title">
-                <h2 style="
+                <h2 class="agency-name" style="
                     font-family: 'Montserrat', sans-serif;
                     font-size: 34px;
                     font-weight: 800;
@@ -533,7 +542,7 @@ tr:nth-child(even) td{
                     color: red;
                     margin-bottom: 10px;
                 ">
-                    <%= company.name %>
+                    M/S <%= company.name %>
                 </h2>
                 <div class="subline"></div>
                 <p>
@@ -559,7 +568,7 @@ tr:nth-child(even) td{
     <table class="info-table">
         <tr>
             <td><strong>UMRAH COMPANY</strong></td>
-            <td><%= foreignCompany.name %></td>
+            <td class="agency-name">M/S <%= foreignCompany.name %></td>
             <td><strong>HOTEL VOUCHER#</strong></td>
             <td><%= voucher.voucherNo %></td>
             <td><strong>V-DATE</strong></td>
@@ -728,19 +737,7 @@ tr:nth-child(even) td{
     </table>
 
     <!-- URDU BLOCK -->
-    <div class="arabic-block">
-        حاجیوں سے گزارش ہے کہ جدہ ائیر پورٹ سے مکہ مکرمہ سفر کے دوران اگر بس اسٹاف آپ کا پاسپورٹ اپنے پاس رکھے تو براہ کرم بس کی تصویر، نمبر پلیٹ کے ساتھ لے کر میزبان گروپ کے اسٹاف کو لازمی آگاہ کریں۔
-        <br>
-        ◄ جدہ ائیر پورٹ سے مکہ بس ٹرانسپورٹ کے لئے اس نمبر پر رابطہ کریں
-        <br>
-        ◄ ہوٹل چیک ان ٹائم دوپہر 4 بجے
-        <br>
-        ◄ ہوٹل چیک آوٹ ٹائم دوپہر 12 بجے
-        <br>
-        ◄ مکہ ہوٹل لائن کے لئے اس نمبر پر رابطہ کریں۔
-        <br>
-        ◄ مدینہ ہوٹل لائن کے لئے اس نمبر پر رابطہ کریں۔
-    </div>
+    <img class="urdu-notice-image" src="<%= urduNoticeImage %>" alt="Urdu instructions">
 
     <div class="important">
         <strong>IMPORTANT NOTICE:</strong>

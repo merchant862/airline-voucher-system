@@ -190,6 +190,7 @@ td {
   .section-title { background:var(--theme-soft) !important; color:var(--theme-dark) !important; border-color:var(--theme-primary) !important; }
   th { background:var(--theme-primary) !important; color:#fff !important; border-color:var(--theme-primary) !important; }
   .customer-name, .hotel-name { color:var(--theme-dark) !important; font-weight:700; }
+  .agency-name { color:#000 !important; }
 </style>
 <body>
 
@@ -227,7 +228,7 @@ td {
     <!-- Info Section -->
     <div class="info-row">
         <div class="info-left">
-            <div><strong>Customer:</strong> <%= company.name %></div>
+            <div><strong>Customer:</strong> <span class="agency-name">M/S <%= company.name %></span></div>
             <div><strong>Address:</strong>Shaheen View Appartments, Office #7, Mezzanine floor, Shaheen View, off Shahrah e Faisal, Block-6 Block 6 P.E.C.H.S., Karachi, 76800</div>
             <div><strong>Family Head:</strong> <%= familyHead %></div>
             <div><strong>Package:</strong> Custom</div>

@@ -109,6 +109,15 @@ th, td{
     background:#fff;
 }
 
+.urdu-notice-image{
+    display:block;
+    width:100%;
+    height:auto;
+    margin-top:10px;
+}
+
+.agency-name{ color:#000 !important; }
+
 .customer-name,
 .hotel-name{
     font-weight:700;
@@ -219,7 +228,7 @@ th, td{
 </td>
 
 <td width="60%" class="center-title">
-    <h2><%= (company.name || '').toUpperCase() %></h2>
+    <h2 class="agency-name">M/S <%= (company.name || '').toUpperCase() %></h2>
     <div><p>Shaheen View Appartments, Office #7, Mezzanine floor, Shaheen View, off Shahrah e Faisal, Block-6 Block 6 P.E.C.H.S., Karachi, 76800</p></div>
     <div class="service-title">SERVICE VOUCHER</div>
 </td>
@@ -236,7 +245,7 @@ th, td{
 <table>
 <tr>
 <td><strong>UMRAH COMPANY</strong></td>
-<td><%= foreignCompany.name %></td>
+<td class="agency-name">M/S <%= foreignCompany.name %></td>
 <td><strong>HOTEL VOUCHER#</strong></td>
 <td><%= voucher.voucherNo %></td>
 <td><strong>V-DATE</strong></td>
@@ -393,19 +402,7 @@ TOTAL PAX: <%= customers.length %>
 </table>
 
 <!-- URDU BLOCK -->
-<div class="arabic-block">
-حاجیوں سے گزارش ہے کہ جدہ ائیر پورٹ سے مکہ مکرمہ سفر کے دوران اگر بس اسٹاف آپ کا پاسپورٹ اپنے پاس رکھے تو براہ کرم بس کی تصویر، نمبر پلیٹ کے ساتھ لے کر میزبان گروپ کے اسٹاف کو لازمی آگاہ کریں۔
-<br>
-◄ جدہ ائیر پورٹ سے مکہ بس ٹرانسپورٹ کے لئے اس نمبر پر رابطہ کریں
-<br>
-◄ ہوٹل چیک ان ٹائم دوپہر 4 بجے
-<br>
-◄ ہوٹل چیک آوٹ ٹائم دوپہر 12 بجے
-<br>
-◄ مکہ ہوٹل لائن کے لئے اس نمبر پر رابطہ کریں۔
-<br>
-◄ مدینہ ہوٹل لائن کے لئے اس نمبر پر رابطہ کریں۔
-</div>
+<img class="urdu-notice-image" src="<%= urduNoticeImage %>" alt="Urdu instructions">
 
 <div class="important">
 <strong>IMPORTANT NOTICE:</strong>

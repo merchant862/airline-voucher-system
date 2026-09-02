@@ -4,7 +4,7 @@ const path = require('path');
 const ejs = require('ejs');
 const puppeteer = require('puppeteer');
 const { generateVoucherQr } = require('./helpers/qrCode');
-const { getVoucherThemeKey, getVoucherTheme } = require('./helpers/voucherThemes');
+const { getVoucherThemeKey, getVoucherTheme, getUrduNoticeImage } = require('./helpers/voucherThemes');
 const { vouchers, customers, hotels, transports, notes, agencies, foreignAgencies, voucherFormats } = require('./../../database/models');
 
 function getFamilyHeadName(customerList = []) {
@@ -250,6 +250,7 @@ async function updateVoucherController(req, res, next) {
             notes: voucherData.notes.map(n => n.content).join('\n'),
             qrImage,
             theme: getVoucherTheme(voucherData.pdfTheme),
+            urduNoticeImage: getUrduNoticeImage(),
             verifiedImage: await getBase64Image(getVerifiedImagePath(voucherData.voucherFormat.ejsPath))
         };
 

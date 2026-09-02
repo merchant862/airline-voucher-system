@@ -17,4 +17,17 @@ function getVoucherThemeKey(themeKey) {
   return VOUCHER_THEMES[themeKey] ? themeKey : DEFAULT_VOUCHER_THEME;
 }
 
-module.exports = { VOUCHER_THEMES, DEFAULT_VOUCHER_THEME, getVoucherTheme, getVoucherThemeKey };
+function getUrduNoticeImage() {
+  const filePath = path.join(__dirname, '../../../public/images/urdu-notices-reference.png');
+  return `data:image/png;base64,${fs.readFileSync(filePath).toString('base64')}`;
+}
+
+module.exports = {
+  VOUCHER_THEMES,
+  DEFAULT_VOUCHER_THEME,
+  getVoucherTheme,
+  getVoucherThemeKey,
+  getUrduNoticeImage
+};
+const fs = require('fs');
+const path = require('path');

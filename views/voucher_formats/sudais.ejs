@@ -52,6 +52,8 @@
   th { background:var(--theme-primary) !important; color:#fff !important; border-color:var(--theme-primary) !important; }
   .section-title { color:var(--theme-dark) !important; border-bottom-color:var(--theme-primary) !important; }
   .customer-name, .hotel-name { color:var(--theme-dark) !important; font-weight:700; }
+  .agency-name { color:#000 !important; }
+  .urdu-notice-image { display:block; width:100%; height:auto; margin-top:10px; }
 </style>
 <body>
 
@@ -62,7 +64,7 @@
         <% if(company.logo){ %><img src="<%= company.logo %>" class="left-logo" /><% } %>
         <% if(foreignCompany.logo){ %><img src="<%= foreignCompany.logo %>" class="right-logo" /><% } %>
         
-        <h2><%= company.name %></h2>
+        <h2 class="agency-name">M/S <%= company.name %></h2>
         <h5 class="company-address">
             Shaheen View Appartments, Office #7, Mezzanine floor,<br/> Shaheen View, off Shahrah e Faisal, Block-6 Block 6 P.E.C.H.S., Karachi, 76800
         </h5>
@@ -73,7 +75,7 @@
 	<table>
 		<tr>
 			<td><strong>IATA:</strong></td>
-			<td><%= company.name %></td>
+			<td class="agency-name">M/S <%= company.name %></td>
 
 			<td><strong>Voucher No:</strong></td>
 			<td><%= voucher.voucherNo %></td>
@@ -84,7 +86,7 @@
 
 		<tr>
 			<td><strong>Saudi Company:</strong></td>
-			<td><%= foreignCompany.name %></td>
+			<td class="agency-name">M/S <%= foreignCompany.name %></td>
 
 			<td><strong>Date:</strong></td>
 			<td><%= voucher.date %></td>
@@ -229,6 +231,9 @@
         Transport Contact: +966500000000
         <%= notes %>
     </div>
+
+    <!-- URDU BLOCK -->
+    <img class="urdu-notice-image" src="<%= urduNoticeImage %>" alt="Urdu instructions">
 
 </div>
 
