@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+
 const VOUCHER_THEMES = {
   blue: { label: 'Ocean Blue', primary: '#2563eb', dark: '#1d4ed8', soft: '#eff6ff', accent: '#0f766e' },
   teal: { label: 'Professional Teal', primary: '#0f766e', dark: '#115e59', soft: '#f0fdfa', accent: '#2563eb' },
@@ -17,11 +20,15 @@ function getVoucherThemeKey(themeKey) {
   return VOUCHER_THEMES[themeKey] ? themeKey : DEFAULT_VOUCHER_THEME;
 }
 
+function getUrduFontData() {
+  const fontPath = path.join(__dirname, '../../../public/fonts/NotoNastaliqUrdu-Regular.ttf');
+  return `data:font/ttf;base64,${fs.readFileSync(fontPath).toString('base64')}`;
+}
+
 module.exports = {
   VOUCHER_THEMES,
   DEFAULT_VOUCHER_THEME,
   getVoucherTheme,
-  getVoucherThemeKey
+  getVoucherThemeKey,
+  getUrduFontData
 };
-const fs = require('fs');
-const path = require('path');

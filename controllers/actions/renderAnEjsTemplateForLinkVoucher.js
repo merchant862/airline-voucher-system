@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const path = require('path');
 const { generateVoucherQr } = require('./helpers/qrCode');
-const { getVoucherTheme } = require('./helpers/voucherThemes');
+const { getVoucherTheme, getUrduFontData } = require('./helpers/voucherThemes');
 
 const {
     vouchers,
@@ -232,6 +232,7 @@ async function getVoucherTemplate(req, res, next) {
             transports: formattedTransports,
             notes: formattedNotes,
             theme: getVoucherTheme(voucher.linkTheme),
+            urduFontData: getUrduFontData(),
             departureFlight,
             arrivalFlight,
             qrImage,
