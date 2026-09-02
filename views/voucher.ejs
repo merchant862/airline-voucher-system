@@ -175,24 +175,24 @@ button.submitBtn {
 
         <div class="flex-row" style="margin-top:16px;">
             <div class="flex-col">
+                <label>PDF Theme Color</label>
+                <select id="pdfThemeSelect" name="pdfTheme" required></select>
+            </div>
+            <div class="flex-col">
                 <label>Download Voucher Format</label>
                 <select id="voucherFormatSelect" name="voucherFormatsId">
                     <option value="">Select Download Voucher Format</option>
                 </select>
             </div>
             <div class="flex-col">
+                <label>Link Theme Color</label>
+                <select id="linkThemeSelect" name="linkTheme" required></select>
+            </div>
+            <div class="flex-col">
                 <label>Link Voucher Format</label>
                 <select id="linkVoucherFormatSelect" name="linkVoucherFormatsId">
                     <option value="">Select Link Voucher Format</option>
                 </select>
-            </div>
-            <div class="flex-col">
-                <label>PDF Theme Color</label>
-                <select id="pdfThemeSelect" name="pdfTheme" required></select>
-            </div>
-            <div class="flex-col">
-                <label>Link Theme Color</label>
-                <select id="linkThemeSelect" name="linkTheme" required></select>
             </div>
         </div>
     </div>
@@ -325,7 +325,19 @@ function loadThemeSelect(selectId, label) {
         option.textContent = text;
         select.appendChild(option);
     });
-    select.value = 'blue';
+    select.value = '';
+    select.addEventListener('change', () => {
+        const formatId = selectId === 'pdfThemeSelect' ? 'voucherFormatSelect' : 'linkVoucherFormatSelect';
+        openFormatDemo(formatId, selectId);
+        saveFormData();
+    });
+}
+
+function openFormatDemo(formatId, themeId) {
+    const format = document.getElementById(formatId);
+    const theme = document.getElementById(themeId);
+    if (!format?.value || !theme?.value) return;
+    window.open(`/api/voucher/template/${format.value}?theme=${theme.value}`, '_blank');
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -506,7 +518,7 @@ async function loadVoucherFormats() {
         select.addEventListener('change', function () {
             if (!this.value) return;
             saveFormData();
-            window.open(`/api/voucher/template/${this.value}?theme=${document.getElementById('pdfThemeSelect').value || 'blue'}`, '_blank');
+            openFormatDemo('voucherFormatSelect', 'pdfThemeSelect');
         });
     } catch (err) {
         console.error(err);
@@ -531,7 +543,7 @@ async function loadLinkVoucherFormats() {
         select.addEventListener('change', function () {
             if (!this.value) return;
             saveFormData();
-            window.open(`/api/voucher/template/${this.value}?theme=${document.getElementById('linkThemeSelect').value || 'blue'}`, '_blank');
+            openFormatDemo('linkVoucherFormatSelect', 'linkThemeSelect');
         });
     } catch (err) {
         console.error(err);

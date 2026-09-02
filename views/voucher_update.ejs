@@ -153,20 +153,20 @@
       <h3>Voucher Formats</h3>
       <div class="flight-grid">
         <div>
-          <label for="voucherFormatSelect">Download Voucher Format</label>
-          <select id="voucherFormatSelect" name="voucherFormatsId" required></select>
-        </div>
-        <div>
-          <label for="linkVoucherFormatSelect">Link Voucher Format</label>
-          <select id="linkVoucherFormatSelect" name="linkVoucherFormatsId" required></select>
-        </div>
-        <div>
           <label for="pdfThemeSelect">PDF Theme Color</label>
           <select id="pdfThemeSelect" name="pdfTheme" required></select>
         </div>
         <div>
+          <label for="voucherFormatSelect">Download Voucher Format</label>
+          <select id="voucherFormatSelect" name="voucherFormatsId" required></select>
+        </div>
+        <div>
           <label for="linkThemeSelect">Link Theme Color</label>
           <select id="linkThemeSelect" name="linkTheme" required></select>
+        </div>
+        <div>
+          <label for="linkVoucherFormatSelect">Link Voucher Format</label>
+          <select id="linkVoucherFormatSelect" name="linkVoucherFormatsId" required></select>
         </div>
       </div>
     </div>
@@ -430,6 +430,17 @@
         option.selected = value === (selectedValue || 'blue');
         select.appendChild(option);
       });
+      select.addEventListener('change', () => {
+        const formatId = selectId === 'pdfThemeSelect' ? 'voucherFormatSelect' : 'linkVoucherFormatSelect';
+        openFormatDemo(formatId, selectId);
+      });
+    }
+
+    function openFormatDemo(formatId, themeId) {
+      const format = document.getElementById(formatId);
+      const theme = document.getElementById(themeId);
+      if (!format?.value || !theme?.value) return;
+      window.open(`/api/voucher/template/${format.value}?theme=${theme.value}`, '_blank');
     }
 
     async function loadVoucherFormatSelect(url, selectId, placeholder, selectedId) {
@@ -449,7 +460,7 @@
       select.addEventListener('change', () => {
         if (select.value) {
           const themeId = selectId === 'voucherFormatSelect' ? 'pdfThemeSelect' : 'linkThemeSelect';
-          window.open(`/api/voucher/template/${select.value}?theme=${document.getElementById(themeId).value || 'blue'}`, '_blank');
+          openFormatDemo(selectId, themeId);
         }
       });
     }
