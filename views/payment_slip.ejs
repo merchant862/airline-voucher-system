@@ -73,9 +73,12 @@ tbody tr:nth-child(even) td{ background:#fbfdff; }
     --slip-dark:<%= slip.theme.dark %>;
     --slip-soft:<%= slip.theme.soft %>;
   }
-  .slip .header { border-bottom:3px solid var(--slip-primary) !important; background:var(--slip-soft) !important; }
-  .slip .brand h1, .slip .receipt strong, .slip .meta span { color:var(--slip-dark) !important; }
-  .slip .brand .bar, .slip th { background:var(--slip-primary) !important; }
+  .slip .header { border-bottom:3px solid var(--slip-dark) !important; background:var(--slip-primary) !important; }
+  .slip .brand h1.agency-name { color:#000 !important; background:#fff; padding:2px 6px; display:inline-block; border-radius:3px; }
+  .slip .brand p, .slip .receipt { color:#fff !important; }
+  .slip .receipt strong { color:#fff !important; }
+  .slip .meta span { color:var(--slip-dark) !important; }
+  .slip .brand .bar, .slip th { background:var(--slip-dark) !important; }
   .slip th, .slip .totalBox { border-color:var(--slip-primary) !important; }
   .slip .totalRow:last-child { background:var(--slip-soft) !important; color:var(--slip-dark) !important; }
   .agency-name { color:#000 !important; }
