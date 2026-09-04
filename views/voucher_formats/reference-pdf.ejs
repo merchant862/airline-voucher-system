@@ -6,6 +6,39 @@
 <style>
 @page{size:A4 portrait;margin:4mm}*{box-sizing:border-box}body{margin:0;color:#111;font-family:Arial,Helvetica,sans-serif;font-size:8px}.voucher{width:100%}.header{display:grid;grid-template-columns:34% 32% 34%;align-items:start;min-height:80px;padding-bottom:3px}.header-left{padding:5px 0 0 4px}.header-center{text-align:center}.header-right{text-align:right;padding:4px 3px 0 0}.title{font-size:18px;line-height:1.03;font-weight:800}.voucher-no{margin-top:3px;color:var(--theme-dark);font-size:13px;font-weight:700}.logo{width:128px;height:57px;object-fit:contain}.foreign-name{font-size:9px;line-height:1.25;font-weight:800;text-transform:uppercase}.foreign-details{margin-top:2px;line-height:1.2}.info{width:100%;border-collapse:collapse;margin-top:2px}.info td{padding:3px 4px;border:2px solid #111;font-size:9px}.info .label{font-weight:800;white-space:nowrap}.band{margin-top:3px;padding:2px;border:2px solid #111;background:#d2d2d2;text-align:center;font-family:Georgia,serif;font-size:11px;font-weight:700}.data{width:100%;border-collapse:collapse;table-layout:fixed}.data th,.data td{padding:2px 3px;border:2px solid #111;text-align:center;vertical-align:middle;word-wrap:break-word}.data th{background:#d2d2d2;font-weight:700}.data .name,.data .hotel{font-weight:700}.data .name,.data .hotel{color:var(--theme-dark)}.accommodation td{border-style:dotted}.total{text-align:right;padding:2px 12px 0 0;font-weight:700;font-style:italic}.transport td{padding-top:3px;padding-bottom:3px}.flight-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}.flight-title{padding:2px;border:2px solid #111;border-bottom:0;background:#d2d2d2;color:var(--theme-dark);text-align:center;font-family:Georgia,serif;font-size:10px;font-weight:700}.flight th,.flight td{padding:3px 3px}.bottom{display:grid;grid-template-columns:1fr 115px;gap:5px;align-items:start;margin-top:3px}.instructions{color:var(--theme-dark);font-size:9px;font-style:italic;font-weight:700}.notes{min-height:28px;font-style:italic;font-weight:700}.qr{text-align:center}.qr img{width:108px;height:108px;object-fit:contain}.contact-title{margin-top:5px;text-align:center;font-family:Georgia,serif;font-size:10px}.contact{width:100%;border-collapse:collapse;margin-top:3px}.contact td{padding:5px;border:2px solid #111;text-align:center;font-family:Georgia,serif;font-size:9px}.urdu{direction:rtl;text-align:right;margin:4px 0 0;padding:0 16px 0 0;font-family:'Voucher Nastaliq','Noto Nastaliq Urdu','Noto Naskh Arabic',Tahoma,sans-serif;font-size:8px;line-height:1.28}.urdu li{margin:0;padding-right:3px}
 </style>
+<style>
+  /* Match the reference PDF's full-page scale while keeping the layout compact. */
+  body { font-size:10px; }
+  .header { min-height:112px; padding-bottom:7px; }
+  .header-left { padding:8px 0 0 7px; }
+  .header-center { padding-top:3px; }
+  .header-right { padding:8px 5px 0 0; }
+  .title { font-size:25px; }
+  .voucher-no { margin-top:5px; font-size:17px; }
+  .logo { width:175px; height:82px; }
+  .foreign-name { font-size:12px; }
+  .foreign-details { margin-top:4px; line-height:1.3; }
+  .info { margin-top:4px; }
+  .info td { padding:5px 6px; font-size:10px; }
+  .band { margin-top:5px; padding:4px; font-size:14px; }
+  .data th, .data td { padding:4px 5px; }
+  .data th, .data td { font-size:10px; }
+  .total { padding-top:3px; font-size:11px; }
+  .transport td { padding-top:5px; padding-bottom:5px; }
+  .flight-grid { gap:8px; }
+  .flight-title { padding:4px; font-size:13px; }
+  .flight th, .flight td { padding:5px 4px; }
+  .bottom { grid-template-columns:1fr 125px; gap:8px; margin-top:5px; }
+  .instructions { font-size:11px; }
+  .notes { min-height:36px; font-size:10px; }
+  .qr img { width:120px; height:120px; }
+  .contact-title { margin-top:8px; font-size:13px; }
+  .contact { margin-top:4px; }
+  .contact td { padding:7px; font-size:11px; }
+  .urdu { margin-top:7px; padding-right:18px; font-size:10px; line-height:1.45; }
+  .urdu li { display:list-item; width:100%; }
+  .urdu { text-align:justify; text-align-last:right; font-size:10.5px; line-height:1.6; }
+</style>
 <style>@font-face{font-family:'Voucher Nastaliq';src:url('<%= urduFontData %>') format('truetype');font-weight:400}:root{--theme-primary:<%= theme.primary %>;--theme-dark:<%= theme.dark %>;--theme-soft:<%= theme.soft %>}</style>
 </head>
 <body><main class="voucher">
