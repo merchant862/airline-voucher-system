@@ -4,7 +4,7 @@ const QRCode = require('qrcode');
 
 const QR_OPTIONS = {
   errorCorrectionLevel: 'M',
-  margin: 4,
+  margin: 1,
   type: 'svg',
   color: {
     dark: '#000000',
