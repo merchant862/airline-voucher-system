@@ -18,6 +18,12 @@
   .foreign-name { font-size:13px; }
 </style>
 <style>:root{--theme-primary:<%= theme.primary %>;--theme-dark:<%= theme.dark %>;--theme-soft:<%= theme.soft %>}</style>
+<style>
+  @media (max-width:700px) {
+    body { padding:0 12px; }
+    .page { width:100%; max-width:none; }
+  }
+</style>
 </head>
 <body>
 <main class="page">

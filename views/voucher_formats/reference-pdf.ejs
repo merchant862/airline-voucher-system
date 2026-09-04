@@ -31,24 +31,33 @@
   .bottom { grid-template-columns:1fr 125px; gap:8px; margin-top:5px; }
   .instructions { font-size:11px; }
   .notes { min-height:36px; font-size:10px; }
-  .qr img { width:120px; height:120px; }
-  .contact-title { margin-top:8px; font-size:13px; }
-  .contact { margin-top:4px; }
-  .contact td { padding:7px; font-size:11px; }
+  .bottom { grid-template-columns:1fr 105px; }
+  .qr img { width:100px; height:100px; }
   .urdu { margin-top:7px; padding-right:18px; font-size:10px; line-height:1.45; }
   .urdu li { display:list-item; width:100%; }
   .urdu { text-align:justify; text-align-last:right; font-size:10.5px; line-height:1.6; }
 </style>
 <style>@font-face{font-family:'Voucher Nastaliq';src:url('<%= urduFontData %>') format('truetype');font-weight:400}:root{--theme-primary:<%= theme.primary %>;--theme-dark:<%= theme.dark %>;--theme-soft:<%= theme.soft %>}</style>
+<style>
+  .header-left { padding-top:4px; line-height:1.45; }
+  .header-left .agency-name { font-size:13px; font-weight:800; }
+  .header-left .header-fact { font-size:11px; }
+  .header-center .title { margin-top:4px; font-family:Georgia,serif; font-size:15px; text-transform:none; }
+  .header-center .voucher-no { margin-top:2px; font-family:Georgia,serif; font-size:14px; }
+  .header-right .foreign-name { font-size:11px; }
+  .header-right .pbt-name { font-size:10px; }
+  .header-right .city { font-weight:800; }
+  .header-right .whatsapp { margin-top:2px; font-size:10px; font-weight:700; }
+</style>
 </head>
 <body><main class="voucher">
-  <header class="header"><div class="header-left"><div class="title">HOTEL<br>VOUCHER</div><div class="voucher-no"><%= voucher.voucherNo||'' %></div></div><div class="header-center"><% if(company.logo){ %><img class="logo" src="<%= company.logo %>" alt="Local company logo"><% } %></div><div class="header-right"><div class="foreign-name"><%= foreignCompany.name||'' %></div><div class="foreign-details"><%= foreignCompany.address||'' %><% if(foreignCompany.phone){ %><br><%= foreignCompany.phone %><% } %><% if(foreignCompany.email){ %><br><%= foreignCompany.email %><% } %></div></div></header>
+  <% const foreignBaseName = (foreignCompany.name || '').replace(/\s*\(PBT\)\s*$/i, ''); %>
+  <header class="header"><div class="header-left"><div class="agency-name"><%= company.name||'' %></div><div class="header-fact">Voucher Date: <%= voucher.date||'' %></div><div class="header-fact">PAX: <%= customers.length %></div></div><div class="header-center"><% if(company.logo){ %><img class="logo" src="<%= company.logo %>" alt="Local company logo"><% } %><div class="title">Hotel Voucher</div><div class="voucher-no"><%= voucher.voucherNo||'' %></div></div><div class="header-right"><div class="foreign-name"><%= foreignBaseName %></div><div class="pbt-name"><%= foreignBaseName %><% if(foreignBaseName){ %> (PBT)<% } %></div><div class="city"><%= foreignCompany.address||'' %></div><div class="whatsapp">Whats APP: <%= foreignCompany.phone||'' %></div></div></header>
   <table class="info"><tr><td class="label">Passenger Name</td><td><%= familyHead||customers[0]?.name||'' %></td><td class="label">Voucher No</td><td><%= voucher.voucherNo||'' %></td><td class="label">Voucher Date</td><td><%= voucher.date||'' %></td></tr></table>
   <div class="band">Mutamers</div><table class="data"><tr><th>SNO</th><th>Passport</th><th>Passenger Name</th><th>Gender</th><th>PAX</th><th>Visa #</th><th>PNR</th></tr><% customers.forEach((c,i)=>{ %><tr><td><%= i+1 %></td><td><%= c.passport||'' %></td><td class="name"><%= c.name||'' %></td><td><%= c.gender||'' %></td><td><%= c.paxType||'' %></td><td><%= c.visaNumber||'' %></td><td><%= c.pnr||'' %></td></tr><% }) %></table>
   <div class="band">Accommodation</div><table class="data accommodation"><tr><th>City</th><th>Hotel Name</th><th>Meal</th><th>Confirm #</th><th>Room Type</th><th>Checkin</th><th>Checkout</th><th>Nights</th></tr><% hotels.forEach(h=>{ %><tr><td><%= h.city||'' %></td><td class="hotel"><%= h.name||'' %></td><td><%= h.mealPlan||'' %></td><td><%= h.confirmNo||'' %></td><td><%= h.roomType||'' %></td><td><%= h.checkIn||'' %></td><td><%= h.checkOut||'' %></td><td><%= h.nights||0 %></td></tr><% }) %></table><div class="total">Total Nights: <%= hotels.reduce((sum,h)=>sum+Number(h.nights||0),0) %></div>
   <div class="band">Transport/Services</div><table class="data transport"><tr><th>Type</th><th>Route</th></tr><% transports.forEach(t=>{ %><tr><td><%= t.type||'' %></td><td><%= t.route||'' %></td></tr><% }) %></table>
   <div class="flight-grid"><div><div class="flight-title">Departure (Pakistan to KSA)</div><table class="data flight"><tr><th>Flight</th><th>Sector</th><th>Departure</th><th>Arrival</th></tr><tr><td><%= departureFlight.flightNo||'' %></td><td><%= departureFlight.fromCity||'' %> - <%= departureFlight.toCity||'' %></td><td><%= departureFlight.date||'' %> - <%= departureFlight.takeoff||'' %></td><td><%= departureFlight.date||'' %> - <%= departureFlight.landing||'' %></td></tr></table></div><div><div class="flight-title">Arrival (KSA to PAK)</div><table class="data flight"><tr><th>Flight</th><th>Sector</th><th>Departure</th><th>Arrival</th></tr><tr><td><%= arrivalFlight.flightNo||'' %></td><td><%= arrivalFlight.fromCity||'' %> - <%= arrivalFlight.toCity||'' %></td><td><%= arrivalFlight.date||'' %> - <%= arrivalFlight.takeoff||'' %></td><td><%= arrivalFlight.date||'' %> - <%= arrivalFlight.landing||'' %></td></tr></table></div></div>
   <div class="bottom"><div><div class="instructions">Special Instructions:</div><div class="notes"><%= notes||'—' %></div></div><div class="qr"><img src="<%= qrImage %>" alt="Voucher QR code"></div></div>
-  <div class="contact-title">SAUDI ARABIA TEAM CONTACT DETAILS</div><table class="contact"><tr><td>Local Company<br><%= company.name||'' %></td><td><%= company.phone||'' %></td></tr><tr><td>Foreign Company<br><%= foreignCompany.name||'' %></td><td><%= foreignCompany.phone||'' %></td></tr></table>
   <ul class="urdu"><li>آپ کا ہوٹل اور پیکیج اس دستاویز میں درج ہے، اسی کے مطابق آپ کو رہائش اور دیگر سہولیات فراہم کی جائیں گی۔</li><li>سفر کے دوران سامان مقررہ وزن کے مطابق ہونا چاہیے، اضافی سامان کی ادائیگی آپ کے ذمے ہوگی۔</li><li>پاسپورٹ اور ضروری دستاویزات محفوظ رکھیں اور سعودی عرب میں قیام کے دوران ہدایات پر عمل کریں۔</li><li>حرمین شریفین میں زیارت کے لیے مقررہ اوقات اور گروپ کی ہدایات کی پابندی کریں۔</li><li>جدہ ایئرپورٹ پر روانگی سے 3 تا 5 گھنٹے پہلے پہنچیں۔</li><li>ہوٹل چیک آؤٹ کا وقت دوپہر 2 بجے ہے، دیگر اوقات پیکیج کے مطابق ہوں گے۔</li><li>واپسی کی پرواز سے پہلے اپنے سامان سمیت ہوٹل کے ریسپشن پر موجود رہیں۔</li><li>سعودی حکومت اور کمپنی کے قوانین کی خلاف ورزی کے ذمے دار مسافر ہوں گے۔</li></ul>
 </main></body></html>
