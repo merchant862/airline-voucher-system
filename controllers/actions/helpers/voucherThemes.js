@@ -8,7 +8,9 @@ const VOUCHER_THEMES = {
   rose: { label: 'Soft Rose', primary: '#be123c', dark: '#9f1239', soft: '#fff1f2', accent: '#c2410c' },
   amber: { label: 'Warm Amber', primary: '#b45309', dark: '#92400e', soft: '#fffbeb', accent: '#0f766e' },
   violet: { label: 'Elegant Violet', primary: '#6d28d9', dark: '#5b21b6', soft: '#f5f3ff', accent: '#0f766e' },
-  bw: { label: 'No Color, Black & White', primary: '#111111', dark: '#000000', soft: '#ffffff', accent: '#000000' }
+  bw: { label: 'No Color, Black & White', primary: '#111111', dark: '#000000', soft: '#ffffff', accent: '#000000' },
+  'light-grey': { label: 'Light Grey', primary: '#9ca3af', dark: '#4b5563', soft: '#f3f4f6', accent: '#6b7280' },
+  'dark-grey': { label: 'Dark Grey', primary: '#374151', dark: '#111827', soft: '#e5e7eb', accent: '#6b7280' }
 };
 
 const DEFAULT_VOUCHER_THEME = 'blue';
