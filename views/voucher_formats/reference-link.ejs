@@ -19,6 +19,10 @@
 </style>
 <style>:root{--theme-primary:<%= theme.primary %>;--theme-dark:<%= theme.dark %>;--theme-soft:<%= theme.soft %>}</style>
 <style>
+  .pbt-name { color:var(--theme-dark); font-size:11px; line-height:1.35; font-weight:800; text-transform:uppercase; }
+  .print { position:static; display:block; margin:8px auto 0; }
+</style>
+<style>
   @media (max-width:700px) {
     body { padding:0 12px; }
     .page { width:100%; max-width:none; }
@@ -27,10 +31,11 @@
 </head>
 <body>
 <main class="page">
+  <% const foreignBaseName = (foreignCompany.name || '').replace(/\s*\(PBT\)\s*$/i, ''); %>
   <header class="header">
     <div class="header-left"><div class="title">HOTEL<br>VOUCHER</div><div class="voucher-no"><%= voucher.voucherNo || '' %></div></div>
     <div class="header-center"><% if(company.logo){ %><img class="logo" src="<%= company.logo %>" alt="Local company logo"><% } %></div>
-    <div class="header-right"><div class="foreign-name"><%= foreignCompany.name || '' %></div><div class="foreign-details"><%= foreignCompany.address || '' %><% if(foreignCompany.phone){ %><br><%= foreignCompany.phone %><% } %><% if(foreignCompany.email){ %><br><%= foreignCompany.email %><% } %></div></div>
+    <div class="header-right"><div class="foreign-name"><%= foreignBaseName %></div><div class="pbt-name"><%= foreignBaseName %><% if(foreignBaseName){ %> (PBT)<% } %></div><div class="foreign-details"><%= foreignCompany.address || '' %><% if(foreignCompany.phone){ %><br><%= foreignCompany.phone %><% } %><% if(foreignCompany.email){ %><br><%= foreignCompany.email %><% } %></div></div>
   </header>
   <section class="facts">
     <div class="fact-column"><div><span class="fact-label">Passenger:</span><%= familyHead || customers[0]?.name || '' %></div><div><span class="fact-label">Voucher Date:</span><%= voucher.date || '' %></div><div><span class="fact-label">PAX:</span><%= customers.length %></div></div>
