@@ -413,7 +413,9 @@
         ['irfan', 'Standard PDF'],
         ['sudais', 'Modern PDF'],
         ['crm2', 'CRM Link 2'],
-        ['crm', 'CRM Link']
+        ['crm', 'CRM Link'],
+        ['reference-pdf', 'Reference Compact PDF'],
+        ['reference-link', 'Reference Compact Link']
       ];
       const match = names.find(([key]) => ejsPath.includes(key));
       return match ? match[1] : `${labelPrefix} ${index + 1}`;

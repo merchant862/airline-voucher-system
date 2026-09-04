@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hotel Voucher <%= voucher.voucherNo %></title>
+<style>
+@page { size:A4 portrait; margin:8mm; }
+* { box-sizing:border-box; }
+body { margin:0; background:#fff; color:#111827; font-family:Arial,Helvetica,sans-serif; font-size:11px; }
+.voucher { max-width:960px; margin:0 auto; }
+.header { display:grid; grid-template-columns:1fr 1fr 1fr; align-items:start; min-height:105px; padding-bottom:8px; border-bottom:2px solid var(--theme-primary); }
+.header-left { text-align:left; }
+.header-center { text-align:center; }
+.header-right { text-align:right; }
+.logo { width:150px; height:72px; object-fit:contain; }
+.agency-name { margin:0; color:var(--theme-dark); font-size:17px; font-weight:800; text-transform:uppercase; }
+.foreign-name { margin:0; color:var(--theme-dark); font-size:13px; font-weight:800; text-transform:uppercase; }
+.foreign-details { margin-top:5px; line-height:1.35; }
+.voucher-title { margin:8px 0 0; color:var(--theme-primary); font-size:18px; font-weight:800; letter-spacing:.5px; }
+.voucher-no { margin-top:3px; color:var(--theme-dark); font-size:16px; font-weight:800; }
+.info { width:100%; margin-top:10px; border-collapse:collapse; }
+.info td { padding:4px 7px; border:1px solid #111; }
+.label { font-weight:700; white-space:nowrap; }
+.section-title { margin-top:9px; padding:5px; color:#fff; background:var(--theme-primary); text-align:center; font-size:13px; font-weight:800; }
+table.data { width:100%; border-collapse:collapse; table-layout:fixed; }
+.data th, .data td { padding:4px 5px; border:1px solid #111; text-align:center; vertical-align:middle; word-wrap:break-word; }
+.data th { color:#fff; background:var(--theme-dark); font-weight:700; }
+.data td:first-child, .data .name, .data .hotel { font-weight:700; }
+.data .name, .data .hotel { color:var(--theme-dark); }
+.flight-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.flight-title { padding:4px; color:var(--theme-dark); border:1px solid var(--theme-primary); border-bottom:0; text-align:center; font-weight:800; }
+.qr-notes { display:grid; grid-template-columns:1fr 150px; gap:10px; align-items:start; margin-top:9px; }
+.notes { min-height:100px; padding:7px; border:1px solid #111; line-height:1.4; white-space:pre-line; }
+.notes strong { color:var(--theme-dark); }
+.qr { text-align:center; }
+.qr img { width:140px; height:140px; object-fit:contain; }
+.url { margin-top:8px; color:var(--theme-dark); font-size:9px; text-align:center; text-decoration:underline; overflow-wrap:anywhere; }
+@media print { body { font-size:9px; } .header { min-height:82px; } .logo { width:120px; height:56px; } .agency-name { font-size:14px; } .foreign-name { font-size:10px; } .voucher-title { font-size:15px; } .voucher-no { font-size:13px; } .section-title { margin-top:6px; padding:3px; font-size:10px; } .info td, .data th, .data td { padding:3px 4px; } .qr-notes { grid-template-columns:1fr 120px; margin-top:6px; } .qr img { width:110px; height:110px; } .notes { min-height:72px; } }
+</style>
+<style>
+:root { --theme-primary:<%= theme.primary %>; --theme-dark:<%= theme.dark %>; --theme-soft:<%= theme.soft %>; }
+.foreign-details, .url { color:var(--theme-dark); }
+</style>
+</head>
+<body>
+<main class="voucher">
+  <header class="header">
+    <div class="header-left">
+      <% if (company.logo) { %><img class="logo" src="<%= company.logo %>" alt="Local company logo"><% } %>
+      <h1 class="agency-name">M/S <%= company.name || '' %></h1>
+    </div>
+    <div class="header-center">
+      <div class="voucher-title">HOTEL VOUCHER</div>
+      <div class="voucher-no"><%= voucher.voucherNo || '' %></div>
+    </div>
+    <div class="header-right">
+      <div class="foreign-name"><%= foreignCompany.name || '' %></div>
+      <div class="foreign-details"><%= foreignCompany.address || '' %><% if (foreignCompany.phone) { %><br><%= foreignCompany.phone %><% } %><% if (foreignCompany.email) { %><br><%= foreignCompany.email %><% } %></div>
+    </div>
+  </header>
+
+  <table class="info">
+    <tr><td class="label">Passenger Name</td><td><%= familyHead || customers[0]?.name || '' %></td><td class="label">Voucher Date</td><td><%= voucher.date || '' %></td></tr>
+    <tr><td class="label">Total PAX</td><td><%= customers.length %></td><td class="label">Total Nights</td><td><%= hotels.reduce((sum, hotel) => sum + Number(hotel.nights || 0), 0) %></td></tr>
+  </table>
+
+  <div class="section-title">MUTAMERS</div>
+  <table class="data"><tr><th>Sr No</th><th>Passport</th><th>Passenger Name</th><th>Gender</th><th>Visa</th><th>PNR</th></tr>
+    <% customers.forEach((customer, index) => { %><tr><td><%= index + 1 %></td><td><%= customer.passport || '' %></td><td class="name"><%= customer.name || '' %></td><td><%= customer.gender || '' %></td><td><%= customer.visaNumber || '' %></td><td><%= customer.pnr || '' %></td></tr><% }) %>
+  </table>
+
+  <div class="section-title">ACCOMMODATION</div>
+  <table class="data"><tr><th>City</th><th>Hotel Name</th><th>Room Type</th><th>Meal Plan</th><th>Check In</th><th>Check Out</th><th>Nights</th></tr>
+    <% hotels.forEach(hotel => { %><tr><td><%= hotel.city || '' %></td><td class="hotel"><%= hotel.name || '' %></td><td><%= hotel.roomType || '' %></td><td><%= hotel.mealPlan || '' %></td><td><%= hotel.checkIn || '' %></td><td><%= hotel.checkOut || '' %></td><td><%= hotel.nights || 0 %></td></tr><% }) %>
+  </table>
+
+  <div class="section-title">TRANSPORT / SERVICES</div>
+  <table class="data"><tr><th>Type</th><th>Route</th></tr>
+    <% transports.forEach(transport => { %><tr><td><%= transport.type || '' %></td><td><%= transport.route || '' %></td></tr><% }) %>
+  </table>
+
+  <div class="section-title">FLIGHT DETAILS</div>
+  <div class="flight-grid">
+    <div><div class="flight-title">DEPARTURE</div><table class="data"><tr><th>Flight</th><th>Sector</th><th>Date</th><th>Time</th></tr><tr><td><%= departureFlight.flightNo || '' %></td><td><%= departureFlight.fromCity || '' %> - <%= departureFlight.toCity || '' %></td><td><%= departureFlight.date || '' %></td><td><%= departureFlight.takeoff || '' %> - <%= departureFlight.landing || '' %></td></tr></table></div>
+    <div><div class="flight-title">ARRIVAL</div><table class="data"><tr><th>Flight</th><th>Sector</th><th>Date</th><th>Time</th></tr><tr><td><%= arrivalFlight.flightNo || '' %></td><td><%= arrivalFlight.fromCity || '' %> - <%= arrivalFlight.toCity || '' %></td><td><%= arrivalFlight.date || '' %></td><td><%= arrivalFlight.takeoff || '' %> - <%= arrivalFlight.landing || '' %></td></tr></table></div>
+  </div>
+
+  <div class="qr-notes"><div class="notes"><strong>Notes</strong><br><%= notes || '' %></div><div class="qr"><img src="<%= qrImage %>" alt="Voucher QR code"><div class="url" id="pageUrl"></div></div></div>
+</main>
+<script>document.getElementById('pageUrl').textContent = window.location.href;</script>
+</body>
+</html>
