@@ -17,6 +17,7 @@ const {
   roomTypePrices
 } = require('../../database/models');
 const { getVoucherTheme, getVoucherThemeKey } = require('./helpers/voucherThemes');
+const { generateVoucherQr } = require('./helpers/qrCode');
 
 const titleCase = (value) =>
   String(value || '')
@@ -114,6 +115,7 @@ async function downloadPaymentSlipPdfController(req, res, next) {
     const items = [...hotelItems, ...transportItems];
     const totalAmount = items.reduce((sum, item) => sum + item.amount, 0);
     const themeKey = getVoucherThemeKey(voucherData.pdfTheme);
+    const qrImage = await generateVoucherQr(voucherData.id);
 
     const html = await ejs.renderFile(
       path.join(__dirname, '../..', 'views/payment_slip.ejs'),
@@ -136,6 +138,7 @@ async function downloadPaymentSlipPdfController(req, res, next) {
           currency: 'PKR',
           items,
           totalAmount,
+          qrImage,
           themeKey,
           theme: getVoucherTheme(themeKey)
         }
