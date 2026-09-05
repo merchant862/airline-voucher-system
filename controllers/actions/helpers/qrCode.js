@@ -15,7 +15,8 @@ const QR_OPTIONS = {
 function buildVoucherQrUrl(voucherId) {
   let baseUrl = String(process.env.URL || '').trim();
   baseUrl = baseUrl.replace(/^(https?):(?!\/\/)/i, '$1://');
-  return `${baseUrl.replace(/\/+$/, '')}/${voucherId}`;
+  const origin = baseUrl ? new URL(baseUrl).origin : '';
+  return `${origin}/voucher/scan/${voucherId}`;
 }
 
 async function generateVoucherQr(voucherId) {

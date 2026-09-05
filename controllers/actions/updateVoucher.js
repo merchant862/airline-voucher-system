@@ -55,6 +55,8 @@ async function updateVoucherController(req, res, next) {
         // 1️⃣ UPDATE VOUCHER FIELDS
         // ==============================
         await voucher.update({
+            companyId: req.body.companyId,
+            foreignCompanyId: req.body.foreignCompanyId,
             departureFlightDate: req.body.departureFlightDate,
             departureFlightNo: req.body.departureFlightNo,
             departureFlightFromCity: req.body.departureFlightFromCity,

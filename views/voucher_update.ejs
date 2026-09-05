@@ -148,6 +148,25 @@
 
   <form id="voucherEditForm" method="POST" action="/voucher/update/<%= voucherData.id %>">
 
+    <!-- Agencies -->
+    <div class="form-section">
+      <h3>Voucher Agencies</h3>
+      <div class="flight-grid">
+        <div>
+          <label for="companySelect">Local Agency</label>
+          <select id="companySelect" name="companyId" required>
+            <option value="">Select Local Agency</option>
+          </select>
+        </div>
+        <div>
+          <label for="foreignCompanySelect">Foreign Agency</label>
+          <select id="foreignCompanySelect" name="foreignCompanyId" required>
+            <option value="">Select Foreign Agency</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
     <!-- Voucher Formats -->
     <div class="form-section">
       <h3>Voucher Formats</h3>
@@ -390,6 +409,7 @@
         });
       });
 
+      await loadAgencies();
       await loadVoucherFormats();
       await loadLinkVoucherFormats();
       loadThemeSelect('pdfThemeSelect', '<%= voucherData.pdfTheme || "blue" %>');
@@ -419,6 +439,33 @@
       ];
       const match = names.find(([key]) => ejsPath.includes(key));
       return match ? match[1] : `${labelPrefix} ${index + 1}`;
+    }
+
+    async function loadAgencySelect(type, selectId, selectedId, placeholder) {
+      const response = await fetch(`/api/agencies/${type}`);
+      const data = await response.json();
+      if (!data.success) throw new Error(`Unable to load ${placeholder.toLowerCase()}`);
+
+      const select = document.getElementById(selectId);
+      select.innerHTML = `<option value="">${placeholder}</option>`;
+      data.data.forEach(agency => {
+        const option = document.createElement('option');
+        option.value = agency.id;
+        option.textContent = agency.name;
+        option.selected = String(agency.id) === String(selectedId || '');
+        select.appendChild(option);
+      });
+    }
+
+    async function loadAgencies() {
+      try {
+        await Promise.all([
+          loadAgencySelect('local', 'companySelect', '<%= voucherData.companyId || "" %>', 'Select Local Agency'),
+          loadAgencySelect('foreign', 'foreignCompanySelect', '<%= voucherData.foreignCompanyId || "" %>', 'Select Foreign Agency')
+        ]);
+      } catch (err) {
+        console.error(err);
+      }
     }
 
     const voucherThemes = [
@@ -870,6 +917,8 @@
       }
 
       const payload = {
+        companyId: document.getElementById('companySelect').value,
+        foreignCompanyId: document.getElementById('foreignCompanySelect').value,
         voucherFormatsId: voucherFormatId,
         linkVoucherFormatsId: linkVoucherFormatId,
         pdfTheme: document.getElementById('pdfThemeSelect').value,
