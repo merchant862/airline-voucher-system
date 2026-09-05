@@ -77,6 +77,59 @@
       resize: vertical;
     }
 
+    .custom-dropdown {
+      position: relative;
+      margin-top: 6px;
+    }
+
+    .custom-dropdown .dropdown-selected {
+      width: 100%;
+      min-height: 37px;
+      padding: 8px 10px;
+      border: 1px solid #333;
+      border-radius: 6px;
+      background: #2a2a50;
+      color: #fff;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+
+    .custom-dropdown .dropdown-selected img,
+    .custom-dropdown .dropdown-option img {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+      border-radius: 4px;
+      object-fit: contain;
+      vertical-align: middle;
+    }
+
+    .custom-dropdown .dropdown-options {
+      display: none;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 3px);
+      max-height: 240px;
+      overflow-y: auto;
+      z-index: 20;
+      border: 1px solid #555;
+      border-radius: 6px;
+      background: #242447;
+    }
+
+    .custom-dropdown .dropdown-option {
+      display: flex;
+      align-items: center;
+      padding: 7px 10px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .custom-dropdown .dropdown-option:hover {
+      background: #383866;
+    }
+
     .add-btn {
       padding: 10px 16px;
       background: #7b2ff7;
@@ -154,15 +207,19 @@
       <div class="flight-grid">
         <div>
           <label for="companySelect">Local Agency</label>
-          <select id="companySelect" name="companyId" required>
-            <option value="">Select Local Agency</option>
-          </select>
+          <div class="custom-dropdown" id="companyDropdown">
+            <div class="dropdown-selected">Select Local Agency</div>
+            <div class="dropdown-options"></div>
+          </div>
+          <input type="hidden" id="companySelect" name="companyId" required>
         </div>
         <div>
           <label for="foreignCompanySelect">Foreign Agency</label>
-          <select id="foreignCompanySelect" name="foreignCompanyId" required>
-            <option value="">Select Foreign Agency</option>
-          </select>
+          <div class="custom-dropdown" id="foreignCompanyDropdown">
+            <div class="dropdown-selected">Select Foreign Agency</div>
+            <div class="dropdown-options"></div>
+          </div>
+          <input type="hidden" id="foreignCompanySelect" name="foreignCompanyId" required>
         </div>
       </div>
     </div>
@@ -441,27 +498,47 @@
       return match ? match[1] : `${labelPrefix} ${index + 1}`;
     }
 
-    async function loadAgencySelect(type, selectId, selectedId, placeholder) {
+    async function loadAgencySelect(type, dropdownId, hiddenInputId, selectedId, placeholder) {
       const response = await fetch(`/api/agencies/${type}`);
       const data = await response.json();
       if (!data.success) throw new Error(`Unable to load ${placeholder.toLowerCase()}`);
 
-      const select = document.getElementById(selectId);
-      select.innerHTML = `<option value="">${placeholder}</option>`;
+      const dropdown = document.getElementById(dropdownId);
+      const selected = dropdown.querySelector('.dropdown-selected');
+      const options = dropdown.querySelector('.dropdown-options');
+      const hiddenInput = document.getElementById(hiddenInputId);
+      options.innerHTML = '';
+
       data.data.forEach(agency => {
-        const option = document.createElement('option');
-        option.value = agency.id;
-        option.textContent = agency.name;
-        option.selected = String(agency.id) === String(selectedId || '');
-        select.appendChild(option);
+        const option = document.createElement('div');
+        option.className = 'dropdown-option';
+        option.innerHTML = `${agency.image ? `<img src="${agency.image}" alt="">` : ''}<span>${agency.name}</span>`;
+        option.addEventListener('click', () => {
+          selected.innerHTML = `${agency.image ? `<img src="${agency.image}" alt="">` : ''}<span>${agency.name}</span>`;
+          hiddenInput.value = agency.id;
+          options.style.display = 'none';
+        });
+        if (String(agency.id) === String(selectedId || '')) {
+          selected.innerHTML = `${agency.image ? `<img src="${agency.image}" alt="">` : ''}<span>${agency.name}</span>`;
+          hiddenInput.value = agency.id;
+        }
+        options.appendChild(option);
+      });
+
+      selected.addEventListener('click', event => {
+        event.stopPropagation();
+        options.style.display = options.style.display === 'block' ? 'none' : 'block';
+      });
+      document.addEventListener('click', event => {
+        if (!dropdown.contains(event.target)) options.style.display = 'none';
       });
     }
 
     async function loadAgencies() {
       try {
         await Promise.all([
-          loadAgencySelect('local', 'companySelect', '<%= voucherData.companyId || "" %>', 'Select Local Agency'),
-          loadAgencySelect('foreign', 'foreignCompanySelect', '<%= voucherData.foreignCompanyId || "" %>', 'Select Foreign Agency')
+          loadAgencySelect('local', 'companyDropdown', 'companySelect', '<%= voucherData.companyId || "" %>', 'Select Local Agency'),
+          loadAgencySelect('foreign', 'foreignCompanyDropdown', 'foreignCompanySelect', '<%= voucherData.foreignCompanyId || "" %>', 'Select Foreign Agency')
         ]);
       } catch (err) {
         console.error(err);
