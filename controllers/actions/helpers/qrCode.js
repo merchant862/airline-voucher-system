@@ -3,8 +3,8 @@
 const QRCode = require('qrcode');
 
 const QR_OPTIONS = {
-  errorCorrectionLevel: 'M',
-  margin: 1,
+  errorCorrectionLevel: 'L',
+  margin: 2,
   type: 'svg',
   color: {
     dark: '#000000',
@@ -13,8 +13,9 @@ const QR_OPTIONS = {
 };
 
 function buildVoucherQrUrl(voucherId) {
-  const baseUrl = process.env.URL || '';
-  return `${baseUrl}${voucherId}`;
+  let baseUrl = String(process.env.URL || '').trim();
+  baseUrl = baseUrl.replace(/^(https?):(?!\/\/)/i, '$1://');
+  return `${baseUrl.replace(/\/+$/, '')}/${voucherId}`;
 }
 
 async function generateVoucherQr(voucherId) {
