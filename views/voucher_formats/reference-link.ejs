@@ -26,13 +26,26 @@
   @media (max-width:700px) {
     body { padding:0 12px; }
     .page { width:100%; max-width:none; }
-    .header { height:105px; }
+    .header { grid-template-columns: minmax(0, 1fr) 92px minmax(0, 1fr); height:105px; }
     .header-left { padding-top:4px; }
     .header-center { padding-top:4px; }
-    .header-right { padding-top:6px; }
+    .header-right { padding-top:6px; min-width:0; }
     .logo { width:92px; height:54px; }
     .header-left .title { font-size:18px; line-height:1.05; }
     .header-left .voucher-no { margin-top:4px; font-size:14px; }
+    .header-right .foreign-name,
+    .header-right .pbt-name,
+    .header-right .foreign-details { font-size:8px; line-height:1.2; overflow-wrap:anywhere; }
+    .facts { grid-template-columns:1fr; min-height:0; gap:8px; }
+    .fact-column { line-height:1.8; }
+    .fact-column.right { padding-right:0; text-align:left; }
+    .section { margin-top:10px; padding-bottom:5px; font-size:14px; }
+    .data th, .data td { padding:5px 3px; font-size:9px; }
+    .flight-grid { grid-template-columns:1fr; gap:14px; }
+    .flight-title { font-size:14px; }
+    .total { padding-right:0; }
+    .notes { margin-top:18px; }
+    .url { margin-top:18px; font-size:9px; }
   }
 </style>
 </head>
