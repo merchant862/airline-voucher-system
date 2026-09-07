@@ -77,6 +77,29 @@
     .url { margin-top:18px; font-size:9px; }
   }
 </style>
+<style>
+  @media print and (max-width:700px) {
+    @page { size:A4 portrait; margin:6mm; }
+    body { padding:0 !important; font-size:10px !important; overflow:visible !important; }
+    .page { width:100% !important; max-width:none !important; overflow:visible !important; }
+    .header { height:125px !important; padding:8px 10px !important; }
+    .logo { width:145px !important; height:90px !important; }
+    .header-left .title { font-size:28px !important; }
+    .header-right .foreign-name { font-size:12px !important; }
+    .facts { grid-template-columns:1fr 1fr !important; margin-top:8px !important; min-height:84px !important; gap:6px !important; }
+    .fact-column { line-height:1.8 !important; }
+    .fact-column.right { text-align:right !important; padding-right:8px !important; }
+    .section { min-height:27px !important; margin-top:6px !important; padding:3px 6px !important; font-size:16px !important; }
+    .data { display:table !important; overflow:visible !important; white-space:normal !important; table-layout:fixed !important; }
+    .data tbody { display:table-row-group !important; min-width:0 !important; }
+    .data th, .data td { padding:4px 4px !important; font-size:9px !important; }
+    .flight-grid { gap:8px !important; margin-top:8px !important; }
+    .flight-title { padding-bottom:4px !important; font-size:14px !important; }
+    .notes { margin-top:10px !important; }
+    .url { margin-top:10px !important; font-size:8px !important; }
+    .print { display:none !important; }
+  }
+</style>
 </head>
 <body>
 <main class="page">
