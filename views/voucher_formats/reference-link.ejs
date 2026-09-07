@@ -63,6 +63,12 @@
     .data { font-size:8px; table-layout:auto; }
     .data th, .data td { padding:4px 3px; line-height:1.25; }
     .data th { font-size:8px; white-space:nowrap; }
+    .data { display:block; overflow-x:auto; white-space:nowrap; scrollbar-width:thin; }
+    .data tbody { display:table; width:100%; min-width:560px; }
+    .data.transport tbody { min-width:100%; }
+    .data.flight tbody { min-width:480px; }
+    .data::-webkit-scrollbar { height:4px; }
+    .data::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:4px; }
     .flight-grid { grid-template-columns:1fr; gap:14px; }
     .flight-title { font-size:13px; }
     .fact-label { margin-right:6px; }
