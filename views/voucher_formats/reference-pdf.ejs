@@ -52,6 +52,10 @@
   .header-right .city { font-weight:800; }
   .header-right .city { color:#000; font-weight:400; }
   .header-right .whatsapp { margin-top:2px; font-size:10px; font-weight:700; }
+  .flight-grid { grid-template-columns:minmax(0,1fr) minmax(0,1fr) 100px; align-items:start; }
+  .flight-grid::after { content:''; display:block; width:90px; height:90px; background:url('<%= qrImage %>') center/contain no-repeat; }
+  .bottom { display:block; }
+  .bottom .qr { display:none; }
 </style>
 </head>
 <body><main class="voucher"><div class="approved-stamp" aria-hidden="true">APPROVED</div>
