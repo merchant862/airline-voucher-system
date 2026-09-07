@@ -26,22 +26,21 @@
   @media (max-width:700px) {
     body { padding:0 10px; }
     .page { width:100%; max-width:none; }
-    .header { grid-template-columns: minmax(0, 1fr) 88px minmax(0, 1fr); height:108px; gap:4px; }
-    .header-left { padding-top:4px; }
-    .header-center { padding-top:4px; }
-    .header-right { padding-top:6px; min-width:0; }
-    .logo { width:84px; height:50px; }
-    .header-left .title { font-size:17px; line-height:1.05; }
+    .header { grid-template-columns:1fr; height:auto; min-height:0; gap:4px; padding:8px 0 10px; text-align:center; }
+    .header-left, .header-center, .header-right { padding:0; text-align:center; min-width:0; }
+    .logo { width:104px; height:58px; }
+    .header-left .title { font-size:20px; line-height:1.05; }
     .header-left .voucher-no { margin-top:4px; font-size:14px; }
     .header-right .foreign-name,
     .header-right .pbt-name,
-    .header-right .foreign-details { font-size:8px; line-height:1.2; overflow-wrap:anywhere; }
+    .header-right .foreign-details { font-size:9px; line-height:1.25; overflow-wrap:anywhere; }
     .facts { grid-template-columns:1fr; min-height:0; gap:8px; }
     .fact-column { line-height:1.8; }
     .fact-column.right { padding-right:0; text-align:left; }
     .section { margin-top:10px; padding-bottom:5px; font-size:14px; }
-    .data th, .data td { padding:4px 2px; font-size:8px; line-height:1.25; }
-    .data th { font-size:8px; }
+    .data { font-size:8px; table-layout:auto; }
+    .data th, .data td { padding:4px 3px; line-height:1.25; }
+    .data th { font-size:8px; white-space:nowrap; }
     .flight-grid { grid-template-columns:1fr; gap:14px; }
     .flight-title { font-size:13px; }
     .fact-label { margin-right:6px; }
