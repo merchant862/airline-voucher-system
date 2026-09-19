@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hotel Voucher <%= voucher.voucherNo %></title>
+<style>
+  @page { size:A4 portrait; margin:0; }
+  * { box-sizing:border-box; }
+  :root { --tour-blue:<%= theme.primary %>; --tour-dark:<%= theme.dark %>; }
+  body { margin:0; min-height:100vh; background:var(--tour-blue); color:#263238; font-family:Arial,Helvetica,sans-serif; }
+  .shell { min-height:100vh; padding:42px 18px 34px; position:relative; overflow:hidden; }
+  .shell::after { content:''; position:absolute; left:-10%; right:-10%; bottom:-150px; height:290px; border-radius:50% 50% 0 0; background:#fff; }
+  .hero { position:relative; z-index:1; color:#fff; text-align:center; margin:0 auto 24px; }
+  .hero h1 { margin:0 0 20px; font-size:42px; line-height:1.05; font-weight:800; letter-spacing:.5px; }
+  .hero p { margin:0; font-size:25px; line-height:1.35; font-weight:400; }
+  .preview-card { position:relative; z-index:2; width:min(100%,720px); margin:0 auto; padding:18px 18px 28px; background:#fff; border-radius:10px; box-shadow:0 8px 24px rgba(36,56,90,.14); }
+  .voucher-preview { width:100%; height:620px; border:0; background:#fff; overflow:hidden; }
+  .voucher-preview .preview-inner { transform-origin:top left; }
+  .preview-card .pdf-button { display:flex; align-items:center; justify-content:center; gap:18px; width:100%; margin:22px auto 0; padding:18px 22px; border:0; border-radius:8px; background:#9bd2b6; color:#263238; font-size:24px; line-height:1; text-decoration:none; }
+  .pdf-button svg { width:30px; height:30px; fill:none; stroke:currentColor; stroke-width:2; }
+  @media (max-width:700px) {
+    .shell { padding:28px 10px 24px; }
+    .hero { margin-bottom:18px; }
+    .hero h1 { margin-bottom:14px; font-size:30px; }
+    .hero p { font-size:19px; line-height:1.35; }
+    .preview-card { padding:10px 10px 18px; border-radius:8px; }
+    .voucher-preview { height:390px; }
+    .preview-card .pdf-button { margin-top:14px; padding:15px 18px; font-size:20px; }
+    .pdf-button svg { width:26px; height:26px; }
+  }
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="hero">
+    <h1>TOUR PVT LTD</h1>
+    <p>SAUD HASOO</p>
+    <p>SERVICES UMRAH HAJJ</p>
+  </header>
+  <section class="preview-card">
+    <div class="voucher-preview">
+      <div class="preview-inner">
+        <style>
+          .preview-inner { width:100%; padding:14px; color:#263238; font:10px Arial,sans-serif; }
+          .preview-inner .pv-head { display:grid; grid-template-columns:1fr 1fr 1fr; align-items:start; border:1px solid #e0e5eb; border-radius:6px; padding:10px; min-height:94px; }
+          .preview-inner .pv-title { font-size:23px; line-height:1.02; font-weight:700; }
+          .preview-inner .pv-no { margin-top:8px; font-size:16px; font-weight:700; }
+          .preview-inner .pv-logo { width:110px; height:70px; object-fit:contain; display:block; margin:auto; }
+          .preview-inner .pv-foreign { text-align:right; font-size:10px; line-height:1.35; font-weight:700; }
+          .preview-inner .pv-facts { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0; line-height:1.8; font-weight:600; }
+          .preview-inner .pv-facts:last-child { text-align:right; }
+          .preview-inner .pv-section { margin-top:8px; padding:5px; border:1px solid #dfe5eb; border-radius:3px; background:#f5f8fb; color:#3277a6; text-align:center; font-size:14px; font-weight:700; }
+          .preview-inner table { width:100%; border-collapse:collapse; table-layout:fixed; }
+          .preview-inner th,.preview-inner td { padding:5px 4px; border:1px solid #e1e6eb; text-align:left; vertical-align:middle; word-wrap:break-word; }
+          .preview-inner th { font-size:8px; }
+          .preview-inner td { font-size:8px; }
+          .preview-inner .pv-flight { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+          .preview-inner .pv-flight-title { color:#3277a6; text-align:center; font-size:11px; font-weight:700; margin-bottom:3px; }
+          .preview-inner .pv-note { margin-top:10px; font-weight:600; }
+        </style>
+        <div class="pv-head">
+          <div><div class="pv-title">HOTEL<br>VOUCHER</div><div class="pv-no"><%= voucher.voucherNo || '' %></div></div>
+          <div><% if(company.logo){ %><img class="pv-logo" src="<%= company.logo %>" alt="Local company logo"><% } %></div>
+          <div class="pv-foreign"><%= foreignCompany.name || '' %><br><%= foreignCompany.name || '' %> (PBT)</div>
+        </div>
+        <div class="pv-facts"><div>Passenger: <%= familyHead || customers[0]?.name || '' %><br>Voucher Date: <%= voucher.date || '' %><br>PAX: <%= customers.length %></div><div>Local Company: <%= company.name || '' %><br>Foreign Company: <%= foreignCompany.name || '' %><br>Nights: <%= hotels.reduce((sum,h)=>sum+Number(h.nights||0),0) %></div></div>
+        <div class="pv-section">Mutamers</div><table><tr><th>Passport</th><th>Passenger Name</th><th>Gender</th><th>PAX</th><th>Visa</th><th>PNR</th></tr><% customers.forEach(c=>{ %><tr><td><%= c.passport||'' %></td><td><%= c.name||'' %></td><td><%= c.gender||'' %></td><td><%= c.paxType||'' %></td><td><%= c.visaNumber||'' %></td><td><%= c.pnr||'' %></td></tr><% }) %></table>
+        <div class="pv-section">Accommodation</div><table><tr><th>Hotel Name</th><th>Room Type</th><th>Confirm #</th><th>Checkin</th><th>Checkout</th><th>Nights</th></tr><% hotels.forEach(h=>{ %><tr><td><%= h.name||'' %></td><td><%= h.roomType||'' %></td><td><%= h.confirmNo||'' %></td><td><%= h.checkIn||'' %></td><td><%= h.checkOut||'' %></td><td><%= h.nights||0 %></td></tr><% }) %></table>
+        <div class="pv-section">Transport/Services</div><table><tr><th>Type</th><th>Route</th></tr><% transports.forEach(t=>{ %><tr><td><%= t.type||'' %></td><td><%= t.route||'' %></td></tr><% }) %></table>
+        <div class="pv-flight"><div><div class="pv-flight-title">Departure (Pakistan to KSA)</div><table><tr><th>Flight</th><th>Sector</th><th>Departure</th><th>Arrival</th></tr><tr><td><%= departureFlight.flightNo||'' %></td><td><%= departureFlight.fromCity||'' %> - <%= departureFlight.toCity||'' %></td><td><%= departureFlight.date||'' %> - <%= departureFlight.takeoff||'' %></td><td><%= departureFlight.date||'' %> - <%= departureFlight.landing||'' %></td></tr></table></div><div><div class="pv-flight-title">Arrival (KSA to PAK)</div><table><tr><th>Flight</th><th>Sector</th><th>Departure</th><th>Arrival</th></tr><tr><td><%= arrivalFlight.flightNo||'' %></td><td><%= arrivalFlight.fromCity||'' %> - <%= arrivalFlight.toCity||'' %></td><td><%= arrivalFlight.date||'' %> - <%= arrivalFlight.takeoff||'' %></td><td><%= arrivalFlight.date||'' %> - <%= arrivalFlight.landing||'' %></td></tr></table></div></div>
+        <div class="pv-note">Note: <%= notes || '—' %></div>
+      </div>
+    </div>
+    <a class="pdf-button" href="<%= pdfUrl %>" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="3"></circle></svg><span>View PDF</span></a>
+  </section>
+</main>
+</body>
+</html>

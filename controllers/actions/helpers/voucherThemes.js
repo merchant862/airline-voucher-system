@@ -11,6 +11,7 @@ const VOUCHER_THEMES = {
   bw: { label: 'No Color, Black & White', primary: '#111111', dark: '#000000', soft: '#ffffff', accent: '#000000' },
   'light-grey': { label: 'Light Grey', primary: '#9ca3af', dark: '#4b5563', soft: '#f3f4f6', accent: '#6b7280' },
   'dark-grey': { label: 'Dark Grey', primary: '#d1d5db', dark: '#4b5563', soft: '#f3f4f6', accent: '#6b7280' }
+  , 'tour-blue': { label: 'Tour Blue', primary: '#587bc9', dark: '#3157a4', soft: '#eef3ff', accent: '#9bd2b6' }
 };
 
 const DEFAULT_VOUCHER_THEME = 'blue';

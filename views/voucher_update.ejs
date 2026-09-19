@@ -492,7 +492,8 @@
         ['crm2', 'CRM Link 2'],
         ['crm', 'CRM Link'],
         ['reference-pdf', 'Reference Compact PDF'],
-        ['reference-link', 'Reference Compact Link']
+        ['reference-link', 'Reference Compact Link'],
+        ['tour-pvt-link', 'Tour PVT Mobile Link']
       ];
       const match = names.find(([key]) => ejsPath.includes(key));
       return match ? match[1] : `${labelPrefix} ${index + 1}`;
@@ -548,7 +549,7 @@
     const voucherThemes = [
       ['blue', 'Ocean Blue'], ['teal', 'Professional Teal'], ['green', 'Fresh Green'],
       ['rose', 'Soft Rose'], ['amber', 'Warm Amber'], ['violet', 'Elegant Violet'],
-      ['bw', 'No Color, Black & White'], ['light-grey', 'Light Grey'], ['dark-grey', 'Dark Grey']
+      ['bw', 'No Color, Black & White'], ['light-grey', 'Light Grey'], ['dark-grey', 'Dark Grey'], ['tour-blue', 'Tour Blue']
     ];
 
     function loadThemeSelect(selectId, selectedValue) {

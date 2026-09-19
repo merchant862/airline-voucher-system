@@ -236,6 +236,7 @@ async function getVoucherTemplate(req, res, next) {
             departureFlight,
             arrivalFlight,
             qrImage,
+            pdfUrl: `/voucher/download/${voucher.id}`,
             verifiedImage: getVerifiedImagePath(voucher.linkVoucherFormat?.ejsPath)
         });
 
