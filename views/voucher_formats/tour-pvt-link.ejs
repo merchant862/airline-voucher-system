@@ -17,6 +17,8 @@
   .preview-card { position:relative; z-index:2; width:min(100%,720px); margin:0 auto; padding:18px 18px 28px; background:#fff; border-radius:10px; box-shadow:0 8px 24px rgba(36,56,90,.14); }
   .voucher-preview { width:100%; height:540px; border:0; background:#fff; overflow:hidden; }
   .voucher-preview .preview-inner { width:122%; margin-left:-11%; transform:scale(.82); transform-origin:top center; }
+  .link-qr { display:flex; justify-content:center; margin:16px auto 0; }
+  .link-qr img { width:112px; height:112px; object-fit:contain; }
   .preview-card .pdf-button { display:flex; align-items:center; justify-content:center; gap:18px; width:100%; margin:22px auto 0; padding:18px 22px; border:0; border-radius:8px; background:#9bd2b6; color:#263238; font-size:24px; line-height:1; text-decoration:none; }
   .pdf-button svg { width:30px; height:30px; fill:none; stroke:currentColor; stroke-width:2; }
   @media (max-width:700px) {
@@ -27,6 +29,8 @@
     .preview-card { padding:10px 10px 18px; border-radius:8px; }
     .voucher-preview { height:360px; overflow:hidden; }
     .voucher-preview .preview-inner { width:156%; margin-left:-28%; transform:scale(.64); }
+    .link-qr { margin-top:12px; }
+    .link-qr img { width:92px; height:92px; }
     .preview-card .pdf-button { margin-top:14px; padding:15px 18px; font-size:20px; }
     .pdf-button svg { width:26px; height:26px; }
   }
@@ -73,6 +77,7 @@
         <div class="pv-note">Note: <%= notes || '—' %></div>
       </div>
     </div>
+    <div class="link-qr"><img src="<%= qrImage %>" alt="Voucher QR code"></div>
     <a class="pdf-button" href="<%= typeof pdfUrl !== 'undefined' ? pdfUrl : '#' %>" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="3"></circle></svg><span>View PDF</span></a>
   </section>
 </main>
