@@ -269,7 +269,7 @@ async function downloadVoucherPdfController(req, res, next) {
 
     res.set({
       'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename="${buildVoucherPdfFilename(voucherData.customers)}"`,
+      'Content-Disposition': `${req.query.view ? 'inline' : 'attachment'}; filename="${buildVoucherPdfFilename(voucherData.customers)}"`,
       'Content-Length': pdfBuffer.length
     });
 
