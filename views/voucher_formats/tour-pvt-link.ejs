@@ -11,6 +11,7 @@
   body { margin:0; min-height:100vh; background:var(--tour-blue); color:#263238; font-family:Arial,Helvetica,sans-serif; }
   .shell { min-height:100vh; padding:42px 18px 34px; position:relative; overflow:hidden; }
   .shell::after { content:''; position:absolute; left:-10%; right:-10%; bottom:-150px; height:290px; border-radius:50% 50% 0 0; background:#fff; }
+  .shell::before { content:''; position:absolute; left:-12%; right:-12%; bottom:230px; height:2px; background:rgba(255,255,255,.82); transform:rotate(-7deg); box-shadow:0 22px 0 rgba(255,255,255,.82); z-index:0; }
   .hero { position:relative; z-index:1; color:#fff; text-align:center; margin:0 auto 24px; }
   .hero h1 { margin:0 0 20px; font-size:42px; line-height:1.05; font-weight:800; letter-spacing:.5px; }
   .hero p { margin:0; font-size:25px; line-height:1.35; font-weight:400; }
