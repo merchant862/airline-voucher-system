@@ -72,7 +72,7 @@
         <div class="pv-note">Note: <%= notes || '—' %></div>
       </div>
     </div>
-    <a class="pdf-button" href="<%= pdfUrl %>" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="3"></circle></svg><span>View PDF</span></a>
+    <a class="pdf-button" href="<%= typeof pdfUrl !== 'undefined' ? pdfUrl : '#' %>" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="3"></circle></svg><span>View PDF</span></a>
   </section>
 </main>
 </body>

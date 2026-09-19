@@ -86,6 +86,7 @@ async function getVoucherTemplate(req, res, next) {
             departureFlight,
             arrivalFlight,
             qrImage,
+            pdfUrl: '#',
             theme: getVoucherTheme(req.query.theme),
             urduFontData: getUrduFontData(),
             verifiedImage: getVerifiedImagePath(format.ejsPath)
