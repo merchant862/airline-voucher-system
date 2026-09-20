@@ -2,7 +2,7 @@ require('dotenv').config();
 
 async function loginViewController(req, res, next) 
 {
-    try{ return res.status(200).render(`../views/login.ejs`) }
+    try{ return res.status(200).render(`../views/login.ejs`, { next: req.query.next || '' }) }
     catch(error){ next(error) }
 }
 

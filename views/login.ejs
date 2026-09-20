@@ -147,18 +147,19 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 
   const email = e.target.email.value;
   const password = e.target.password.value;
+  const next = new URLSearchParams(window.location.search).get('next') || '';
 
   try {
     const res = await fetch('/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email, password, next })
     });
 
     const data = await res.json();
 
     if(data.success){
-      window.location.href = '/dashboard';
+      window.location.href = data.redirect || '/dashboard';
     } else {
       alert(data.message || "Login failed");
     }

@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { admins } = require('../../database/models');
+const { getSafeNext } = require('../../utils/safeRedirect');
 
 const loginController = async (req, res, next) => {
   try {
@@ -34,7 +35,11 @@ const loginController = async (req, res, next) => {
       secure: process.env.NODE_ENV === 'production'
     });
 
-    return res.json({ success: true, message: "Login successful" });
+    return res.json({
+      success: true,
+      message: "Login successful",
+      redirect: getSafeNext(req.body.next)
+    });
 
   } catch (err) {
     next(err);
