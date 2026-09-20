@@ -415,7 +415,6 @@
             <button type="button" class="delete-item-btn">×</button>
 
             <label>Route / Description</label>
-            <input type="search" class="transportRouteFilter" placeholder="Filter route or type">
             <select
               class="transportRouteSelect"
               name="transports[<%= index %>][route]"
@@ -854,7 +853,6 @@
         <button type="button" class="delete-item-btn">×</button>
 
         <label>Route / Description</label>
-        <input type="search" class="transportRouteFilter" placeholder="Filter route or type">
         <select class="transportRouteSelect">
           <option value="">Select Route</option>
         </select>
@@ -877,7 +875,6 @@
       const typeInput = div.querySelector('.transportTypeInput');
       const rateWrap = div.querySelector('.transportRateWrap');
       const rateInput = div.querySelector('.transportRateInput');
-      const routeFilter = div.querySelector('.transportRouteFilter');
 
       const initialRoute = routeSelect.dataset.initialRoute || routeSelect.value || '';
       const initialType = typeInput.value || '';
@@ -925,20 +922,6 @@
         const selectedOption = this.selectedOptions[0];
         typeInput.value = selectedOption?.dataset.type || '';
         updateTransportRateVisibility();
-      });
-
-      routeFilter.addEventListener('input', function () {
-        const query = this.value.trim().toLowerCase();
-        Array.from(routeSelect.options).forEach((option, index) => {
-          if (index === 0) return;
-          option.hidden = Boolean(query) && !option.textContent.toLowerCase().includes(query);
-        });
-        const selected = routeSelect.selectedOptions[0];
-        if (query && selected && selected.index > 0 && selected.hidden) {
-          routeSelect.value = '';
-          typeInput.value = '';
-          updateTransportRateVisibility();
-        }
       });
 
       updateTransportRateVisibility();

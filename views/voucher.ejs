@@ -807,7 +807,6 @@ function addTransport(prefill = {}) {
     div.innerHTML = `
         <span class="removeBtn" onclick="removeRow(this)">❌</span>
         <label>Route / Description</label>
-        <input type="search" class="transportRouteFilter" placeholder="Filter route or type">
         <select name="transportRoute[]" required class="transportRouteSelect">
             <option value="">Select Route</option>
             ${transportOptions}
@@ -826,21 +825,6 @@ function addTransport(prefill = {}) {
     const typeInput = div.querySelector('.transportTypeInput');
     const rateWrap = div.querySelector('.transportRateWrap');
     const rateInput = div.querySelector('.transportRateInput');
-    const routeFilter = div.querySelector('.transportRouteFilter');
-
-    routeFilter.addEventListener('input', function () {
-        const query = this.value.trim().toLowerCase();
-        Array.from(routeSelect.options).forEach((option, index) => {
-            if (index === 0) return;
-            option.hidden = Boolean(query) && !option.textContent.toLowerCase().includes(query);
-        });
-        const selected = routeSelect.selectedOptions[0];
-        if (query && selected && selected.index > 0 && selected.hidden) {
-            routeSelect.value = '';
-            typeInput.value = '';
-            updateTransportRateVisibility();
-        }
-    });
 
     function updateTransportRateVisibility() {
         const type = typeInput.value.trim().toLowerCase();
