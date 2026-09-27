@@ -50,7 +50,7 @@ async function addVoucherController(req, res, next) {
         });
 
         const selectedLinkVoucherFormat = await voucherFormats.findOne({
-            where: { id: req.body.linkVoucherFormatsId },
+            where: { id: req.body.linkVoucherFormatsId, name: 'LINK_FORMAT' },
             transaction: t
         });
 

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Service Voucher</title>
+
+<style>
+body{
+    font-family: Arial, "Noto Naskh Arabic", "Amiri", Tahoma, sans-serif;
+    background:#f2f2f2;
+    margin:0;
+}
+
+.wrapper{
+    width:1000px;
+    margin:20px auto;
+    background:#fff;
+    padding:20px;
+    border:1px solid #000;
+}
+
+.header-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:10px;
+}
+
+.header-table td{
+    border:none;
+    vertical-align:middle;
+}
+
+.logo{
+    height:70px;
+}
+
+.center-title{
+    text-align:center;
+}
+
+.center-title h2{
+    margin:0;
+    font-size:20px;
+}
+
+.service-title{
+    text-align:center;
+    font-weight:bold;
+    letter-spacing:3px;
+    margin-top:5px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12px;
+    margin-top:5px;
+}
+
+table, th, td{
+    border:1px solid #000;
+    text-align:center;
+}
+
+th, td{
+    padding:5px;
+}
+
+.section-heading{
+    text-align:center;
+    font-weight:bold;
+    margin-top:10px;
+    letter-spacing:2px;
+}
+
+.center{text-align:center;}
+.right{text-align:right;}
+
+.qr-wrapper{
+    margin-top:10px;
+}
+
+.note{
+    font-size:11px;
+    margin-top:8px;
+    white-space:pre-line;
+}
+
+.arabic-block{
+    direction:rtl;
+    text-align:right;
+    font-size:13px;
+    margin-top:8px;
+    font-family: "Noto Naskh Arabic","Amiri",Tahoma,Arial;
+}
+
+.important{
+    margin-top:10px;
+    border-top:2px solid #000;
+    padding-top:5px;
+    font-size:12px;
+}
+
+.qr-image{
+    width:260px;
+    height:260px;
+    max-width:100%;
+    object-fit:contain;
+    background:#fff;
+}
+
+.urdu-bullets{
+    direction:rtl;
+    text-align:right;
+    margin:10px 0 0;
+    padding:0 22px 0 0;
+    font-family:"Voucher Nastaliq","Noto Nastaliq Urdu","Noto Naskh Arabic",Tahoma,Arial,sans-serif;
+    font-size:12px;
+    line-height:1.65;
+}
+
+.urdu-bullets li{ padding-right:4px; margin:0; }
+
+.agency-name{ color:#000 !important; }
+
+.customer-name,
+.hotel-name{
+    font-weight:700;
+    color:#111827;
+}
+
+@media print {
+    body{
+        background:#fff;
+    }
+
+    .wrapper{
+        width:760px;
+        margin:0 auto;
+        padding:8px;
+    }
+
+    .logo{
+        height:52px;
+    }
+
+    .center-title h2{
+        font-size:18px;
+    }
+
+    .center-title p{
+        margin:2px 0;
+        font-size:10px;
+        line-height:1.25;
+    }
+
+    .service-title{
+        margin-top:3px;
+        font-size:11px;
+        letter-spacing:1.5px;
+    }
+
+    table{
+        margin-top:4px;
+        font-size:10px;
+    }
+
+    th, td{
+        padding:3px 4px;
+        font-size:10px;
+    }
+
+    .section-heading{
+        margin-top:6px;
+        font-size:10px;
+        letter-spacing:1px;
+    }
+
+    .qr-wrapper{
+        margin-top:6px;
+    }
+
+    .qr-wrapper ul{
+        margin:4px 0 0 14px;
+        padding:0;
+    }
+
+    .qr-wrapper li{
+        margin-bottom:2px;
+        font-size:9.5px;
+        line-height:1.2;
+    }
+
+    .qr-image{
+        width:210px;
+        height:210px;
+    }
+
+    .note,
+    .arabic-block,
+    .important{
+        margin-top:4px;
+        font-size:8.5px;
+        line-height:1.15;
+    }
+
+    .arabic-block{
+        font-size:9px;
+        line-height:1.25;
+    }
+}
+</style>
+</head>
+
+<style>
+  @font-face { font-family:'Voucher Nastaliq'; src:url('<%= urduFontData %>') format('truetype'); font-weight:400; font-style:normal; }
+  :root { --theme-primary:<%= theme.primary %>; --theme-dark:<%= theme.dark %>; --theme-soft:<%= theme.soft %>; }
+  .section-heading { background:var(--theme-primary) !important; color:var(--theme-dark) !important; }
+  .header-table td, .voucher-id span { border-color:var(--theme-primary) !important; }
+  .service-title { color:var(--theme-dark) !important; }
+  .customer-name, .hotel-name { color:var(--theme-dark) !important; }
+</style>
+<body>
+
+<div class="wrapper">
+
+<!-- HEADER -->
+<table class="header-table">
+<tr>
+<td width="20%">
+    <% if(company.logo){ %>
+        <img src="<%= company.logo %>" class="logo">
+    <% } %>
+</td>
+
+<td width="60%" class="center-title">
+    <h2 class="agency-name">M/S <%= (company.name || '').toUpperCase() %></h2>
+    <div><p>Shaheen View Appartments, Office #7, Mezzanine floor, Shaheen View, off Shahrah e Faisal, Block-6 Block 6 P.E.C.H.S., Karachi, 76800</p></div>
+    <div class="service-title">SERVICE VOUCHER</div>
+</td>
+
+<td width="20%" class="right">
+    <% if(foreignCompany.logo){ %>
+        <img src="<%= foreignCompany.logo %>" class="logo">
+    <% } %>
+</td>
+</tr>
+</table>
+
+<!-- VOUCHER INFO -->
+<table>
+<tr>
+<td><strong>UMRAH COMPANY</strong></td>
+<td class="agency-name">M/S <%= foreignCompany.name %></td>
+<td><strong>HOTEL VOUCHER#</strong></td>
+<td><%= voucher.voucherNo %></td>
+<td><strong>V-DATE</strong></td>
+<td><%= voucher.date %></td>
+</tr>
+<tr>
+<td><strong>Executive Agent</strong></td>
+<td colspan="5">PKG CATEGORY / DAZ 0%</td>
+</tr>
+</table>
+
+<!-- PARTY DETAILS -->
+<div class="section-heading">PARTY DETAILS</div>
+
+<table>
+<tr>
+<th>SR</th>
+<th>PAX NAME(S)</th>
+<th>PASSPORT NO.</th>
+<th>GROUP</th>
+<th>VISA NO.</th>
+</tr>
+
+<% customers.forEach((c,i)=>{ %>
+<tr>
+<td class="center"><%= i+1 %></td>
+<td class="customer-name"><%= c.name %></td>
+<td><%= c.passport %></td>
+<td>901052165</td>
+<td><%= c.visaNumber %></td>
+</tr>
+<% }) %>
+
+<tr>
+<td colspan="5" class="center">
+GENTS: <%= customers.filter(c=>c.gender==='male').length %> &nbsp;&nbsp;
+LADIES: <%= customers.filter(c=>c.gender==='female').length %> &nbsp;&nbsp;
+CHILDREN: <%= customers.filter(c=>c.paxType==='children').length %> &nbsp;&nbsp;
+INFANT: <%= customers.filter(c=>c.paxType==='infant').length %> &nbsp;&nbsp;
+TOTAL PAX: <%= customers.length %>
+</td>
+</tr>
+</table>
+
+<!-- ACCOMMODATION -->
+<div class="section-heading">ACCOMMODATION DETAILS</div>
+
+<table>
+<tr>
+<th>CITY</th>
+<th>HOTEL NAME</th>
+<th>ROOM</th>
+<th>ROOM TYPE</th>
+<th>CHECK IN</th>
+<th>CHECK OUT</th>
+<th>NIGHTS</th>
+</tr>
+
+<% hotels.forEach(h=>{ %>
+<tr>
+<td><%= h.city %></td>
+<td class="hotel-name"><%= h.name %></td>
+<td class="center">1</td>
+<td><%= h.roomType %></td>
+<td><%= h.checkIn %></td>
+<td><%= h.checkOut %></td>
+<td class="center"><%= h.nights %></td>
+</tr>
+<% }) %>
+
+<tr>
+<td colspan="6" class="right"><strong>Total Nights</strong></td>
+<td class="center">
+<%= hotels.reduce((sum,h)=>sum+h.nights,0) %>
+</td>
+</tr>
+</table>
+
+<!-- TRANSPORT -->
+<div class="section-heading">TRANSPORTATION DETAILS</div>
+
+<table>
+<tr>
+<th>TYPE</th>
+<th>ROUTE</th>
+</tr>
+
+<% transports.forEach(t=>{ %>
+<tr>
+<td><%= t.type %></td>
+<td><%= t.route %></td>
+</tr>
+<% }) %>
+</table>
+
+<!-- FLIGHT DETAILS -->
+<div class="section-heading">FLIGHT DETAILS</div>
+
+<table>
+<tr>
+<th>FLIGHT</th>
+<th>FROM</th>
+<th>TO</th>
+<th>DEPARTURE</th>
+<th>ARRIVAL</th>
+</tr>
+<tr>
+<td><%= departureFlight.flightNo %></td>
+<td><%= departureFlight.fromCity %></td>
+<td><%= departureFlight.toCity %></td>
+<td><%= departureFlight.date %> - <%= departureFlight.takeoff %></td>
+<td><%= departureFlight.date %> - <%= departureFlight.landing %></td>
+</tr>
+<tr>
+<td><%= arrivalFlight.flightNo %></td>
+<td><%= arrivalFlight.fromCity %></td>
+<td><%= arrivalFlight.toCity %></td>
+<td><%= arrivalFlight.date %> - <%= arrivalFlight.takeoff %></td>
+<td><%= arrivalFlight.date %> - <%= arrivalFlight.landing %></td>
+</tr>
+</table>
+
+<!-- QR + CONTACT -->
+<table class="qr-wrapper">
+<tr>
+<td width="70%" style="text-align: left;">
+    <strong>Notes.</strong>
+    <ul>
+        <li>MAKKAH HOTEL: Uzair 0548335007 (Day) Tariq 0549306332 (Night)</li>
+        <li>MEDINAH HOTEL: MR. ARSALAN +966544809146</li>
+        <li>Transport Contact: +966500000000</li>
+        <li>Please contact Makkah/Madinah operations 24 hours before the scheduled transportation and notify them accordingly.</li>
+        <li>Room sharing means 4-6 beds per room.</li>
+        <li>Separate room will incur extra cost.</li>
+        <li>If the above mentioned hotel is unavailable in that case a similar category hotel will be provided.</li>
+        <li>In case of any transport related delays, our esteemed passengers are advised to observe patience at airports and hotels.</li>
+        <li>Each and every Pax has to wear wrist band or company badge. If anybody fails to follow directions SAR 2,000 will be charged as penalty per Pax.</li>
+        <li>Please when you call for requesting Transportation or any services you must give us the Name of the Agency and the Serial Number above.</li>
+        <li>No service will be provided if the vendor fails to notify us the agency name and the serial number.</li>
+
+        <% if (notes) { %>
+            <% notes.split('\n').forEach(n => { %>
+                <li><%= n %></li>
+            <% }) %>
+        <% } %>
+    </ul>
+</td>
+
+<td width="30%" class="center">
+<img src="<%= qrImage %>" class="qr-image"><br>
+<strong>AUTHORIZED<br><%= (company.name || '').toUpperCase() %></strong>
+</td>
+</tr>
+</table>
+
+<!-- URDU BLOCK -->
+<ul class="urdu-bullets">
+    <li>آپ کا ہوٹل اور پیکیج اس دستاویز میں درج ہے۔ اسی کے مطابق آپ کو رہائش اور دیگر سہولیات فراہم کی جائیں گی۔</li>
+    <li>سفر کے دوران سامان سعودی ایئر لائن کے مقررہ وزن کے مطابق ہونا چاہیے۔ اضافی سامان کی ادائیگی آپ کے ذمے ہوگی۔</li>
+    <li>پاسپورٹ اور ضروری دستاویزات محفوظ رکھیں۔ سعودی عرب میں قیام کے دوران تمام ہدایات پر عمل کریں۔</li>
+    <li>حرمین شریفین میں زیارت کے لیے مقررہ اوقات اور گروپ کی ہدایات کی پابندی کریں۔</li>
+    <li>جدہ ایئرپورٹ پر پرواز کے انتظامات مکمل کرنے کے لیے روانگی سے 3 تا 5 گھنٹے پہلے پہنچیں۔</li>
+    <li>ہوٹل چیک آؤٹ کا وقت دوپہر 2 بجے ہے، جبکہ نائٹ چیک اِن اور دیگر اوقات پیکیج کے مطابق ہوں گے۔</li>
+    <li>واپسی کی پرواز سے پہلے اپنے سامان سمیت ہوٹل کے ریسپشن پر موجود رہیں۔ اپنی معلومات کی درستگی کے آپ خود ذمے دار ہیں۔</li>
+    <li>سعودی حکومت اور کمپنی کے قوانین کی خلاف ورزی کی صورت میں ہونے والے نقصان کے ذمے دار مسافر ہوں گے۔</li>
+</ul>
+
+<div class="important">
+<strong>IMPORTANT NOTICE:</strong>
+Passengers are requested not to hand over your passport to anyone in Saudi Arabia either agent or transporter provider.
+</div>
+
+</div>
+
+</body>
+</html>
