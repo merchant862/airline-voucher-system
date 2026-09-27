@@ -362,7 +362,7 @@ tr:nth-child(even) td{
     margin-bottom:4px;
 }
 
-@media print {
+@media print, screen {
     body{
         padding:0;
         background:#ffffff;
@@ -507,8 +507,8 @@ tr:nth-child(even) td{
 <style>
   @page { size: A4 portrait; margin: 0; }
   html, body { box-sizing: border-box; }
-  body { padding: 12mm; }
-  .wrapper { box-sizing: border-box; width: 210mm; max-width: 100%; min-height: 297mm; margin: 0 auto; }
+  body { padding: 0; background: #fff; }
+  .wrapper { box-sizing: border-box; width: 760px; max-width: calc(100% - 16px); min-height: 0; margin: 0 auto; padding: 8px; }
 </style>
 </head>
 

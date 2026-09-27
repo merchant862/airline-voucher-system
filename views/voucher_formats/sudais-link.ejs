@@ -28,7 +28,7 @@
         .note { font-size: 13px; margin-top: 15px; white-space: pre-line; }
         .qr-image { width:260px; height:260px; max-width:100%; object-fit:contain; background:#fff; }
 
-        @media print {
+        @media print, screen {
             body { background:#fff; margin:0; }
             .page { width:760px; margin:0 auto; padding:8px; border:0; }
             .header { margin-bottom:8px; }
@@ -49,8 +49,8 @@
     <style>
       @page { size: A4 portrait; margin: 0; }
       html, body { box-sizing: border-box; }
-      body { padding: 12mm; }
-      .page { box-sizing: border-box; width: 210mm; max-width: 100%; min-height: 297mm; margin: 0 auto; padding: 12mm; }
+      body { background: #fff; margin: 0; padding: 0; }
+      .page { box-sizing: border-box; width: 760px; max-width: calc(100% - 16px); min-height: 0; margin: 0 auto; padding: 8px; }
     </style>
 </head>
 <style>
