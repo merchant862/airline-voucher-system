@@ -17,20 +17,22 @@ const loginController = async (req, res, next) => {
     const isMatch = await bcrypt.compare(password, admin.password);
     if (!isMatch) return res.status(401).json({ success: false, message: "Invalid credentials" });
 
-    let expiresIn = (process.env.NODE_ENV == 'development') ? '30d' : '15m';
-    let maxAge = (process.env.NODE_ENV == 'development') ? 30 * 24 * 60 * 60 * 1000 : 15 * 60 * 1000 ;
+    const expiresIn = (process.env.NODE_ENV === 'development') ? '30d' : '1d';
+    const maxAge = (process.env.NODE_ENV === 'development')
+      ? 30 * 24 * 60 * 60 * 1000
+      : 24 * 60 * 60 * 1000;
 
     // Generate JWT with role "admin"
     const token = jwt.sign(
       { id: admin.id, email: admin.email, role: 'admin' },
       process.env.SECRET,
-      { expiresIn: expiresIn }   // ✅ 15 minutes
+      { expiresIn }
     );
 
     // Set cookie
     res.cookie('adminToken', token, {
       httpOnly: true,
-      maxAge: maxAge,   // ✅ 15 minutes in milliseconds
+      maxAge,
       sameSite: 'strict',
       secure: process.env.NODE_ENV === 'production'
     });
