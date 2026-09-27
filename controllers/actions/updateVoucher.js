@@ -42,7 +42,7 @@ async function updateVoucherController(req, res, next) {
             transaction: t
         });
         const selectedLinkVoucherFormat = await voucherFormats.findOne({
-            where: { id: req.body.linkVoucherFormatsId, name: 'LINK_FORMAT' },
+            where: { id: req.body.linkVoucherFormatsId },
             transaction: t
         });
 

@@ -3,8 +3,12 @@ const { voucherFormats } = require('./../../database/models');
 async function getVoucherFormatsByVoucherController(req, res, next) {
   try {
 
+    const where = req.params.name === 'LINK_FORMAT'
+      ? undefined
+      : { name: 'DOWNLOAD_FORMAT' };
+
     const voucherFormatList = await voucherFormats.findAll({
-      where: { name : req.params.name },
+      where,
       attributes: [
         'id',
         'ejsPath',
