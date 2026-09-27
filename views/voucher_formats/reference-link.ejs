@@ -100,8 +100,12 @@
     .print { display:none !important; }
   }
 </style>
+<style>
+  .approved-stamp { position:fixed; top:300px; left:50%; z-index:5; color:#65e884; font-family:Arial,Helvetica,sans-serif; font-size:46px; font-weight:400; letter-spacing:0; opacity:.35; transform:translateX(-50%) rotate(-45deg); pointer-events:none; white-space:nowrap; }
+</style>
 </head>
 <body>
+<div class="approved-stamp" aria-hidden="true">APPROVED</div>
 <main class="page">
   <% const foreignBaseName = (foreignCompany.name || '').replace(/\s*\(PBT\)\s*$/i, ''); %>
   <header class="header">
