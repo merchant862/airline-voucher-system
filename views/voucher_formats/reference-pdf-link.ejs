@@ -57,6 +57,12 @@
   .bottom { display:block; }
   .bottom .qr { display:none; }
 </style>
+<style>
+  @page { size: A4 portrait; margin: 0; }
+  html, body { box-sizing: border-box; }
+  body { padding: 4mm; }
+  .voucher { box-sizing: border-box; width: 210mm; max-width: 100%; min-height: 297mm; }
+</style>
 </head>
 <body><main class="voucher"><div class="approved-stamp" aria-hidden="true">APPROVED</div>
   <% const foreignBaseName = (foreignCompany.name || '').replace(/\s*\(PBT\)\s*$/i, ''); %>
