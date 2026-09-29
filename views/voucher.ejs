@@ -746,7 +746,9 @@ async function swapHotelInputByCity(city, div, selectedHotelName = '') {
             const data = await res.json();
             if (!data.success) return;
 
-            const filteredHotels = data.data.filter(h => h.city === city);
+            const filteredHotels = data.data
+                .filter(h => h.city === city)
+                .sort((a, b) => (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' }));
             const select = document.createElement('select');
             select.name = 'hotelName[]';
             select.required = true;
@@ -791,7 +793,10 @@ async function loadTransportList() {
         const res = await fetch('/api/list/transports');
         const data = await res.json();
         if (!data.success) return;
-        window.transportListData = data.data;
+        window.transportListData = (data.data || []).slice().sort((a, b) => {
+            const routeOrder = (a.route || '').localeCompare(b.route || '', undefined, { sensitivity: 'base' });
+            return routeOrder || (a.type || '').localeCompare(b.type || '', undefined, { sensitivity: 'base' });
+        });
     } catch (err) {
         console.error(err);
     }

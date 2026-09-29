@@ -779,7 +779,9 @@
       const currentValue = (hotelField && hotelField.value) ? hotelField.value : (hotelField?.dataset?.initialValue || '');
 
       if (city === 'MAKKAH' || city === 'MADINAH') {
-        const filteredHotels = (hotelsListData || []).filter(h => h.city === city);
+        const filteredHotels = (hotelsListData || [])
+          .filter(h => h.city === city)
+          .sort((a, b) => (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' }));
 
         const select = document.createElement('select');
         select.className = 'hotelNameSelect';
@@ -831,7 +833,9 @@
         const res = await fetch('/api/list/hotels');
         const data = await res.json();
         if (data.success) {
-          hotelsListData = data.data || [];
+          hotelsListData = (data.data || []).slice().sort((a, b) =>
+            (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' })
+          );
         }
       } catch (err) {
         console.error(err);
@@ -843,7 +847,12 @@
       try {
         const res = await fetch('/api/list/transports');
         const data = await res.json();
-        if (data.success) transportListData = data.data || [];
+        if (data.success) {
+          transportListData = (data.data || []).slice().sort((a, b) => {
+            const routeOrder = (a.route || '').localeCompare(b.route || '', undefined, { sensitivity: 'base' });
+            return routeOrder || (a.type || '').localeCompare(b.type || '', undefined, { sensitivity: 'base' });
+          });
+        }
       } catch (err) {
         console.error(err);
       }
