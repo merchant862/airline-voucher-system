@@ -3,20 +3,37 @@
 module.exports = {
   async up(queryInterface) {
     const now = new Date();
-    await queryInterface.bulkInsert('voucherFormats', [
+    const formats = [
       {
         ejsPath: 'views/voucher_formats/ktp2.ejs',
         name: 'DOWNLOAD_FORMAT',
-        createdAt: now,
-        updatedAt: now
       },
       {
         ejsPath: 'views/voucher_formats/ktp2-link.ejs',
         name: 'LINK_FORMAT',
-        createdAt: now,
-        updatedAt: now
       }
-    ]);
+    ];
+
+    for (const format of formats) {
+      const [rows] = await queryInterface.sequelize.query(
+        'SELECT id FROM voucherFormats WHERE ejsPath = :ejsPath LIMIT 1',
+        { replacements: { ejsPath: format.ejsPath } }
+      );
+
+      if (rows.length) {
+        await queryInterface.bulkUpdate(
+          'voucherFormats',
+          { name: format.name, updatedAt: now },
+          { id: rows[0].id }
+        );
+      } else {
+        await queryInterface.bulkInsert('voucherFormats', [{
+          ...format,
+          createdAt: now,
+          updatedAt: now
+        }]);
+      }
+    }
   },
 
   async down(queryInterface, Sequelize) {
