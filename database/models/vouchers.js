@@ -37,6 +37,8 @@ module.exports = (sequelize, DataTypes) => {
     arrivalFlightTakeOffTime: DataTypes.TIME,
     arrivalFlightLandingTime: DataTypes.TIME,
     foreignCompanyId: DataTypes.INTEGER,
+    packageNumber: DataTypes.INTEGER,
+    packageName: DataTypes.STRING,
     voucherFormatsId: DataTypes.INTEGER,
     linkVoucherFormatsId: DataTypes.INTEGER,
     pdfTheme: DataTypes.STRING,

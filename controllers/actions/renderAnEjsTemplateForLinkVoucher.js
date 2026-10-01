@@ -224,7 +224,9 @@ async function getVoucherTemplate(req, res, next) {
 
             voucher: {
                 voucherNo: voucher.voucherNo,
-                date: voucher.departureFlightDate?.toISOString().split('T')[0] || voucher.createdAt?.toISOString().split('T')[0]
+                date: voucher.departureFlightDate?.toISOString().split('T')[0] || voucher.createdAt?.toISOString().split('T')[0],
+                package: voucher.packageNumber,
+                packageType: voucher.packageName
             },
 
             customers: formattedCustomers,

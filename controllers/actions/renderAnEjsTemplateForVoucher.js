@@ -60,24 +60,28 @@ async function getVoucherTemplate(req, res, next) {
 
         // Base64 QR generate
         const qrImage = await generateQr(qrData);
+        const isKtp2 = format.ejsPath.includes('ktp2');
 
         // ======= Render EJS =======
         res.render(path.join(__dirname, '../../', format.ejsPath), {
             company: {
-                name: "MEEM TRAVELS",
-                email: "Meemtravels110@gmail.com",
-                address:"Suite 210, 2nd Floor, Business Arcade, Street 12, Block 5, Gulshan-e-Iqbal, Karachi, Sindh, Pakistan",
-                logo: "/images/meem_travels.png"
+                name: isKtp2 ? "KTP TRAVELS" : "MEEM TRAVELS",
+                email: isKtp2 ? "" : "Meemtravels110@gmail.com",
+                address: isKtp2 ? "" : "Suite 210, 2nd Floor, Business Arcade, Street 12, Block 5, Gulshan-e-Iqbal, Karachi, Sindh, Pakistan",
+                logo: isKtp2 ? "/images/ktp.png" : "/images/meem_travels.png"
             },
             foreignCompany:{
-                name: "Daleel Alzowar",
+                name: "ARKAN AL BAIT FOR UMRAH SERVICES",
                 address:'',
                 logo: "/images/daleel-alzowar.png"
             },
             familyHead: "SAIF ALI",
             voucher: {
                 voucherNo: "UB-90125",
-                date: "2026-01-15"
+                date: "2026-01-15",
+                package: "20",
+                packageType: "Standard",
+                beds: 3
             },
             customers,
             hotels,

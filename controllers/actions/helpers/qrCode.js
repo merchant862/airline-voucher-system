@@ -15,8 +15,18 @@ const QR_OPTIONS = {
 function buildVoucherQrUrl(voucherId) {
   let baseUrl = String(process.env.URL || '').trim();
   baseUrl = baseUrl.replace(/^(https?):(?!\/\/)/i, '$1://');
-  const origin = baseUrl ? new URL(baseUrl).origin : '';
-  return `${origin}/voucher/scan/${voucherId}`;
+  if (!baseUrl) return `/voucher/scan/${encodeURIComponent(voucherId)}`;
+
+  const url = new URL(baseUrl);
+  const publicPath = url.pathname.replace(/\/+$/, '');
+
+  // URL is configured as the public voucher path in production. Keep that
+  // exact path in the QR so scanners open the same public voucher route.
+  if (publicPath && publicPath !== '/') {
+    return `${url.origin}${publicPath}/${encodeURIComponent(voucherId)}`;
+  }
+
+  return `${url.origin}/voucher/scan/${encodeURIComponent(voucherId)}`;
 }
 
 async function generateVoucherQr(voucherId) {

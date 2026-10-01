@@ -57,6 +57,8 @@ async function updateVoucherController(req, res, next) {
         await voucher.update({
             companyId: req.body.companyId,
             foreignCompanyId: req.body.foreignCompanyId,
+            packageNumber: req.body.packageNumber === '' ? null : Number(req.body.packageNumber) || null,
+            packageName: req.body.packageName?.trim() || null,
             departureFlightDate: req.body.departureFlightDate,
             departureFlightNo: req.body.departureFlightNo,
             departureFlightFromCity: req.body.departureFlightFromCity,
@@ -218,7 +220,12 @@ async function updateVoucherController(req, res, next) {
         const qrImage = await generateVoucherQr(voucherId);
 
         const ejsData = {
-            voucher: { voucherNo: voucherData.voucherNo, date: formatDate(voucherData.departureFlightDate) },
+            voucher: {
+                voucherNo: voucherData.voucherNo,
+                date: formatDate(voucherData.departureFlightDate),
+                package: voucherData.packageNumber,
+                packageType: voucherData.packageName
+            },
             company: {
                 name: voucherData.company?.name,
                 email: voucherData.company?.email,

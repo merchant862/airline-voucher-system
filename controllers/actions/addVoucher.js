@@ -69,6 +69,8 @@ async function addVoucherController(req, res, next) {
             linkTheme: getVoucherThemeKey(req.body.linkTheme),
             companyId: req.body.companyId,
             foreignCompanyId: req.body.foreignCompanyId,
+            packageNumber: req.body.packageNumber === '' ? null : Number(req.body.packageNumber) || null,
+            packageName: req.body.packageName?.trim() || null,
             voucherNo: `UB-${Math.floor(100000 + Math.random() * 900000)}`,
             departureFlightDate: req.body.departureFlightDate,
             departureFlightNo: req.body.departureFlightNo,
@@ -240,6 +242,8 @@ async function addVoucherController(req, res, next) {
     voucher: {
         voucherNo: voucherData.voucherNo,
         date: formatDate(voucherData.departureFlightDate),
+        package: voucherData.packageNumber,
+        packageType: voucherData.packageName,
     },
     company: {
         name: voucherData.company?.name,

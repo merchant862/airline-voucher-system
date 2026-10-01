@@ -247,6 +247,20 @@
       </div>
     </div>
 
+    <div class="form-section">
+      <h3>Package (Optional)</h3>
+      <div class="flight-grid">
+        <div>
+          <label for="packageNumber">Package Number</label>
+          <input type="number" id="packageNumber" name="packageNumber" min="0" value="<%= voucherData.packageNumber ?? '' %>" placeholder="Default: 20">
+        </div>
+        <div>
+          <label for="packageName">Package Name</label>
+          <input type="text" id="packageName" name="packageName" value="<%= voucherData.packageName || '' %>" placeholder="Default: Standard">
+        </div>
+      </div>
+    </div>
+
     <!-- Departure Flight -->
     <div class="form-section">
       <h3>Departure Flight</h3>
@@ -486,6 +500,8 @@
       const ejsPath = (format.ejsPath || '').toLowerCase();
       const names = [
         ['reference-pdf-link', 'Reference PDF Link'],
+        ['ktp2-link', 'KTP-1'],
+        ['ktp2', 'KTP'],
         ['meem1-link', 'Meem Travel PDF Link'],
         ['sudais-link', 'Modern PDF Link'],
         ['irfan-link', 'Standard PDF Link'],
@@ -1010,6 +1026,8 @@
       const payload = {
         companyId: document.getElementById('companySelect').value,
         foreignCompanyId: document.getElementById('foreignCompanySelect').value,
+        packageNumber: document.getElementById('packageNumber').value,
+        packageName: document.getElementById('packageName').value,
         voucherFormatsId: voucherFormatId,
         linkVoucherFormatsId: linkVoucherFormatId,
         pdfTheme: document.getElementById('pdfThemeSelect').value,

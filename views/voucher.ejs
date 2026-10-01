@@ -197,6 +197,20 @@ button.submitBtn {
         </div>
     </div>
 
+    <div class="form-section">
+        <h3>Package (Optional)</h3>
+        <div class="flex-row">
+            <div class="flex-col">
+                <label for="packageNumber">Package Number</label>
+                <input type="number" id="packageNumber" name="packageNumber" min="0" placeholder="Default: 20">
+            </div>
+            <div class="flex-col">
+                <label for="packageName">Package Name</label>
+                <input type="text" id="packageName" name="packageName" placeholder="Default: Standard">
+            </div>
+        </div>
+    </div>
+
     <!-- Customers Section -->
     <div class="form-section">
         <h3>Passenger(s)</h3>
@@ -301,6 +315,8 @@ function formatDisplayName(format, index, labelPrefix) {
     const ejsPath = (format.ejsPath || '').toLowerCase();
         const names = [
             ['reference-pdf-link', 'Reference PDF Link'],
+            ['ktp2-link', 'KTP-1'],
+            ['ktp2', 'KTP'],
             ['meem1-link', 'Meem Travel PDF Link'],
             ['sudais-link', 'Modern PDF Link'],
             ['irfan-link', 'Standard PDF Link'],
@@ -932,6 +948,8 @@ form.addEventListener('submit', async e => {
         linkTheme: document.getElementById('linkThemeSelect').value,
         companyId: document.getElementById('companySelect').value,
         foreignCompanyId: document.getElementById('foreignCompanySelect').value,
+        packageNumber: document.getElementById('packageNumber').value,
+        packageName: document.getElementById('packageName').value,
         departureFlightDate: document.getElementById('departureFlightDate').value,
         departureFlightNo: document.getElementById('departureFlightNo').value,
         departureFlightFromCity: document.getElementById('departureFlightFromCity').value,

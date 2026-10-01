@@ -142,7 +142,9 @@ async function downloadVoucherPdfController(req, res, next) {
 
       voucher: {
         voucherNo: voucherData.voucherNo,
-        date: formatDate(voucherData.departureFlightDate)
+        date: formatDate(voucherData.departureFlightDate),
+        package: voucherData.packageNumber,
+        packageType: voucherData.packageName
       },
 
       company: {
@@ -250,10 +252,11 @@ async function downloadVoucherPdfController(req, res, next) {
       await document.fonts.ready;
     });
 
+    const isKtp2Download = voucherData.voucherFormat.ejsPath.includes('ktp2');
     const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true,
-      margin: {
+      margin: isKtp2Download ? undefined : {
         top: '5mm',
         bottom: '5mm',
         left: '5mm',
