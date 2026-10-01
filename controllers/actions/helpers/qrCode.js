@@ -4,7 +4,9 @@ const QRCode = require('qrcode');
 
 const QR_OPTIONS = {
   errorCorrectionLevel: 'L',
-  margin: 2,
+  // Keep the rendered QR dimensions unchanged while giving the modules more
+  // usable area for reliable scanning in the PDF rasterization.
+  margin: 0,
   type: 'svg',
   color: {
     dark: '#000000',
