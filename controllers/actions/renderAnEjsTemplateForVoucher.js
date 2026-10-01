@@ -17,6 +17,8 @@ async function getVoucherTemplate(req, res, next) {
 
         const format = await voucherFormats.findOne({ where: { id: req.params.id } });
         if (!format) return res.status(404).send('Format not found');
+        const isKtp2 = format.ejsPath.includes('ktp2') || format.ejsPath.includes('ktp-2');
+        const isKtp2Link = format.ejsPath.includes('ktp-2-link');
 
         // ======= Static Data =======
         const departureFlight = {
@@ -54,14 +56,28 @@ async function getVoucherTemplate(req, res, next) {
             { route: "MAK-JED", type: "Private Car" }
         ];
 
+        // Keep the KTP-2 demo close to the supplied reference while real vouchers remain dynamic.
+        if (isKtp2Link) {
+            customers.splice(0, customers.length,
+                { name: "MUHAMMAD AQIB", gender: "male", passport: "CH1359551", paxType: "Adult", beds: "Yes", visaNumber: "", pnr: "45002344" },
+                { name: "SHER MUHAMMAD", gender: "male", passport: "VE0169331", paxType: "Adult", beds: "Yes", visaNumber: "", pnr: "45002344" }
+            );
+            hotels.splice(0, hotels.length,
+                { name: "Land Premium-1000 Meter", confirmNo: "", city: "Makkah", roomType: "Sharing", mealPlan: "RO", checkIn: "30-09-26", checkOut: "07-10-26", nights: 7 },
+                { name: "SHAZA AL MANWARA-750 Meter", confirmNo: "", city: "Medinah", roomType: "Sharing", mealPlan: "RO", checkIn: "07-10-26", checkOut: "14-10-26", nights: 7 },
+                { name: "Land Premium-1000 Meter", confirmNo: "", city: "Makkah", roomType: "Sharing", mealPlan: "RO", checkIn: "14-10-26", checkOut: "20-10-26", nights: 6 }
+            );
+            transports.splice(0, transports.length, { route: "Round Trip (Jed-Mak-Med-Mak-Jed)", type: "Economy By Bus" });
+            Object.assign(departureFlight, { flightNo: "EY-295", date: "30-Sep", fromCity: "KHI", toCity: "RUH", takeoff: "21:35", landing: "02:55" });
+            Object.assign(arrivalFlight, { flightNo: "EY-602", date: "20-Oct", fromCity: "JED", toCity: "KHI", takeoff: "03:10", landing: "11:00" });
+        }
+
         const notes = ``;
 
         const qrData = `Voucher: ${Date.now()}`;
 
         // Base64 QR generate
         const qrImage = await generateQr(qrData);
-        const isKtp2 = format.ejsPath.includes('ktp2');
-
         // ======= Render EJS =======
         res.render(path.join(__dirname, '../../', format.ejsPath), {
             company: {
@@ -75,10 +91,10 @@ async function getVoucherTemplate(req, res, next) {
                 address:'',
                 logo: "/images/daleel-alzowar.png"
             },
-            familyHead: "SAIF ALI",
+            familyHead: isKtp2Link ? "MUHAMMAD AQIB" : "SAIF ALI",
             voucher: {
-                voucherNo: "UB-90125",
-                date: "2026-01-15",
+                voucherNo: isKtp2Link ? "UB-100363" : "UB-90125",
+                date: isKtp2Link ? "29/09/26" : "2026-01-15",
                 package: "20",
                 packageType: "Standard",
                 beds: 3

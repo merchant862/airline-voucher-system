@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hotel Voucher <%= voucher.voucherNo || '' %></title>
+  <style>
+    @page { size: A4 portrait; margin: 0; }
+    :root { --primary:<%= theme?.primary || '#bfdbfe' %>; --dark:<%= theme?.dark || '#1d4ed8' %>; --soft:<%= theme?.soft || '#eff6ff' %>; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { background: #eef0f4; color: #252a31; font-family: Arial, Helvetica, sans-serif; font-size: 10px; }
+    .voucher { position: relative; width: min(820px, calc(100% - 60px)); min-height: 1068px; margin: 24px auto; padding: 22px 26px 18px; background: #fff; }
+    .header { display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: start; min-height: 152px; border-bottom: 1px solid #e6e8ec; padding-bottom: 12px; }
+    .header-left { padding-top: 5px; }
+    .title { font-size: 15px; line-height: 1.05; font-weight: 700; letter-spacing: .2px; white-space: nowrap; }
+    .voucher-no { margin-top: 7px; font-size: 14px; }
+    .header-center { text-align: center; }
+    .logo { width: 118px; height: 62px; margin-top: 8px; object-fit: contain; transform: translateX(-12px); }
+    .header-right { padding-top: 5px; text-align: right; color: #777; font-size: 7px; line-height: 1.5; }
+    .foreign-name { color: #777; }
+    .pbt-name { margin-top: 4px; }
+    .info { display: grid; grid-template-columns: 1fr auto; gap: 5px 20px; padding: 22px 0 10px; line-height: 1.65; }
+    .info-row { display: flex; gap: 8px; min-width: 0; }
+    .info-row.right { justify-content: flex-end; }
+    .info-row.pax { grid-column: 1 / -1; }
+    .label { font-weight: 700; white-space: nowrap; }
+    .section-title { margin-top: 14px; padding: 6px 8px; background: #f4f4f4; color: #0798ba; text-align: center; font-size: 17px; font-weight: 700; }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    th, td { padding: 11px 6px; border-bottom: 1px solid #e8eaed; text-align: left; vertical-align: middle; overflow-wrap: anywhere; }
+    th { background: #f4f5f7; font-size: 8.5px; font-weight: 700; }
+    td { font-size: 8.5px; color: #6e737b; }
+    td.name, td.hotel { color: #42474e; }
+    .total { padding: 8px 38px 3px 0; text-align: right; font-size: 9px; }
+    .flight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 11px; }
+    .flight-title { padding: 5px; background: #f4f4f4; color: #0798ba; text-align: center; font-size: 16px; font-weight: 700; }
+    .flight th, .flight td { padding: 10px 5px; font-size: 8.5px; }
+    .notes { position: absolute; left: 26px; right: 26px; bottom: 72px; margin: 0; min-height: 0; color: #777; }
+    .print-button { position: absolute; right: 16px; bottom: 16px; display: block; width: max-content; padding: 7px 8px; border: 0; border-radius: 3px; background: #0798ba; color: #fff; font: inherit; font-size: 10px; cursor: pointer; }
+    @media print { body { background: #fff; } .voucher { width: 100%; min-height: 1068px; margin: 0; padding: 16px 22px; } .print-button { display: none; } }
+    @media (max-width: 620px) {
+      body { font-size: 7px; }
+      .voucher { width: calc(100% - 28px); min-height: 600px; margin: 14px auto; padding: 12px 14px; }
+      .header { min-height: 98px; }
+      .title { font-size: 9.5px; white-space: nowrap; }
+      .logo { width: 68px; height: 36px; margin-top: 5px; transform: translateX(-3px); }
+      .voucher-no { font-size: 9.5px; margin-top: 4px; }
+      .header-right { font-size: 4.5px; }
+      .info { grid-template-columns: 1fr auto; gap: 3px 8px; padding-top: 12px; line-height: 1.5; }
+      .info-row.right { justify-content: flex-end; }
+      .info-row.pax { grid-column: 1; }
+      .section-title { font-size: 10px; padding: 4px; }
+      th, td { padding: 5px 3px; font-size: 5.5px; }
+      th { font-size: 5.5px; }
+      .flight-grid { gap: 7px; }
+      .flight-title { font-size: 10px; }
+      .flight th, .flight td { padding: 5px 2px; font-size: 5.5px; }
+      .notes { left: 12px; right: 12px; bottom: 42px; }
+      .print-button { right: 10px; bottom: 10px; padding: 5px 6px; font-size: 7px; }
+    }
+  </style>
+</head>
+<body>
+<main class="voucher">
+  <% const foreignBaseName = (foreignCompany?.name || '').replace(/\s*\(PBT\)\s*$/i, ''); %>
+  <% const adultCount = customers.filter(c => ['male','female'].includes((c.gender || '').toLowerCase())).length; const childCount = customers.filter(c => (c.gender || '').toLowerCase() === 'children').length; const infantCount = customers.filter(c => (c.gender || '').toLowerCase() === 'infant').length; %>
+  <header class="header">
+    <div class="header-left"><div class="title">HOTEL VOUCHER</div><div class="voucher-no"><%= voucher.voucherNo || '' %></div></div>
+    <div class="header-center"><% if (company?.logo) { %><img class="logo" src="<%= company.logo %>" alt="Local company logo"><% } %></div>
+    <div class="header-right"><div class="foreign-name"><%= foreignBaseName %></div><div class="pbt-name"><%= foreignBaseName %><% if (foreignBaseName) { %> (PBT)<% } %></div></div>
+  </header>
+
+  <section class="info">
+    <div class="info-row"><span class="label">Customer:</span><span>DCS-Direct Counter Sale</span></div>
+    <div class="info-row right"><span class="label">Voucher Date:</span><span><%= voucher.date || '' %></span></div>
+    <div class="info-row"><span class="label">Family Head:</span><span><%= familyHead || customers[0]?.name || '' %></span></div>
+    <div class="info-row right"><span class="label">Status:</span><span>Approved</span></div>
+    <div class="info-row"><span class="label">Package:</span><span><%= voucher.package || '20' %> <%= voucher.packageType || 'Standard' %></span></div>
+    <div class="info-row pax"><span class="label">PAX:</span><span><%= customers.length %> (A:<%= adultCount %>,C:<%= childCount %>,I:<%= infantCount %>),Beds=<%= customers.length %></span></div>
+  </section>
+
+  <div class="section-title">Mutamers</div>
+  <table><tr><th>Passport</th><th>Mutamer Name</th><th>Gender</th><th>PAX</th><th>Bed</th><th>Group No.</th><th>Visa</th><th>Ticket</th><th>PNR</th></tr>
+    <% customers.forEach((c, i) => { %><tr><td><%= c.passport || '' %></td><td class="name"><%= c.name || '' %></td><td><%= /^female$/i.test(c.gender || '') ? 'Female' : /^male$/i.test(c.gender || '') ? 'Male' : c.gender || '' %></td><td><%= c.paxType || '' %></td><td><%= c.beds || 'Yes' %></td><td><%= c.pnr || '' %></td><td><%= c.visaNumber || '' %></td><td></td><td><%= c.pnr || '' %></td></tr><% }) %>
+  </table>
+
+  <div class="section-title">Accommodation</div>
+  <table><tr><th>Hotel Name</th><th>Room Type</th><th>BRN</th><th>Confirm #</th><th>Checkin</th><th>Checkout</th><th>Nights</th><th>View Type</th><th>Meal Plan</th></tr>
+    <% hotels.forEach(h => { %><tr><td class="hotel"><%= h.name || '' %></td><td><%= h.roomType || '' %></td><td></td><td><%= h.confirmNo || '' %></td><td><%= h.checkIn || '' %></td><td><%= h.checkOut || '' %></td><td><%= h.nights || '' %></td><td>Standard</td><td><%= h.mealPlan || '' %></td></tr><% }) %>
+  </table>
+  <div class="total">Total Nights: <%= hotels.reduce((sum, h) => sum + Number(h.nights || 0), 0) %></div>
+
+  <div class="section-title">Transport/Services</div>
+  <table><tr><th>Type</th><th>Route</th><th>Description</th><th>BRN</th></tr>
+    <% transports.forEach(t => { %><tr><td><%= t.type || '' %></td><td><%= t.route || '' %></td><td>—</td><td>—</td></tr><% }) %>
+  </table>
+
+  <div class="flight-grid">
+    <div><div class="flight-title">Departure (Pakistan to KSA)</div><table class="flight"><tr><th>Flight</th><th>Sector</th><th>Departure</th><th>Arrival</th></tr><tr><td><%= departureFlight.flightNo || '' %></td><td><%= departureFlight.fromCity || '' %> - <%= departureFlight.toCity || '' %></td><td><%= departureFlight.date || '' %><br><%= departureFlight.takeoff || '' %></td><td><%= departureFlight.date || '' %><br><%= departureFlight.landing || '' %></td></tr></table></div>
+    <div><div class="flight-title">Arrival (KSA to PAK)</div><table class="flight"><tr><th>Flight</th><th>Sector</th><th>Departure</th><th>Arrival</th></tr><tr><td><%= arrivalFlight.flightNo || '' %></td><td><%= arrivalFlight.fromCity || '' %> - <%= arrivalFlight.toCity || '' %></td><td><%= arrivalFlight.date || '' %><br><%= arrivalFlight.takeoff || '' %></td><td><%= arrivalFlight.date || '' %><br><%= arrivalFlight.landing || '' %></td></tr></table></div>
+  </div>
+  <div class="notes">Notes: <%= notes || '—' %></div>
+  <button class="print-button" type="button" onclick="window.print()">▣ Print</button>
+</main>
+</body>
+</html>
