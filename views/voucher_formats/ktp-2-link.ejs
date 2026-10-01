@@ -71,7 +71,7 @@
   </header>
 
   <section class="info">
-    <div class="info-row"><span class="label">Customer:</span><span>DCS-Direct Counter Sale</span></div>
+    <div class="info-row"><span class="label">Customer:</span><span><%= familyHead || customers[0]?.name || '' %></span></div>
     <div class="info-row right"><span class="label">Voucher Date:</span><span><%= voucher.date || '' %></span></div>
     <div class="info-row"><span class="label">Family Head:</span><span><%= familyHead || customers[0]?.name || '' %></span></div>
     <div class="info-row right"><span class="label">Status:</span><span>Approved</span></div>
