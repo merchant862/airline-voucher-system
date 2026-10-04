@@ -50,7 +50,12 @@ router.get('/api/transports/:id', auth(), getTransportsByVoucherController);
 router.get('/api/voucher/template/:id', renderAnEJSTemplateForVoucherController);
 router.get('/api/list/:type', auth(), getTransportsandHotelsController)
 const publicVoucherPath = '/crm/data/voucher/hotel/travel/c=930390289898889s9ddcc0X9d0d90nsnwxweeddd&q=1909cnkxcjdsdudd9d9sd9sd9si9sdsdd/crm/data/voucher/hotel/travel/c=930390289898889s9ddcc0X9d0d90nsnwxweeddd&q=1909cnkxcjdsdudd9d9sd9sd9si9sdsdd';
-router.get('/voucher/scan/:id', (req, res) => res.redirect(`${publicVoucherPath}/${encodeURIComponent(req.params.id)}`));
+router.get('/voucher/scan/:id', (req, res) => {
+  const query = req.query.group
+    ? `?group=${encodeURIComponent(String(req.query.group))}`
+    : '';
+  res.redirect(`${publicVoucherPath}/${encodeURIComponent(req.params.id)}${query}`);
+});
 router.get(`${publicVoucherPath}/:id`, renderAnEJSTemplateForLinkVoucherController);
 router.get('/api/voucher/formats/:name', auth(), getVoucherFormatsByVoucherController);
 router.get('/api/voucher/:id', auth(), getVoucherDataByIdController);

@@ -238,27 +238,27 @@ button.submitBtn {
         <div class="flight-grid">
             <div>
                 <label>Flight No</label>
-                <input type="text" id="departureFlightNo" name="departureFlightNo" placeholder="Flight Code" required>
+            <input type="text" id="departureFlightNo" name="departureFlightNo" placeholder="Flight Code">
             </div>
             <div>
                 <label>Date</label>
-                <input type="date" id="departureFlightDate" name="departureFlightDate" required>
+            <input type="date" id="departureFlightDate" name="departureFlightDate">
             </div>
             <div>
                 <label>From City</label>
-                <input type="text" id="departureFlightFromCity" name="departureFlightFromCity" placeholder="City" required>
+            <input type="text" id="departureFlightFromCity" name="departureFlightFromCity" placeholder="City">
             </div>
             <div>
                 <label>To City</label>
-                <input type="text" id="departureFlightToCity" name="departureFlightToCity" placeholder="City" required>
+            <input type="text" id="departureFlightToCity" name="departureFlightToCity" placeholder="City">
             </div>
             <div>
                 <label>Takeoff Time (24h)</label>
-                <input type="text" id="departureFlightTakeOffTime" name="departureFlightTakeOffTime" placeholder="HH:MM" required>
+            <input type="text" id="departureFlightTakeOffTime" name="departureFlightTakeOffTime" placeholder="HH:MM">
             </div>
             <div>
                 <label>Landing Time (24h)</label>
-                <input type="text" id="departureFlightLandingTime" name="departureFlightLandingTime" placeholder="HH:MM" required>
+            <input type="text" id="departureFlightLandingTime" name="departureFlightLandingTime" placeholder="HH:MM">
             </div>
         </div>
     </div>
@@ -268,27 +268,27 @@ button.submitBtn {
         <div class="flight-grid">
             <div>
                 <label>Flight No</label>
-                <input type="text" id="arrivalFlightNo" name="arrivalFlightNo" placeholder="Flight Code" required>
+            <input type="text" id="arrivalFlightNo" name="arrivalFlightNo" placeholder="Flight Code">
             </div>
             <div>
                 <label>Date</label>
-                <input type="date" id="arrivalFlightDate" name="arrivalFlightDate" required>
+            <input type="date" id="arrivalFlightDate" name="arrivalFlightDate">
             </div>
             <div>
                 <label>From City</label>
-                <input type="text" id="arrivalFlightFromCity" name="arrivalFlightFromCity" placeholder="City" required>
+            <input type="text" id="arrivalFlightFromCity" name="arrivalFlightFromCity" placeholder="City">
             </div>
             <div>
                 <label>To City</label>
-                <input type="text" id="arrivalFlightToCity" name="arrivalFlightToCity" placeholder="City" required>
+            <input type="text" id="arrivalFlightToCity" name="arrivalFlightToCity" placeholder="City">
             </div>
             <div>
                 <label>Takeoff Time (24h)</label>
-                <input type="text" id="arrivalFlightTakeOffTime" name="arrivalFlightTakeOffTime" placeholder="HH:MM" required>
+            <input type="text" id="arrivalFlightTakeOffTime" name="arrivalFlightTakeOffTime" placeholder="HH:MM">
             </div>
             <div>
                 <label>Landing Time (24h)</label>
-                <input type="text" id="arrivalFlightLandingTime" name="arrivalFlightLandingTime" placeholder="HH:MM" required>
+            <input type="text" id="arrivalFlightLandingTime" name="arrivalFlightLandingTime" placeholder="HH:MM">
             </div>
         </div>
     </div>
@@ -460,6 +460,12 @@ function restoreFormData() {
     const customerPassports = normalizeArray(data['customerPassport[]']);
     const customerVisas = normalizeArray(data['customerVisa[]']);
     const customerPNRs = normalizeArray(data['customerPNR[]']);
+    const customerFlightFields = [
+        'customerDepartureFlightNo[]', 'customerDepartureFlightDate[]', 'customerDepartureFlightFromCity[]',
+        'customerDepartureFlightToCity[]', 'customerDepartureFlightTakeOffTime[]', 'customerDepartureFlightLandingTime[]',
+        'customerArrivalFlightNo[]', 'customerArrivalFlightDate[]', 'customerArrivalFlightFromCity[]',
+        'customerArrivalFlightToCity[]', 'customerArrivalFlightTakeOffTime[]', 'customerArrivalFlightLandingTime[]'
+    ].map(name => normalizeArray(data[name]));
 
     for (let i = 0; i < customerNames.length; i++) {
         addCustomer({
@@ -467,7 +473,19 @@ function restoreFormData() {
             customerGender: customerGenders[i] || '',
             customerPassport: customerPassports[i] || '',
             customerVisa: customerVisas[i] || '',
-            customerPNR: customerPNRs[i] || ''
+            customerPNR: customerPNRs[i] || '',
+            customerDepartureFlightNo: customerFlightFields[0][i] || '',
+            customerDepartureFlightDate: customerFlightFields[1][i] || '',
+            customerDepartureFlightFromCity: customerFlightFields[2][i] || '',
+            customerDepartureFlightToCity: customerFlightFields[3][i] || '',
+            customerDepartureFlightTakeOffTime: customerFlightFields[4][i] || '',
+            customerDepartureFlightLandingTime: customerFlightFields[5][i] || '',
+            customerArrivalFlightNo: customerFlightFields[6][i] || '',
+            customerArrivalFlightDate: customerFlightFields[7][i] || '',
+            customerArrivalFlightFromCity: customerFlightFields[8][i] || '',
+            customerArrivalFlightToCity: customerFlightFields[9][i] || '',
+            customerArrivalFlightTakeOffTime: customerFlightFields[10][i] || '',
+            customerArrivalFlightLandingTime: customerFlightFields[11][i] || ''
         });
     }
 
@@ -656,6 +674,22 @@ function addCustomer(prefill = {}) {
 
         <label>PNR</label>
         <input type="text" name="customerPNR[]" value="${escapeHtml(prefill.customerPNR || '')}">
+
+        <fieldset class="passenger-flight-fields">
+            <legend>Passenger Flight Details (optional)</legend>
+            <label>Departure Flight No</label><input type="text" name="customerDepartureFlightNo[]" value="${escapeHtml(prefill.customerDepartureFlightNo || '')}" placeholder="Flight No">
+            <label>Departure Date</label><input type="date" name="customerDepartureFlightDate[]" value="${escapeHtml(prefill.customerDepartureFlightDate || '')}">
+            <label>Departure From</label><input type="text" name="customerDepartureFlightFromCity[]" value="${escapeHtml(prefill.customerDepartureFlightFromCity || '')}" placeholder="City">
+            <label>Departure To</label><input type="text" name="customerDepartureFlightToCity[]" value="${escapeHtml(prefill.customerDepartureFlightToCity || '')}" placeholder="City">
+            <label>Departure Takeoff</label><input type="text" name="customerDepartureFlightTakeOffTime[]" value="${escapeHtml(prefill.customerDepartureFlightTakeOffTime || '')}" placeholder="HH:MM">
+            <label>Departure Landing</label><input type="text" name="customerDepartureFlightLandingTime[]" value="${escapeHtml(prefill.customerDepartureFlightLandingTime || '')}" placeholder="HH:MM">
+            <label>Arrival Flight No</label><input type="text" name="customerArrivalFlightNo[]" value="${escapeHtml(prefill.customerArrivalFlightNo || '')}" placeholder="Flight No">
+            <label>Arrival Date</label><input type="date" name="customerArrivalFlightDate[]" value="${escapeHtml(prefill.customerArrivalFlightDate || '')}">
+            <label>Arrival From</label><input type="text" name="customerArrivalFlightFromCity[]" value="${escapeHtml(prefill.customerArrivalFlightFromCity || '')}" placeholder="City">
+            <label>Arrival To</label><input type="text" name="customerArrivalFlightToCity[]" value="${escapeHtml(prefill.customerArrivalFlightToCity || '')}" placeholder="City">
+            <label>Arrival Takeoff</label><input type="text" name="customerArrivalFlightTakeOffTime[]" value="${escapeHtml(prefill.customerArrivalFlightTakeOffTime || '')}" placeholder="HH:MM">
+            <label>Arrival Landing</label><input type="text" name="customerArrivalFlightLandingTime[]" value="${escapeHtml(prefill.customerArrivalFlightLandingTime || '')}" placeholder="HH:MM">
+        </fieldset>
     `;
 
     document.getElementById('customersContainer').appendChild(div);
@@ -968,6 +1002,18 @@ form.addEventListener('submit', async e => {
         customerPassport: [...document.getElementsByName('customerPassport[]')].map(i => i.value),
         customerVisa: [...document.getElementsByName('customerVisa[]')].map(i => i.value),
         customerPNR: [...document.getElementsByName('customerPNR[]')].map(i => i.value),
+        customerDepartureFlightNo: [...document.getElementsByName('customerDepartureFlightNo[]')].map(i => i.value),
+        customerDepartureFlightDate: [...document.getElementsByName('customerDepartureFlightDate[]')].map(i => i.value),
+        customerDepartureFlightFromCity: [...document.getElementsByName('customerDepartureFlightFromCity[]')].map(i => i.value),
+        customerDepartureFlightToCity: [...document.getElementsByName('customerDepartureFlightToCity[]')].map(i => i.value),
+        customerDepartureFlightTakeOffTime: [...document.getElementsByName('customerDepartureFlightTakeOffTime[]')].map(i => i.value),
+        customerDepartureFlightLandingTime: [...document.getElementsByName('customerDepartureFlightLandingTime[]')].map(i => i.value),
+        customerArrivalFlightNo: [...document.getElementsByName('customerArrivalFlightNo[]')].map(i => i.value),
+        customerArrivalFlightDate: [...document.getElementsByName('customerArrivalFlightDate[]')].map(i => i.value),
+        customerArrivalFlightFromCity: [...document.getElementsByName('customerArrivalFlightFromCity[]')].map(i => i.value),
+        customerArrivalFlightToCity: [...document.getElementsByName('customerArrivalFlightToCity[]')].map(i => i.value),
+        customerArrivalFlightTakeOffTime: [...document.getElementsByName('customerArrivalFlightTakeOffTime[]')].map(i => i.value),
+        customerArrivalFlightLandingTime: [...document.getElementsByName('customerArrivalFlightLandingTime[]')].map(i => i.value),
         hotelName: [...document.getElementsByName('hotelName[]')].map(i => i.value),
         hotelCity: [...document.getElementsByName('hotelCity[]')].map(i => i.value),
         hotelRoomType: [...document.getElementsByName('hotelRoomType[]')].map(i => i.value),

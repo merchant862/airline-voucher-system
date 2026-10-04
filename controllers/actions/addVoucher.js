@@ -7,6 +7,7 @@ const puppeteer = require('puppeteer'); // instead of puppeteer-core
 //const puppeteer = require('puppeteer-core');
 const { generateVoucherQr } = require('./helpers/qrCode');
 const { getVoucherThemeKey, getVoucherTheme, getUrduFontData } = require('./helpers/voucherThemes');
+const { buildPassengerFlightData } = require('./helpers/passengerFlights');
 
 const { vouchers, 
     customers, 
@@ -104,6 +105,18 @@ async function addVoucherController(req, res, next) {
                     customerVisa: req.body.customerVisa?.[i]?.trim() || null,
                     customerGender: gender,
                     customerPNR: req.body.customerPNR?.[i]?.trim() || null,
+                    departureFlightDate: req.body.customerDepartureFlightDate?.[i] || null,
+                    departureFlightNo: req.body.customerDepartureFlightNo?.[i]?.trim() || null,
+                    departureFlightFromCity: req.body.customerDepartureFlightFromCity?.[i]?.trim() || null,
+                    departureFlightToCity: req.body.customerDepartureFlightToCity?.[i]?.trim() || null,
+                    departureFlightTakeOffTime: req.body.customerDepartureFlightTakeOffTime?.[i] || null,
+                    departureFlightLandingTime: req.body.customerDepartureFlightLandingTime?.[i] || null,
+                    arrivalFlightDate: req.body.customerArrivalFlightDate?.[i] || null,
+                    arrivalFlightNo: req.body.customerArrivalFlightNo?.[i]?.trim() || null,
+                    arrivalFlightFromCity: req.body.customerArrivalFlightFromCity?.[i]?.trim() || null,
+                    arrivalFlightToCity: req.body.customerArrivalFlightToCity?.[i]?.trim() || null,
+                    arrivalFlightTakeOffTime: req.body.customerArrivalFlightTakeOffTime?.[i] || null,
+                    arrivalFlightLandingTime: req.body.customerArrivalFlightLandingTime?.[i] || null,
                     voucherId
                 };
             });
@@ -170,7 +183,7 @@ async function addVoucherController(req, res, next) {
                 { 
                     model: customers, 
                     as: 'customers',
-                    attributes: ['id', 'customerName', 'customerPassport', 'customerVisa', 'customerGender', 'customerPNR', 'voucherId', 'createdAt', 'updatedAt']
+                    attributes: ['id', 'customerName', 'customerPassport', 'customerVisa', 'customerGender', 'customerPNR', 'departureFlightDate', 'departureFlightNo', 'departureFlightFromCity', 'departureFlightToCity', 'departureFlightTakeOffTime', 'departureFlightLandingTime', 'arrivalFlightDate', 'arrivalFlightNo', 'arrivalFlightFromCity', 'arrivalFlightToCity', 'arrivalFlightTakeOffTime', 'arrivalFlightLandingTime', 'voucherId', 'createdAt', 'updatedAt']
                 },
                 { 
                     model: hotels, 
@@ -216,6 +229,9 @@ async function addVoucherController(req, res, next) {
             return res.status(400).json({ error: 'Selected download voucher format is not available' });
         }
 
+        // The shared download controller handles flight-group pages and QR targets.
+        return res.redirect(303, `/voucher/download/${voucherId}`);
+
 
         const formatDate = (date) => date ? new Date(date).toISOString().split('T')[0] : '';
 
@@ -237,6 +253,16 @@ async function addVoucherController(req, res, next) {
         // PREPARE EJS DATA
         // ==============================
         const qrImage = await generateVoucherQr(voucherId);
+
+        const passengerFlightData = buildPassengerFlightData(voucherData.customers, {
+            flightNo: voucherData.departureFlightNo, date: formatDate(voucherData.departureFlightDate),
+            fromCity: voucherData.departureFlightFromCity, toCity: voucherData.departureFlightToCity,
+            takeoff: voucherData.departureFlightTakeOffTime, landing: voucherData.departureFlightLandingTime
+        }, {
+            flightNo: voucherData.arrivalFlightNo, date: formatDate(voucherData.arrivalFlightDate),
+            fromCity: voucherData.arrivalFlightFromCity, toCity: voucherData.arrivalFlightToCity,
+            takeoff: voucherData.arrivalFlightTakeOffTime, landing: voucherData.arrivalFlightLandingTime
+        });
 
         const ejsData = {
     voucher: {
@@ -270,7 +296,17 @@ async function addVoucherController(req, res, next) {
         gender: c.customerGender,
         passport: c.customerPassport,
         visaNumber: c.customerVisa,
-        pnr: c.customerPNR
+        pnr: c.customerPNR,
+        departureFlight: {
+            date: formatDate(c.departureFlightDate), flightNo: c.departureFlightNo,
+            fromCity: c.departureFlightFromCity, toCity: c.departureFlightToCity,
+            takeoff: c.departureFlightTakeOffTime, landing: c.departureFlightLandingTime
+        },
+        arrivalFlight: {
+            date: formatDate(c.arrivalFlightDate), flightNo: c.arrivalFlightNo,
+            fromCity: c.arrivalFlightFromCity, toCity: c.arrivalFlightToCity,
+            takeoff: c.arrivalFlightTakeOffTime, landing: c.arrivalFlightLandingTime
+        }
     })),
     hotels: voucherData.hotels.map(h => ({
         name: h.hotelName,
@@ -282,22 +318,9 @@ async function addVoucherController(req, res, next) {
         checkOut: formatDate(h.checkOutDate),
         nights: h.noOfNights
     })),
-    departureFlight: {
-        flightNo: voucherData.departureFlightNo,
-        date: formatDate(voucherData.departureFlightDate),
-        fromCity: voucherData.departureFlightFromCity,
-        toCity: voucherData.departureFlightToCity,
-        takeoff: voucherData.departureFlightTakeOffTime,
-        landing: voucherData.departureFlightLandingTime
-    },
-    arrivalFlight: {
-        flightNo: voucherData.arrivalFlightNo,
-        date: formatDate(voucherData.arrivalFlightDate),
-        fromCity: voucherData.arrivalFlightFromCity,
-        toCity: voucherData.arrivalFlightToCity,
-        takeoff: voucherData.arrivalFlightTakeOffTime,
-        landing: voucherData.arrivalFlightLandingTime
-    },
+    passengerFlights: passengerFlightData.passengerFlights,
+    departureFlight: passengerFlightData.departureFlight,
+    arrivalFlight: passengerFlightData.arrivalFlight,
     notes: voucherData.notes.map(n => n.content).join('\n'),
     qrImage: qrImage,
     theme: getVoucherTheme(voucherData.pdfTheme),

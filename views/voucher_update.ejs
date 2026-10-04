@@ -351,6 +351,22 @@
 
             <label>PNR</label>
             <input type="text" class="customerPNRInput" name="passengers[<%= index %>][customerPNR]" value="<%= passenger.customerPNR || '' %>" placeholder="PNR" />
+
+            <fieldset class="passenger-flight-fields">
+              <legend>Passenger Flight Details (optional)</legend>
+              <label>Departure Flight No</label><input type="text" class="customerDepartureFlightNoInput" value="<%= passenger.departureFlightNo || '' %>" placeholder="Flight No" />
+              <label>Departure Date</label><input type="date" class="customerDepartureFlightDateInput" value="<%= passenger.departureFlightDate ? new Date(passenger.departureFlightDate).toISOString().split('T')[0] : '' %>" />
+              <label>Departure From</label><input type="text" class="customerDepartureFlightFromCityInput" value="<%= passenger.departureFlightFromCity || '' %>" placeholder="City" />
+              <label>Departure To</label><input type="text" class="customerDepartureFlightToCityInput" value="<%= passenger.departureFlightToCity || '' %>" placeholder="City" />
+              <label>Departure Takeoff</label><input type="text" class="customerDepartureFlightTakeOffTimeInput" value="<%= passenger.departureFlightTakeOffTime || '' %>" placeholder="HH:MM" />
+              <label>Departure Landing</label><input type="text" class="customerDepartureFlightLandingTimeInput" value="<%= passenger.departureFlightLandingTime || '' %>" placeholder="HH:MM" />
+              <label>Arrival Flight No</label><input type="text" class="customerArrivalFlightNoInput" value="<%= passenger.arrivalFlightNo || '' %>" placeholder="Flight No" />
+              <label>Arrival Date</label><input type="date" class="customerArrivalFlightDateInput" value="<%= passenger.arrivalFlightDate ? new Date(passenger.arrivalFlightDate).toISOString().split('T')[0] : '' %>" />
+              <label>Arrival From</label><input type="text" class="customerArrivalFlightFromCityInput" value="<%= passenger.arrivalFlightFromCity || '' %>" placeholder="City" />
+              <label>Arrival To</label><input type="text" class="customerArrivalFlightToCityInput" value="<%= passenger.arrivalFlightToCity || '' %>" placeholder="City" />
+              <label>Arrival Takeoff</label><input type="text" class="customerArrivalFlightTakeOffTimeInput" value="<%= passenger.arrivalFlightTakeOffTime || '' %>" placeholder="HH:MM" />
+              <label>Arrival Landing</label><input type="text" class="customerArrivalFlightLandingTimeInput" value="<%= passenger.arrivalFlightLandingTime || '' %>" placeholder="HH:MM" />
+            </fieldset>
           </div>
         <% }) %>
       </div>
@@ -686,6 +702,22 @@
 
         <label>PNR</label>
         <input type="text" class="customerPNRInput" placeholder="PNR">
+
+        <fieldset class="passenger-flight-fields">
+          <legend>Passenger Flight Details (optional)</legend>
+          <label>Departure Flight No</label><input type="text" class="customerDepartureFlightNoInput" placeholder="Flight No">
+          <label>Departure Date</label><input type="date" class="customerDepartureFlightDateInput">
+          <label>Departure From</label><input type="text" class="customerDepartureFlightFromCityInput" placeholder="City">
+          <label>Departure To</label><input type="text" class="customerDepartureFlightToCityInput" placeholder="City">
+          <label>Departure Takeoff</label><input type="text" class="customerDepartureFlightTakeOffTimeInput" placeholder="HH:MM">
+          <label>Departure Landing</label><input type="text" class="customerDepartureFlightLandingTimeInput" placeholder="HH:MM">
+          <label>Arrival Flight No</label><input type="text" class="customerArrivalFlightNoInput" placeholder="Flight No">
+          <label>Arrival Date</label><input type="date" class="customerArrivalFlightDateInput">
+          <label>Arrival From</label><input type="text" class="customerArrivalFlightFromCityInput" placeholder="City">
+          <label>Arrival To</label><input type="text" class="customerArrivalFlightToCityInput" placeholder="City">
+          <label>Arrival Takeoff</label><input type="text" class="customerArrivalFlightTakeOffTimeInput" placeholder="HH:MM">
+          <label>Arrival Landing</label><input type="text" class="customerArrivalFlightLandingTimeInput" placeholder="HH:MM">
+        </fieldset>
       `;
       container.appendChild(div);
       reindexRows();
@@ -971,6 +1003,18 @@
         if (passport) passport.name = `passengers[${index}][customerPassport]`;
         if (visa) visa.name = `passengers[${index}][customerVisa]`;
         if (pnr) pnr.name = `passengers[${index}][customerPNR]`;
+        const flightFieldNames = [
+          'customerDepartureFlightNo', 'customerDepartureFlightDate',
+          'customerDepartureFlightFromCity', 'customerDepartureFlightToCity',
+          'customerDepartureFlightTakeOffTime', 'customerDepartureFlightLandingTime',
+          'customerArrivalFlightNo', 'customerArrivalFlightDate',
+          'customerArrivalFlightFromCity', 'customerArrivalFlightToCity',
+          'customerArrivalFlightTakeOffTime', 'customerArrivalFlightLandingTime'
+        ];
+        flightFieldNames.forEach(field => {
+          const input = row.querySelector(`.${field}Input`);
+          if (input) input.name = `passengers[${index}][${field}]`;
+        });
       });
 
       document.querySelectorAll('#hotels-container .hotel-item').forEach((row, index) => {
@@ -1052,7 +1096,19 @@
           customerPassport: el.querySelector('.customerPassportInput')?.value || '',
           customerVisa: el.querySelector('.customerVisaInput')?.value || '',
           customerPNR: el.querySelector('.customerPNRInput')?.value || '',
-          customerGender: el.querySelector('.customerGenderInput')?.value || ''
+          customerGender: el.querySelector('.customerGenderInput')?.value || '',
+          departureFlightNo: el.querySelector('.customerDepartureFlightNoInput')?.value || '',
+          departureFlightDate: el.querySelector('.customerDepartureFlightDateInput')?.value || '',
+          departureFlightFromCity: el.querySelector('.customerDepartureFlightFromCityInput')?.value || '',
+          departureFlightToCity: el.querySelector('.customerDepartureFlightToCityInput')?.value || '',
+          departureFlightTakeOffTime: el.querySelector('.customerDepartureFlightTakeOffTimeInput')?.value || '',
+          departureFlightLandingTime: el.querySelector('.customerDepartureFlightLandingTimeInput')?.value || '',
+          arrivalFlightNo: el.querySelector('.customerArrivalFlightNoInput')?.value || '',
+          arrivalFlightDate: el.querySelector('.customerArrivalFlightDateInput')?.value || '',
+          arrivalFlightFromCity: el.querySelector('.customerArrivalFlightFromCityInput')?.value || '',
+          arrivalFlightToCity: el.querySelector('.customerArrivalFlightToCityInput')?.value || '',
+          arrivalFlightTakeOffTime: el.querySelector('.customerArrivalFlightTakeOffTimeInput')?.value || '',
+          arrivalFlightLandingTime: el.querySelector('.customerArrivalFlightLandingTimeInput')?.value || ''
         })),
 
         hotels: Array.from(document.querySelectorAll('#hotels-container .hotel-item')).map(el => ({

@@ -14,10 +14,13 @@ const QR_OPTIONS = {
   }
 };
 
-function buildVoucherQrUrl(voucherId) {
+function buildVoucherQrUrl(voucherId, customerIds = []) {
   let baseUrl = String(process.env.URL || '').trim();
   baseUrl = baseUrl.replace(/^(https?):(?!\/\/)/i, '$1://');
-  if (!baseUrl) return `/voucher/scan/${encodeURIComponent(voucherId)}`;
+  const groupQuery = Array.isArray(customerIds) && customerIds.length
+    ? `?group=${encodeURIComponent(customerIds.join(','))}`
+    : '';
+  if (!baseUrl) return `/voucher/scan/${encodeURIComponent(voucherId)}${groupQuery}`;
 
   const url = new URL(baseUrl);
   const publicPath = url.pathname.replace(/\/+$/, '');
@@ -25,14 +28,14 @@ function buildVoucherQrUrl(voucherId) {
   // URL is configured as the public voucher path in production. Keep that
   // exact path in the QR so scanners open the same public voucher route.
   if (publicPath && publicPath !== '/') {
-    return `${url.origin}${publicPath}/${encodeURIComponent(voucherId)}`;
+    return `${url.origin}${publicPath}/${encodeURIComponent(voucherId)}${groupQuery}`;
   }
 
-  return `${url.origin}/voucher/scan/${encodeURIComponent(voucherId)}`;
+  return `${url.origin}/voucher/scan/${encodeURIComponent(voucherId)}${groupQuery}`;
 }
 
-async function generateVoucherQr(voucherId) {
-  return generateQr(buildVoucherQrUrl(voucherId));
+async function generateVoucherQr(voucherId, customerIds = []) {
+  return generateQr(buildVoucherQrUrl(voucherId, customerIds));
 }
 
 async function generateQr(data) {

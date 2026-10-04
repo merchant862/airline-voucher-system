@@ -5,6 +5,8 @@ const ejs = require('ejs');
 const puppeteer = require('puppeteer');
 const { generateVoucherQr } = require('./helpers/qrCode');
 const { getVoucherTheme, getUrduFontData } = require('./helpers/voucherThemes');
+const { buildPassengerFlightData } = require('./helpers/passengerFlights');
+const { groupCustomersByFlight, findRequestedFlightGroup } = require('./helpers/passengerFlightGroups');
 
 const {
   vouchers,
@@ -58,7 +60,7 @@ async function downloadVoucherPdfController(req, res, next) {
                 { 
                     model: customers, 
                     as: 'customers',
-                    attributes: ['id', 'customerName', 'customerPassport', 'customerVisa', 'customerGender', 'customerPNR', 'voucherId', 'createdAt', 'updatedAt']
+                    attributes: ['id', 'customerName', 'customerPassport', 'customerVisa', 'customerGender', 'customerPNR', 'departureFlightDate', 'departureFlightNo', 'departureFlightFromCity', 'departureFlightToCity', 'departureFlightTakeOffTime', 'departureFlightLandingTime', 'arrivalFlightDate', 'arrivalFlightNo', 'arrivalFlightFromCity', 'arrivalFlightToCity', 'arrivalFlightTakeOffTime', 'arrivalFlightLandingTime', 'voucherId', 'createdAt', 'updatedAt']
                 },
                 { 
                     model: hotels, 
@@ -132,13 +134,48 @@ async function downloadVoucherPdfController(req, res, next) {
       }
     };
 
-    const qrImage = await generateVoucherQr(voucherData.id);
+    const departureFallback = {
+      flightNo: voucherData.departureFlightNo,
+      date: formatDate(voucherData.departureFlightDate),
+      fromCity: voucherData.departureFlightFromCity,
+      toCity: voucherData.departureFlightToCity,
+      takeoff: voucherData.departureFlightTakeOffTime,
+      landing: voucherData.departureFlightLandingTime
+    };
+    const arrivalFallback = {
+      flightNo: voucherData.arrivalFlightNo,
+      date: formatDate(voucherData.arrivalFlightDate),
+      fromCity: voucherData.arrivalFlightFromCity,
+      toCity: voucherData.arrivalFlightToCity,
+      takeoff: voucherData.arrivalFlightTakeOffTime,
+      landing: voucherData.arrivalFlightLandingTime
+    };
+
+    const flightGroups = groupCustomersByFlight(
+      voucherData.customers,
+      departureFallback,
+      arrivalFallback
+    );
+    if (!flightGroups.length) {
+      flightGroups.push({ key: '', customers: [], customerIds: [] });
+    }
+    const requestedGroup = findRequestedFlightGroup(flightGroups, req.query.group);
+    const renderGroups = requestedGroup ? [requestedGroup] : flightGroups;
 
     // ==============================
     // 3️⃣ PREPARE EJS DATA
     // ==============================
 
-    const ejsData = {
+    const buildEjsData = async (group) => {
+      const groupCustomers = group.customers;
+      const passengerFlightData = buildPassengerFlightData(
+        groupCustomers,
+        departureFallback,
+        arrivalFallback
+      );
+      const qrImage = await generateVoucherQr(voucherData.id, group.customerIds);
+
+      return {
 
       voucher: {
         voucherNo: voucherData.voucherNo,
@@ -163,14 +200,16 @@ async function downloadVoucherPdfController(req, res, next) {
         logo: await getBase64Image(voucherData.foreignCompany?.image)
       },
 
-      familyHead: voucherData.customers[0]?.customerName || '',
+      familyHead: groupCustomers[0]?.customerName || '',
 
-      customers: voucherData.customers.map(c => ({
+      customers: groupCustomers.map(c => ({
         name: c.customerName,
         gender: c.customerGender,
         passport: c.customerPassport,
         visaNumber: c.customerVisa,
-        pnr: c.customerPNR
+        pnr: c.customerPNR,
+        departureFlight: { date: formatDate(c.departureFlightDate), flightNo: c.departureFlightNo, fromCity: c.departureFlightFromCity, toCity: c.departureFlightToCity, takeoff: c.departureFlightTakeOffTime, landing: c.departureFlightLandingTime },
+        arrivalFlight: { date: formatDate(c.arrivalFlightDate), flightNo: c.arrivalFlightNo, fromCity: c.arrivalFlightFromCity, toCity: c.arrivalFlightToCity, takeoff: c.arrivalFlightTakeOffTime, landing: c.arrivalFlightLandingTime }
       })),
 
       hotels: voucherData.hotels.map(h => ({
@@ -189,40 +228,39 @@ async function downloadVoucherPdfController(req, res, next) {
         route: t.route
       })),
 
-      departureFlight: {
-        flightNo: voucherData.departureFlightNo,
-        date: formatDate(voucherData.departureFlightDate),
-        fromCity: voucherData.departureFlightFromCity,
-        toCity: voucherData.departureFlightToCity,
-        takeoff: voucherData.departureFlightTakeOffTime,
-        landing: voucherData.departureFlightLandingTime
-      },
-
-      arrivalFlight: {
-        flightNo: voucherData.arrivalFlightNo,
-        date: formatDate(voucherData.arrivalFlightDate),
-        fromCity: voucherData.arrivalFlightFromCity,
-        toCity: voucherData.arrivalFlightToCity,
-        takeoff: voucherData.arrivalFlightTakeOffTime,
-        landing: voucherData.arrivalFlightLandingTime
-      },
+      passengerFlights: passengerFlightData.passengerFlights,
+      departureFlight: passengerFlightData.departureFlight,
+      arrivalFlight: passengerFlightData.arrivalFlight,
 
       notes: voucherData.notes.map(n => n.content).join('\n'),
       qrImage,
       theme: getVoucherTheme(voucherData.pdfTheme),
       urduFontData: getUrduFontData(),
       verifiedImage: await getBase64Image(getVerifiedImagePath(voucherData.voucherFormat.ejsPath))
+      };
     };
 
     // ==============================
     // 4️⃣ RENDER HTML
     // ==============================
 
-    const html = await ejs.renderFile(
-      path.join(__dirname, '../..', voucherData.voucherFormat.ejsPath),
-      ejsData,
-      { async: true }
-    );
+    const templatePath = path.join(__dirname, '../..', voucherData.voucherFormat.ejsPath);
+    const htmlParts = [];
+    for (const group of renderGroups) {
+      htmlParts.push(await ejs.renderFile(templatePath, await buildEjsData(group), { async: true }));
+    }
+    const html = htmlParts.length === 1
+      ? htmlParts[0]
+      : (() => {
+          const first = htmlParts[0];
+          const headEnd = first.indexOf('</head>');
+          const head = first.slice(0, headEnd + 7);
+          const bodies = htmlParts.map(part => {
+            const start = part.indexOf('>', part.indexOf('<body')) + 1;
+            return part.slice(start, part.lastIndexOf('</body>'));
+          });
+          return `${head}<body>${bodies.join('<div style="break-before:page"></div>')}</body></html>`;
+        })();
 
     // ==============================
     // 5️⃣ GENERATE PDF

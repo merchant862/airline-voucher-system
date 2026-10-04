@@ -19,6 +19,18 @@ module.exports = (sequelize, DataTypes) => {
     customerVisa: DataTypes.STRING,
     customerGender: DataTypes.ENUM('male', 'female', 'infant', 'children'), // ✅ enum values added
     customerPNR: DataTypes.STRING,
+    departureFlightDate: DataTypes.DATE,
+    departureFlightNo: DataTypes.STRING,
+    departureFlightFromCity: DataTypes.STRING,
+    departureFlightToCity: DataTypes.STRING,
+    departureFlightTakeOffTime: DataTypes.TIME,
+    departureFlightLandingTime: DataTypes.TIME,
+    arrivalFlightDate: DataTypes.DATE,
+    arrivalFlightNo: DataTypes.STRING,
+    arrivalFlightFromCity: DataTypes.STRING,
+    arrivalFlightToCity: DataTypes.STRING,
+    arrivalFlightTakeOffTime: DataTypes.TIME,
+    arrivalFlightLandingTime: DataTypes.TIME,
     voucherId: DataTypes.INTEGER
   }, {
     sequelize,

@@ -5,6 +5,7 @@ const ejs = require('ejs');
 const puppeteer = require('puppeteer');
 const { generateVoucherQr } = require('./helpers/qrCode');
 const { getVoucherThemeKey, getVoucherTheme, getUrduFontData } = require('./helpers/voucherThemes');
+const { buildPassengerFlightData } = require('./helpers/passengerFlights');
 const { vouchers, customers, hotels, transports, notes, agencies, foreignAgencies, voucherFormats } = require('./../../database/models');
 
 function getFamilyHeadName(customerList = []) {
@@ -92,6 +93,18 @@ async function updateVoucherController(req, res, next) {
                 customerVisa: c.customerVisa?.trim() || null,
                 customerGender: validGenders.includes(c.customerGender) ? c.customerGender : 'male', // default male
                 customerPNR: c.customerPNR?.trim() || null,
+                departureFlightDate: c.departureFlightDate || null,
+                departureFlightNo: c.departureFlightNo?.trim() || null,
+                departureFlightFromCity: c.departureFlightFromCity?.trim() || null,
+                departureFlightToCity: c.departureFlightToCity?.trim() || null,
+                departureFlightTakeOffTime: c.departureFlightTakeOffTime || null,
+                departureFlightLandingTime: c.departureFlightLandingTime || null,
+                arrivalFlightDate: c.arrivalFlightDate || null,
+                arrivalFlightNo: c.arrivalFlightNo?.trim() || null,
+                arrivalFlightFromCity: c.arrivalFlightFromCity?.trim() || null,
+                arrivalFlightToCity: c.arrivalFlightToCity?.trim() || null,
+                arrivalFlightTakeOffTime: c.arrivalFlightTakeOffTime || null,
+                arrivalFlightLandingTime: c.arrivalFlightLandingTime || null,
                 voucherId
             }));
             await customers.bulkCreate(customersData, { transaction: t });
@@ -161,7 +174,7 @@ async function updateVoucherController(req, res, next) {
                 { 
                     model: customers, 
                     as: 'customers',
-                    attributes: ['id', 'customerName', 'customerPassport', 'customerVisa', 'customerGender', 'customerPNR', 'voucherId', 'createdAt', 'updatedAt']
+                    attributes: ['id', 'customerName', 'customerPassport', 'customerVisa', 'customerGender', 'customerPNR', 'departureFlightDate', 'departureFlightNo', 'departureFlightFromCity', 'departureFlightToCity', 'departureFlightTakeOffTime', 'departureFlightLandingTime', 'arrivalFlightDate', 'arrivalFlightNo', 'arrivalFlightFromCity', 'arrivalFlightToCity', 'arrivalFlightTakeOffTime', 'arrivalFlightLandingTime', 'voucherId', 'createdAt', 'updatedAt']
                 },
                 { 
                     model: hotels, 
@@ -203,6 +216,9 @@ async function updateVoucherController(req, res, next) {
             ]
         });
 
+        // The shared download controller handles flight-group pages and QR targets.
+        return res.redirect(303, `/voucher/download/${voucherId}`);
+
         // ==============================
         // 7️⃣ GENERATE PDF
         // ==============================
@@ -218,6 +234,15 @@ async function updateVoucherController(req, res, next) {
         };
 
         const qrImage = await generateVoucherQr(voucherId);
+        const passengerFlightData = buildPassengerFlightData(voucherData.customers, {
+            flightNo: voucherData.departureFlightNo, date: formatDate(voucherData.departureFlightDate),
+            fromCity: voucherData.departureFlightFromCity, toCity: voucherData.departureFlightToCity,
+            takeoff: voucherData.departureFlightTakeOffTime, landing: voucherData.departureFlightLandingTime
+        }, {
+            flightNo: voucherData.arrivalFlightNo, date: formatDate(voucherData.arrivalFlightDate),
+            fromCity: voucherData.arrivalFlightFromCity, toCity: voucherData.arrivalFlightToCity,
+            takeoff: voucherData.arrivalFlightTakeOffTime, landing: voucherData.arrivalFlightLandingTime
+        });
 
         const ejsData = {
             voucher: {
@@ -243,22 +268,17 @@ async function updateVoucherController(req, res, next) {
             transports: voucherData.transports.map(t => ({ type: t.type, route: t.route, rate: t.rate })),
             familyHead: voucherData.customers[0]?.customerName || '',
             customers: voucherData.customers.map(c => ({
-                name: c.customerName, gender: c.customerGender, passport: c.customerPassport, visaNumber: c.customerVisa, pnr: c.customerPNR
+                name: c.customerName, gender: c.customerGender, passport: c.customerPassport, visaNumber: c.customerVisa, pnr: c.customerPNR,
+                departureFlight: { date: formatDate(c.departureFlightDate), flightNo: c.departureFlightNo, fromCity: c.departureFlightFromCity, toCity: c.departureFlightToCity, takeoff: c.departureFlightTakeOffTime, landing: c.departureFlightLandingTime },
+                arrivalFlight: { date: formatDate(c.arrivalFlightDate), flightNo: c.arrivalFlightNo, fromCity: c.arrivalFlightFromCity, toCity: c.arrivalFlightToCity, takeoff: c.arrivalFlightTakeOffTime, landing: c.arrivalFlightLandingTime }
             })),
             hotels: voucherData.hotels.map(h => ({
                 name: h.hotelName, confirmNo: h.confirmationNo, city: h.city, roomType: h.roomType, mealPlan: h.mealPlan,
                 checkIn: formatDate(h.checkInDate), checkOut: formatDate(h.checkOutDate), nights: h.noOfNights
             })),
-            departureFlight: {
-                flightNo: voucherData.departureFlightNo, date: formatDate(voucherData.departureFlightDate),
-                fromCity: voucherData.departureFlightFromCity, toCity: voucherData.departureFlightToCity,
-                takeoff: voucherData.departureFlightTakeOffTime, landing: voucherData.departureFlightLandingTime
-            },
-            arrivalFlight: {
-                flightNo: voucherData.arrivalFlightNo, date: formatDate(voucherData.arrivalFlightDate),
-                fromCity: voucherData.arrivalFlightFromCity, toCity: voucherData.arrivalFlightToCity,
-                takeoff: voucherData.arrivalFlightTakeOffTime, landing: voucherData.arrivalFlightLandingTime
-            },
+            passengerFlights: passengerFlightData.passengerFlights,
+            departureFlight: passengerFlightData.departureFlight,
+            arrivalFlight: passengerFlightData.arrivalFlight,
             notes: voucherData.notes.map(n => n.content).join('\n'),
             qrImage,
             theme: getVoucherTheme(voucherData.pdfTheme),

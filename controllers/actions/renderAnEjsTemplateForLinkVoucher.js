@@ -3,6 +3,8 @@ require('dotenv').config();
 const path = require('path');
 const { generateVoucherQr } = require('./helpers/qrCode');
 const { getVoucherTheme, getUrduFontData } = require('./helpers/voucherThemes');
+const { buildPassengerFlightData } = require('./helpers/passengerFlights');
+const { groupCustomersByFlight, findRequestedFlightGroup } = require('./helpers/passengerFlightGroups');
 
 const {
     vouchers,
@@ -37,7 +39,10 @@ async function getVoucherTemplate(req, res, next) {
                         'customerPassport',
                         'customerVisa',
                         'customerGender',
-                        'customerPNR'
+                        'customerPNR',
+                        'departureFlightDate', 'departureFlightNo', 'departureFlightFromCity', 'departureFlightToCity',
+                        'departureFlightTakeOffTime', 'departureFlightLandingTime', 'arrivalFlightDate', 'arrivalFlightNo',
+                        'arrivalFlightFromCity', 'arrivalFlightToCity', 'arrivalFlightTakeOffTime', 'arrivalFlightLandingTime'
                     ]
                 },
                 {
@@ -121,9 +126,19 @@ async function getVoucherTemplate(req, res, next) {
             landing: voucher.arrivalFlightLandingTime
         };
 
+        const flightGroups = groupCustomersByFlight(voucher.customers, departureFlight, arrivalFlight);
+        const requestedGroup = findRequestedFlightGroup(flightGroups, req.query.group);
+        const customersForRender = requestedGroup?.customers || voucher.customers;
+
+        const passengerFlightData = buildPassengerFlightData(
+            customersForRender,
+            departureFlight,
+            arrivalFlight
+        );
+
         // ================= Customers =================
 
-        const formattedCustomers = voucher.customers.map(c => {
+        const formattedCustomers = customersForRender.map(c => {
 
             let paxType;
 
@@ -144,19 +159,21 @@ async function getVoucherTemplate(req, res, next) {
                 paxType,
                 beds: "Yes",
                 visaNumber: c.customerVisa,
-                pnr: c.customerPNR
+                pnr: c.customerPNR,
+                departureFlight: { date: c.departureFlightDate?.toISOString().split('T')[0], flightNo: c.departureFlightNo, fromCity: c.departureFlightFromCity, toCity: c.departureFlightToCity, takeoff: c.departureFlightTakeOffTime, landing: c.departureFlightLandingTime },
+                arrivalFlight: { date: c.arrivalFlightDate?.toISOString().split('T')[0], flightNo: c.arrivalFlightNo, fromCity: c.arrivalFlightFromCity, toCity: c.arrivalFlightToCity, takeoff: c.arrivalFlightTakeOffTime, landing: c.arrivalFlightLandingTime }
             };
         });
 
         // ================= Family Head =================
 
-        const maleCustomer = voucher.customers.find(
+        const maleCustomer = customersForRender.find(
             c => c.customerGender?.toLowerCase() === "male"
         );
 
         const familyHead = maleCustomer
             ? maleCustomer.customerName
-            : voucher.customers[0]?.customerName || "";
+            : customersForRender[0]?.customerName || "";
 
         // ================= Hotels =================
 
@@ -186,7 +203,10 @@ async function getVoucherTemplate(req, res, next) {
 
         // ================= QR Code =================
 
-        const qrImage = await generateVoucherQr(voucher.id);
+        const qrImage = await generateVoucherQr(
+            voucher.id,
+            requestedGroup?.customerIds || []
+        );
 
         // ================= Template Path =================
 
@@ -235,10 +255,11 @@ async function getVoucherTemplate(req, res, next) {
             notes: formattedNotes,
             theme: getVoucherTheme(voucher.linkTheme),
             urduFontData: getUrduFontData(),
-            departureFlight,
-            arrivalFlight,
+            passengerFlights: passengerFlightData.passengerFlights,
+            departureFlight: passengerFlightData.departureFlight,
+            arrivalFlight: passengerFlightData.arrivalFlight,
             qrImage,
-            pdfUrl: `/voucher/download/${voucher.id}?view=1`,
+            pdfUrl: `/voucher/download/${voucher.id}?view=1${requestedGroup ? `&group=${encodeURIComponent(requestedGroup.customerIds.join(','))}` : ''}`,
             verifiedImage: getVerifiedImagePath(voucher.linkVoucherFormat?.ejsPath)
         });
 
