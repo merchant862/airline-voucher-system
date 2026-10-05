@@ -123,6 +123,24 @@ button.submitBtn {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 12px;
 }
+.passenger-flight-fields {
+    margin-top: 16px;
+    padding: 14px;
+    border: 1px solid #555;
+    border-radius: 6px;
+}
+.passenger-flight-fields legend {
+    padding: 0 6px;
+    color: #c77dff;
+    font-weight: bold;
+}
+.passenger-flight-section + .passenger-flight-section {
+    margin-top: 14px;
+}
+.passenger-flight-section h4 {
+    margin: 0 0 8px;
+    color: #b388ff;
+}
 .header-buttons {
     display: flex;
     gap: 10px;
@@ -691,18 +709,28 @@ function addCustomer(prefill = {}) {
 
         <fieldset class="passenger-flight-fields">
             <legend>Passenger Flight Details (optional)</legend>
-            <label>Departure Flight No</label><input type="text" name="customerDepartureFlightNo[]" value="${escapeHtml(prefill.customerDepartureFlightNo || '')}" placeholder="Flight No">
-            <label>Departure Date</label><input type="date" name="customerDepartureFlightDate[]" value="${escapeHtml(prefill.customerDepartureFlightDate || '')}">
-            <label>Departure From</label><input type="text" name="customerDepartureFlightFromCity[]" value="${escapeHtml(prefill.customerDepartureFlightFromCity || '')}" placeholder="City">
-            <label>Departure To</label><input type="text" name="customerDepartureFlightToCity[]" value="${escapeHtml(prefill.customerDepartureFlightToCity || '')}" placeholder="City">
-            <label>Departure Takeoff</label><input type="text" name="customerDepartureFlightTakeOffTime[]" value="${escapeHtml(prefill.customerDepartureFlightTakeOffTime || '')}" placeholder="HH:MM">
-            <label>Departure Landing</label><input type="text" name="customerDepartureFlightLandingTime[]" value="${escapeHtml(prefill.customerDepartureFlightLandingTime || '')}" placeholder="HH:MM">
-            <label>Arrival Flight No</label><input type="text" name="customerArrivalFlightNo[]" value="${escapeHtml(prefill.customerArrivalFlightNo || '')}" placeholder="Flight No">
-            <label>Arrival Date</label><input type="date" name="customerArrivalFlightDate[]" value="${escapeHtml(prefill.customerArrivalFlightDate || '')}">
-            <label>Arrival From</label><input type="text" name="customerArrivalFlightFromCity[]" value="${escapeHtml(prefill.customerArrivalFlightFromCity || '')}" placeholder="City">
-            <label>Arrival To</label><input type="text" name="customerArrivalFlightToCity[]" value="${escapeHtml(prefill.customerArrivalFlightToCity || '')}" placeholder="City">
-            <label>Arrival Takeoff</label><input type="text" name="customerArrivalFlightTakeOffTime[]" value="${escapeHtml(prefill.customerArrivalFlightTakeOffTime || '')}" placeholder="HH:MM">
-            <label>Arrival Landing</label><input type="text" name="customerArrivalFlightLandingTime[]" value="${escapeHtml(prefill.customerArrivalFlightLandingTime || '')}" placeholder="HH:MM">
+            <div class="passenger-flight-section">
+                <h4>Departure Flight</h4>
+                <div class="flight-grid">
+                    <div><label>Flight No</label><input type="text" name="customerDepartureFlightNo[]" value="${escapeHtml(prefill.customerDepartureFlightNo || '')}" placeholder="Flight Code"></div>
+                    <div><label>Date</label><input type="date" name="customerDepartureFlightDate[]" value="${escapeHtml(prefill.customerDepartureFlightDate || '')}"></div>
+                    <div><label>From City</label><input type="text" name="customerDepartureFlightFromCity[]" value="${escapeHtml(prefill.customerDepartureFlightFromCity || '')}" placeholder="City"></div>
+                    <div><label>To City</label><input type="text" name="customerDepartureFlightToCity[]" value="${escapeHtml(prefill.customerDepartureFlightToCity || '')}" placeholder="City"></div>
+                    <div><label>Takeoff Time (24h)</label><input type="text" class="customerDepartureFlightTakeOffTimeInput" name="customerDepartureFlightTakeOffTime[]" value="${escapeHtml(prefill.customerDepartureFlightTakeOffTime || '')}" placeholder="HH:MM"></div>
+                    <div><label>Landing Time (24h)</label><input type="text" class="customerDepartureFlightLandingTimeInput" name="customerDepartureFlightLandingTime[]" value="${escapeHtml(prefill.customerDepartureFlightLandingTime || '')}" placeholder="HH:MM"></div>
+                </div>
+            </div>
+            <div class="passenger-flight-section">
+                <h4>Arrival Flight</h4>
+                <div class="flight-grid">
+                    <div><label>Flight No</label><input type="text" name="customerArrivalFlightNo[]" value="${escapeHtml(prefill.customerArrivalFlightNo || '')}" placeholder="Flight Code"></div>
+                    <div><label>Date</label><input type="date" name="customerArrivalFlightDate[]" value="${escapeHtml(prefill.customerArrivalFlightDate || '')}"></div>
+                    <div><label>From City</label><input type="text" name="customerArrivalFlightFromCity[]" value="${escapeHtml(prefill.customerArrivalFlightFromCity || '')}" placeholder="City"></div>
+                    <div><label>To City</label><input type="text" name="customerArrivalFlightToCity[]" value="${escapeHtml(prefill.customerArrivalFlightToCity || '')}" placeholder="City"></div>
+                    <div><label>Takeoff Time (24h)</label><input type="text" class="customerArrivalFlightTakeOffTimeInput" name="customerArrivalFlightTakeOffTime[]" value="${escapeHtml(prefill.customerArrivalFlightTakeOffTime || '')}" placeholder="HH:MM"></div>
+                    <div><label>Landing Time (24h)</label><input type="text" class="customerArrivalFlightLandingTimeInput" name="customerArrivalFlightLandingTime[]" value="${escapeHtml(prefill.customerArrivalFlightLandingTime || '')}" placeholder="HH:MM"></div>
+                </div>
+            </div>
         </fieldset>
     `;
 
