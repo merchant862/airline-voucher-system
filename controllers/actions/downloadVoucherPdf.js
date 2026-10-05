@@ -292,23 +292,6 @@ async function downloadVoucherPdfController(req, res, next) {
     });
 
     const isKtp2Download = voucherData.voucherFormat.ejsPath.includes('ktp2');
-    if (!isKtp2Download && !voucherData.voucherFormat.ejsPath.includes('ktp-2')) {
-      await page.evaluate(() => {
-        const availableWidth = 780;
-        const availableHeight = 1040;
-        const contentWidth = Math.max(document.body.scrollWidth, document.documentElement.scrollWidth);
-        const contentHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
-        const scale = Math.min(1, availableWidth / contentWidth, availableHeight / contentHeight);
-
-        if (scale < 0.999) {
-          document.body.style.transformOrigin = 'top left';
-          document.body.style.transform = `scale(${scale})`;
-          document.body.style.width = `${100 / scale}%`;
-          document.body.style.height = `${contentHeight * scale}px`;
-          document.body.style.overflow = 'hidden';
-        }
-      });
-    }
     const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true,
