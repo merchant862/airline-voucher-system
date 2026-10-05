@@ -5,6 +5,7 @@ const { voucherFormats } = require('../../database/models');
 const path = require('path');
 const { generateQr } = require('./helpers/qrCode');
 const { getVoucherTheme, getUrduFontData } = require('./helpers/voucherThemes');
+const { buildPassengerFlightData } = require('./helpers/passengerFlights');
 
 function getVerifiedImagePath(ejsPath = '') {
     if (ejsPath.includes('crm2')) return '/images/verified.jpeg';
@@ -73,6 +74,7 @@ async function getVoucherTemplate(req, res, next) {
         }
 
         const notes = ``;
+        const passengerFlightData = buildPassengerFlightData(customers, departureFlight, arrivalFlight);
 
         const qrData = `Voucher: ${Date.now()}`;
 
@@ -105,6 +107,8 @@ async function getVoucherTemplate(req, res, next) {
             notes,
             departureFlight,
             arrivalFlight,
+            passengerFlights: passengerFlightData.passengerFlights,
+            passengerFlightDisplay: passengerFlightData.passengerFlightDisplay,
             qrImage,
             pdfUrl: '#',
             theme: getVoucherTheme(req.query.theme),

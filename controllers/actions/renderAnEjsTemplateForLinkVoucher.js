@@ -126,8 +126,11 @@ async function getVoucherTemplate(req, res, next) {
             landing: voucher.arrivalFlightLandingTime
         };
 
+        const isKtpFormat = voucher.linkVoucherFormat.ejsPath.toLowerCase().includes('ktp');
         const flightGroups = groupCustomersByFlight(voucher.customers, departureFlight, arrivalFlight);
-        const requestedGroup = findRequestedFlightGroup(flightGroups, req.query.group);
+        const requestedGroup = isKtpFormat
+            ? findRequestedFlightGroup(flightGroups, req.query.group)
+            : null;
         const customersForRender = requestedGroup?.customers || voucher.customers;
 
         const passengerFlightData = buildPassengerFlightData(
@@ -205,7 +208,7 @@ async function getVoucherTemplate(req, res, next) {
 
         const qrImage = await generateVoucherQr(
             voucher.id,
-            requestedGroup?.customerIds || []
+            isKtpFormat ? (requestedGroup?.customerIds || []) : []
         );
 
         // ================= Template Path =================
@@ -256,6 +259,7 @@ async function getVoucherTemplate(req, res, next) {
             theme: getVoucherTheme(voucher.linkTheme),
             urduFontData: getUrduFontData(),
             passengerFlights: passengerFlightData.passengerFlights,
+            passengerFlightDisplay: passengerFlightData.passengerFlightDisplay,
             departureFlight: passengerFlightData.departureFlight,
             arrivalFlight: passengerFlightData.arrivalFlight,
             qrImage,

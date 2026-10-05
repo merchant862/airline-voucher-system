@@ -335,10 +335,10 @@ td {
                     <th>Arrival</th>
                 </tr>
                 <tr>
-                    <td><%= departureFlight.flightNo %></td>
-                    <td><%= departureFlight.fromCity %> - <%= departureFlight.toCity %></td>
-                    <td><%= departureFlight.date %> - <%= departureFlight.takeoff %></td>
-                    <td><%= departureFlight.date %> - <%= departureFlight.landing %></td>
+                    <td><%- passengerFlightDisplay.departureFlight.flightNo %></td>
+                    <td><%- passengerFlightDisplay.departureFlight.sector %></td>
+                    <td><%- passengerFlightDisplay.departureFlight.date %> - <%- passengerFlightDisplay.departureFlight.takeoff %></td>
+                    <td><%- passengerFlightDisplay.departureFlight.date %> - <%- passengerFlightDisplay.departureFlight.landing %></td>
                 </tr>
             </table>
         </div>
@@ -353,10 +353,10 @@ td {
                     <th>Arrival</th>
                 </tr>
                 <tr>
-                    <td><%= arrivalFlight.flightNo %></td>
-                    <td><%= arrivalFlight.fromCity %> - <%= arrivalFlight.toCity %></td>
-                    <td><%= arrivalFlight.date %> - <%= arrivalFlight.takeoff %></td>
-                    <td><%= arrivalFlight.date %> - <%= arrivalFlight.landing %></td>
+                    <td><%- passengerFlightDisplay.arrivalFlight.flightNo %></td>
+                    <td><%- passengerFlightDisplay.arrivalFlight.sector %></td>
+                    <td><%- passengerFlightDisplay.arrivalFlight.date %> - <%- passengerFlightDisplay.arrivalFlight.takeoff %></td>
+                    <td><%- passengerFlightDisplay.arrivalFlight.date %> - <%- passengerFlightDisplay.arrivalFlight.landing %></td>
                 </tr>
             </table>
         </div>

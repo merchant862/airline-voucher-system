@@ -495,6 +495,7 @@
           time_24hr: true
         });
       });
+      initPassengerFlightPickers();
 
       await loadAgencies();
       await loadVoucherFormats();
@@ -511,6 +512,19 @@
       bindAddButtons();
       bindDeleteButtons();
     });
+
+    function initPassengerFlightPickers(root = document) {
+      root.querySelectorAll('.customerDepartureFlightTakeOffTimeInput, .customerDepartureFlightLandingTimeInput, .customerArrivalFlightTakeOffTimeInput, .customerArrivalFlightLandingTimeInput').forEach(input => {
+        if (input._flatpickr) return;
+        if (input.value) input.value = input.value.slice(0, 5);
+        flatpickr(input, {
+          enableTime: true,
+          noCalendar: true,
+          dateFormat: 'H:i',
+          time_24hr: true
+        });
+      });
+    }
 
     function formatDisplayName(format, index, labelPrefix) {
       const ejsPath = (format.ejsPath || '').toLowerCase();
@@ -720,6 +734,7 @@
         </fieldset>
       `;
       container.appendChild(div);
+      initPassengerFlightPickers(div);
       reindexRows();
     }
 

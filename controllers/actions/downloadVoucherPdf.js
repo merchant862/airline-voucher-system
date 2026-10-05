@@ -151,16 +151,15 @@ async function downloadVoucherPdfController(req, res, next) {
       landing: voucherData.arrivalFlightLandingTime
     };
 
-    const flightGroups = groupCustomersByFlight(
-      voucherData.customers,
-      departureFallback,
-      arrivalFallback
-    );
-    if (!flightGroups.length) {
-      flightGroups.push({ key: '', customers: [], customerIds: [] });
-    }
-    const requestedGroup = findRequestedFlightGroup(flightGroups, req.query.group);
-    const renderGroups = requestedGroup ? [requestedGroup] : flightGroups;
+    const isKtpFormat = voucherData.voucherFormat.ejsPath.toLowerCase().includes('ktp');
+    const flightGroups = groupCustomersByFlight(voucherData.customers, departureFallback, arrivalFallback);
+    if (!flightGroups.length) flightGroups.push({ key: '', customers: [], customerIds: [] });
+    const requestedGroup = isKtpFormat
+      ? findRequestedFlightGroup(flightGroups, req.query.group)
+      : null;
+    const renderGroups = isKtpFormat
+      ? (requestedGroup ? [requestedGroup] : flightGroups)
+      : [{ key: '', customers: voucherData.customers, customerIds: voucherData.customers.map(c => String(c.id)) }];
 
     // ==============================
     // 3️⃣ PREPARE EJS DATA
@@ -173,7 +172,7 @@ async function downloadVoucherPdfController(req, res, next) {
         departureFallback,
         arrivalFallback
       );
-      const qrImage = await generateVoucherQr(voucherData.id, group.customerIds);
+      const qrImage = await generateVoucherQr(voucherData.id, isKtpFormat ? group.customerIds : []);
 
       return {
 
@@ -229,6 +228,7 @@ async function downloadVoucherPdfController(req, res, next) {
       })),
 
       passengerFlights: passengerFlightData.passengerFlights,
+      passengerFlightDisplay: passengerFlightData.passengerFlightDisplay,
       departureFlight: passengerFlightData.departureFlight,
       arrivalFlight: passengerFlightData.arrivalFlight,
 

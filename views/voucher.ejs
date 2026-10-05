@@ -374,6 +374,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             time_24hr: true
         });
     });
+    initPassengerFlightPickers();
 
     await loadCustomAgencies('local', 'localAgencyDropdown', 'companySelect');
     await loadCustomAgencies('foreign', 'foreignAgencyDropdown', 'foreignCompanySelect');
@@ -384,6 +385,19 @@ document.addEventListener("DOMContentLoaded", async function () {
     await loadTransportList();
     restoreFormData();
 });
+
+function initPassengerFlightPickers(root = document) {
+    root.querySelectorAll('.customerDepartureFlightTakeOffTimeInput, .customerDepartureFlightLandingTimeInput, .customerArrivalFlightTakeOffTimeInput, .customerArrivalFlightLandingTimeInput').forEach(input => {
+        if (input._flatpickr) return;
+        if (input.value) input.value = input.value.slice(0, 5);
+        flatpickr(input, {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: 'H:i',
+            time_24hr: true
+        });
+    });
+}
 
 form.addEventListener('input', saveFormData);
 form.addEventListener('change', saveFormData);
@@ -693,6 +707,7 @@ function addCustomer(prefill = {}) {
     `;
 
     document.getElementById('customersContainer').appendChild(div);
+    initPassengerFlightPickers(div);
     saveFormData();
 }
 
