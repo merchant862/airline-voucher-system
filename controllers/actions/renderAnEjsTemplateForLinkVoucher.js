@@ -259,6 +259,7 @@ async function getVoucherTemplate(req, res, next) {
             theme: getVoucherTheme(voucher.linkTheme),
             urduFontData: getUrduFontData(),
             passengerFlights: passengerFlightData.passengerFlights,
+            passengerFlightRows: passengerFlightData.passengerFlightRows,
             passengerFlightDisplay: passengerFlightData.passengerFlightDisplay,
             departureFlight: passengerFlightData.departureFlight,
             arrivalFlight: passengerFlightData.arrivalFlight,

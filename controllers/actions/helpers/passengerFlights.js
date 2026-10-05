@@ -70,6 +70,7 @@ function buildPassengerFlightData(customers = [], departureFallback = {}, arriva
         departureFlight: buildDisplayFlight([], 'departureFlight', departureFallback),
         arrivalFlight: buildDisplayFlight([], 'arrivalFlight', arrivalFallback)
       },
+      passengerFlightRows: buildPassengerFlightRows([], departureFallback, arrivalFallback),
       departureFlight: departureFallback,
       arrivalFlight: arrivalFallback
     };
@@ -77,6 +78,7 @@ function buildPassengerFlightData(customers = [], departureFallback = {}, arriva
 
   return {
     passengerFlights: passengerRows,
+    passengerFlightRows: buildPassengerFlightRows(passengerRows, departureFallback, arrivalFallback),
     passengerFlightDisplay: {
       departureFlight: buildDisplayFlight(passengerRows, 'departureFlight', departureFallback),
       arrivalFlight: buildDisplayFlight(passengerRows, 'arrivalFlight', arrivalFallback)
@@ -97,6 +99,18 @@ function buildPassengerFlightData(customers = [], departureFallback = {}, arriva
       takeoff: valuesFor(customers, 'arrivalFlightTakeOffTime', arrivalFallback.takeoff),
       landing: valuesFor(customers, 'arrivalFlightLandingTime', arrivalFallback.landing)
     }
+  };
+}
+
+function buildPassengerFlightRows(rows, departureFallback, arrivalFallback) {
+  const sourceRows = rows.length ? rows : [{ departureFlight: departureFallback, arrivalFlight: arrivalFallback }];
+  const value = value => escapeHtml(value || '');
+  const compact = flight => `<tr><td>${value(flight.flightNo)}</td><td>${value(flight.fromCity)} - ${value(flight.toCity)}</td><td>${value(flight.date)} - ${value(flight.takeoff)}</td><td>${value(flight.date)} - ${value(flight.landing)}</td></tr>`;
+  const split = flight => `<tr><td>${value(flight.flightNo)}</td><td>${value(flight.fromCity)}</td><td>${value(flight.toCity)}</td><td>${value(flight.date)} - ${value(flight.takeoff)}</td><td>${value(flight.date)} - ${value(flight.landing)}</td></tr>`;
+  const dated = flight => `<tr><td>${value(flight.flightNo)}</td><td>${value(flight.date)}</td><td>${value(flight.fromCity)} - ${value(flight.toCity)}</td><td>${value(flight.takeoff)}</td><td>${value(flight.landing)}</td></tr>`;
+  return {
+    departure: { compact: sourceRows.map(row => compact(row.departureFlight || departureFallback)).join(''), split: sourceRows.map(row => split(row.departureFlight || departureFallback)).join(''), dated: sourceRows.map(row => dated(row.departureFlight || departureFallback)).join('') },
+    arrival: { compact: sourceRows.map(row => compact(row.arrivalFlight || arrivalFallback)).join(''), split: sourceRows.map(row => split(row.arrivalFlight || arrivalFallback)).join(''), dated: sourceRows.map(row => dated(row.arrivalFlight || arrivalFallback)).join('') }
   };
 }
 

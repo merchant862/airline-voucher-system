@@ -191,13 +191,7 @@
                 <th>Departure</th>
                 <th>Arrival</th>
             </tr>
-            <tr>
-                <td><%- passengerFlightDisplay.departureFlight.flightNo %></td>
-                <td><%- passengerFlightDisplay.departureFlight.date %></td>
-                <td><%- passengerFlightDisplay.departureFlight.sector %></td>
-                <td><%- passengerFlightDisplay.departureFlight.takeoff %></td>
-                <td><%- passengerFlightDisplay.departureFlight.landing %></td>
-            </tr>
+            <%- passengerFlightRows.departure.dated %>
 
             <tr>
                 <th colspan="5" style="text-align:center;">Departure from KSA to Pakistan</th>
@@ -209,13 +203,7 @@
                 <th>Departure</th>
                 <th>Arrival</th>
             </tr>
-            <tr>
-                <td><%- passengerFlightDisplay.arrivalFlight.flightNo %></td>
-                <td><%- passengerFlightDisplay.arrivalFlight.date %></td>
-                <td><%- passengerFlightDisplay.arrivalFlight.sector %></td>
-                <td><%- passengerFlightDisplay.arrivalFlight.takeoff %></td>
-                <td><%- passengerFlightDisplay.arrivalFlight.landing %></td>
-            </tr>
+            <%- passengerFlightRows.arrival.dated %>
         </table>
 
         <!-- Single QR -->

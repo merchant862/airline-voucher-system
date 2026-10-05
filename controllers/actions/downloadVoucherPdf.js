@@ -228,6 +228,7 @@ async function downloadVoucherPdfController(req, res, next) {
       })),
 
       passengerFlights: passengerFlightData.passengerFlights,
+      passengerFlightRows: passengerFlightData.passengerFlightRows,
       passengerFlightDisplay: passengerFlightData.passengerFlightDisplay,
       departureFlight: passengerFlightData.departureFlight,
       arrivalFlight: passengerFlightData.arrivalFlight,

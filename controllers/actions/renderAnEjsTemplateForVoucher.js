@@ -108,6 +108,7 @@ async function getVoucherTemplate(req, res, next) {
             departureFlight,
             arrivalFlight,
             passengerFlights: passengerFlightData.passengerFlights,
+            passengerFlightRows: passengerFlightData.passengerFlightRows,
             passengerFlightDisplay: passengerFlightData.passengerFlightDisplay,
             qrImage,
             pdfUrl: '#',
