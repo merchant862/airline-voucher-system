@@ -108,16 +108,14 @@ function buildDisplayFlight(rows, direction, fallback) {
     const lines = rows.map(row => {
       const flight = row[direction] || {};
       const value = flight[field] || '';
-      const label = escapeHtml(row.passengerName || 'Passenger');
-      return `${label}: ${escapeHtml(value)}`.trim();
+      return escapeHtml(value).trim();
     });
     display[field] = (lines.length ? lines : [escapeHtml(fallback[field] || '')]).join('<br>');
   }
 
   const sectorLines = rows.map(row => {
     const flight = row[direction] || {};
-    const label = escapeHtml(row.passengerName || 'Passenger');
-    return `${label}: ${escapeHtml(flight.fromCity || '')} - ${escapeHtml(flight.toCity || '')}`;
+    return `${escapeHtml(flight.fromCity || '')} - ${escapeHtml(flight.toCity || '')}`;
   });
   display.sector = (sectorLines.length ? sectorLines : [escapeHtml(`${fallback.fromCity || ''} - ${fallback.toCity || ''}`)]).join('<br>');
 
