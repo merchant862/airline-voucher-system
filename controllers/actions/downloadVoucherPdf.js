@@ -199,17 +199,29 @@ async function downloadVoucherPdfController(req, res, next) {
         logo: await getBase64Image(voucherData.foreignCompany?.image)
       },
 
-      familyHead: groupCustomers[0]?.customerName || '',
+      familyHead: isKtpFormat
+        ? groupCustomers[0]?.customerName || ''
+        : getFamilyHeadName(groupCustomers),
 
-      customers: groupCustomers.map(c => ({
-        name: c.customerName,
-        gender: c.customerGender,
-        passport: c.customerPassport,
-        visaNumber: c.customerVisa,
-        pnr: c.customerPNR,
-        departureFlight: { date: formatDate(c.departureFlightDate), flightNo: c.departureFlightNo, fromCity: c.departureFlightFromCity, toCity: c.departureFlightToCity, takeoff: c.departureFlightTakeOffTime, landing: c.departureFlightLandingTime },
-        arrivalFlight: { date: formatDate(c.arrivalFlightDate), flightNo: c.arrivalFlightNo, fromCity: c.arrivalFlightFromCity, toCity: c.arrivalFlightToCity, takeoff: c.arrivalFlightTakeOffTime, landing: c.arrivalFlightLandingTime }
-      })),
+      customers: groupCustomers.map(c => {
+        const gender = c.customerGender?.toLowerCase();
+        const paxType = gender === 'male' || gender === 'female'
+          ? 'Adult'
+          : gender === 'children'
+            ? 'Children'
+            : 'Infant';
+
+        return {
+          name: c.customerName,
+          gender: c.customerGender,
+          passport: c.customerPassport,
+          visaNumber: c.customerVisa,
+          pnr: c.customerPNR,
+          ...(isKtpFormat ? {} : { paxType, beds: 'Yes' }),
+          departureFlight: { date: formatDate(c.departureFlightDate), flightNo: c.departureFlightNo, fromCity: c.departureFlightFromCity, toCity: c.departureFlightToCity, takeoff: c.departureFlightTakeOffTime, landing: c.departureFlightLandingTime },
+          arrivalFlight: { date: formatDate(c.arrivalFlightDate), flightNo: c.arrivalFlightNo, fromCity: c.arrivalFlightFromCity, toCity: c.arrivalFlightToCity, takeoff: c.arrivalFlightTakeOffTime, landing: c.arrivalFlightLandingTime }
+        };
+      }),
 
       hotels: voucherData.hotels.map(h => ({
         name: h.hotelName,
