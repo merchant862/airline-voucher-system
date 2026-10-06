@@ -180,10 +180,9 @@
 
     <div style="display: flex; justify-content: space-between; align-items: flex-start;">
 
-        <table style="width: 74%;">
-            <tr>
-                <th colspan="5" style="text-align:center;">Departure from Pakistan to KSA</th>
-            </tr>
+        <div style="width: 74%;">
+        <div class="section-title">Departure from Pakistan to KSA</div>
+        <table>
             <tr>
                 <th>Flight</th>
                 <th>Date</th>
@@ -192,10 +191,10 @@
                 <th>Arrival</th>
             </tr>
             <%- passengerFlightRows.departure.dated %>
+        </table>
 
-            <tr>
-                <th colspan="5" style="text-align:center;">Departure from KSA to Pakistan</th>
-            </tr>
+        <div class="section-title">Departure from KSA to Pakistan</div>
+        <table>
             <tr>
                 <th>Flight</th>
                 <th>Date</th>
@@ -205,6 +204,7 @@
             </tr>
             <%- passengerFlightRows.arrival.dated %>
         </table>
+        </div>
 
         <!-- Single QR -->
         <div style="width: 22%; text-align: center;">

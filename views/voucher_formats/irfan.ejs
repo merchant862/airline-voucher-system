@@ -350,6 +350,7 @@ TOTAL PAX: <%= customers.length %>
 <!-- FLIGHT DETAILS -->
 <div class="section-heading">FLIGHT DETAILS</div>
 
+<div class="section-heading">DEPARTURE (PAKISTAN TO KSA)</div>
 <table>
 <tr>
 <th>FLIGHT</th>
@@ -359,6 +360,17 @@ TOTAL PAX: <%= customers.length %>
 <th>ARRIVAL</th>
 </tr>
 <%- passengerFlightRows.departure.split %>
+</table>
+
+<div class="section-heading">ARRIVAL (KSA TO PAKISTAN)</div>
+<table>
+<tr>
+<th>FLIGHT</th>
+<th>FROM</th>
+<th>TO</th>
+<th>DEPARTURE</th>
+<th>ARRIVAL</th>
+</tr>
 <%- passengerFlightRows.arrival.split %>
 </table>
 
