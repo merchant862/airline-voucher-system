@@ -172,7 +172,7 @@ body { background: #e8e8e8; }
 	padding: 1px 2px;
 	overflow: hidden;
 	vertical-align: middle;
-	text-align: center;
+	text-align: left;
 	white-space: normal;
 	word-break: break-word;
 }
@@ -304,12 +304,11 @@ body { background: #e8e8e8; }
 .c14{font-family:"f0", sans-serif;font-size:11.33px;color:#000000}
 .c15{font-family:"f3", serif;font-size:13px;color:#000000}
 .ktp-flight-value{font-size:10px !important; white-space:nowrap;}
-.t.c2,.t.c14{overflow:hidden; white-space:nowrap;}
-.ktp-passenger-name{display:inline-block; width:220px; overflow:hidden; white-space:nowrap; text-align:center;}
-.ktp-passenger-visa{display:inline-block; width:60px; overflow:hidden; white-space:nowrap; text-align:center; font-size:9.5px !important;}
-.ktp-passenger-pnr{display:inline-block; width:68px; overflow:hidden; white-space:nowrap; text-align:center; font-size:9.5px !important;}
-.ktp-hotel-city{display:inline-block; width:60px; overflow:hidden; white-space:nowrap; text-align:center; font-size:10.5px !important;}
-.ktp-hotel-name{display:inline-block; width:180px; overflow:hidden; white-space:nowrap; text-align:center;}
+.ktp-passenger-name{display:inline-block; width:280px; overflow:hidden; white-space:nowrap;}
+.ktp-passenger-visa{display:inline-block; width:60px; overflow:hidden; white-space:nowrap; font-size:9.5px !important;}
+.ktp-passenger-pnr{display:inline-block; width:68px; overflow:hidden; white-space:nowrap; font-size:9.5px !important;}
+.ktp-hotel-city{display:inline-block; width:55px; overflow:hidden; white-space:nowrap; font-size:10.5px !important;}
+.ktp-hotel-name{display:inline-block; width:270px; overflow:hidden; white-space:nowrap;}
 .c16{font-family:"f2", serif;font-size:14.67px;color:#000080}
 .c17{font-family:"f5", serif;font-size:14.67px;color:#000080}
 .c18{font-family:"f2", serif;font-size:13.28px;color:#000000}
@@ -444,29 +443,29 @@ body { background: #e8e8e8; }
 <div class="t c5" style="z-index:218;transform:matrix(1,0,0,1,507.63,146.46)"> Manual No:</div>
 <div class="t c7" style="z-index:230;transform:matrix(1,0,0,1,118.44,147.15)"><%= headName || c0.name || '' %></div>
 <div class="t c8" style="z-index:248;transform:matrix(1,0,0,1,374.7,169.02)"> Mutamers</div>
-<div class="t c2" style="width:25px;text-align:center;z-index:260;transform:matrix(1,0,0,1,22.46,185.31)">SNO</div>
-<div class="t c2" style="width:55px;text-align:center;z-index:267;transform:matrix(1,0,0,1,63.66,185.31)">Passport</div>
-<div class="t c2" style="width:220px;text-align:center;z-index:278;transform:matrix(1,0,0,1,125.85,185.31)">Mutamer Name</div>
+<div class="t c2" style="z-index:260;transform:matrix(1,0,0,1,22.46,185.31)"> SNO</div>
+<div class="t c2" style="z-index:267;transform:matrix(1,0,0,1,63.66,185.31)">Passport</div>
+<div class="t c2" style="z-index:278;transform:matrix(1,0,0,1,125.85,185.31)"> Mutamer Name</div>
 <div class="t c2" style="z-index:294;transform:matrix(1,0,0,1,453.62,185.31)">PAX</div>
-<div class="t c2" style="width:50px;text-align:center;z-index:300;transform:matrix(1,0,0,1,665.26,185.31)">Visa #</div>
-<div class="t c2" style="width:45px;text-align:center;z-index:310;transform:matrix(1,0,0,1,737.69,185.31)">PNR</div>
-<div class="t c2" style="width:15px;text-align:center;z-index:316;transform:matrix(1,0,0,1,429.88,185.39)">G</div>
-<div class="t c2" style="width:30px;text-align:center;z-index:320;transform:matrix(1,0,0,1,491.66,185.39)">Bed</div>
-<div class="t c2" style="width:50px;text-align:center;z-index:326;transform:matrix(1,0,0,1,532.35,185.39)">MOFA #</div>
-<div class="t c2" style="width:45px;text-align:center;z-index:335;transform:matrix(1,0,0,1,602.08,185.39)">GRP #</div>
-<% (customers || []).forEach((customer, index) => { const rowTop = 203.83 + (index * 17.4); const widths = { 21.44: 39.15, 60.59: 67.14, 127.73: 250, 421.12: 30.9, 452.02: 41.26, 493.28: 158.72, 652: 64, 716: 69.2 }; const row = (x, value) => `<div class="t c9" style="width:${widths[x] || 40}px;text-align:center;transform:matrix(1,0,0,1,${x},${rowTop})">${value || ''}</div>`; %>
+<div class="t c2" style="z-index:300;transform:matrix(1,0,0,1,665.26,185.31)">Visa #</div>
+<div class="t c2" style="z-index:310;transform:matrix(1,0,0,1,737.69,185.31)">PNR</div>
+<div class="t c2" style="z-index:316;transform:matrix(1,0,0,1,429.88,185.39)">G</div>
+<div class="t c2" style="z-index:320;transform:matrix(1,0,0,1,491.66,185.39)">Bed</div>
+<div class="t c2" style="z-index:326;transform:matrix(1,0,0,1,532.35,185.39)">MOFA #</div>
+<div class="t c2" style="z-index:335;transform:matrix(1,0,0,1,602.08,185.39)">GRP #</div>
+<% (customers || []).forEach((customer, index) => { const rowTop = 203.83 + (index * 17.4); const row = (x, value) => `<div class="t c9" style="transform:matrix(1,0,0,1,${x},${rowTop})">${value || ''}</div>`; %>
 <%- row(21.44, index + 1) %><%- row(60.59, customer.passport) %><%- row(127.73, `<span class="ktp-passenger-name">${customer.name || ''}</span>`) %><%- row(421.12, formatGender(customer.gender)) %><%- row(452.02, customer.paxType || 'Adult') %><%- row(493.28, customer.beds) %><%- row(652, `<span class="ktp-passenger-visa">${customer.visaNumber || ''}</span>`) %><%- row(716, `<span class="ktp-passenger-pnr">${customer.pnr || ''}</span>`) %><% }); %>
 <div class="t c8" style="z-index:484;transform:matrix(1,0,0,1,360.25,240.11)">Accommodation</div>
-<div class="t c2" style="width:60px;text-align:center;z-index:500;transform:matrix(1,0,0,1,30.98,256.41)">City</div>
-<div class="t c2" style="width:180px;text-align:center;z-index:507;transform:matrix(1,0,0,1,67.24,256.41)">Hotel Name</div>
-<div class="t c2" style="width:50px;text-align:center;z-index:521;transform:matrix(1,0,0,1,358.88,256.41)">View</div>
-<div class="t c2" style="width:40px;text-align:center;z-index:528;transform:matrix(1,0,0,1,421.72,256.41)">Meal</div>
-<div class="t c2" style="width:45px;text-align:center;z-index:535;transform:matrix(1,0,0,1,475.65,256.41)">Conf#</div>
-<div class="t c2" style="width:90px;text-align:center;z-index:543;transform:matrix(1,0,0,1,538.47,256.41)">Room Type</div>
-<div class="t c2" style="width:55px;text-align:center;z-index:555;transform:matrix(1,0,0,1,620,256.41)">Checkin</div>
-<div class="t c2" style="width:65px;text-align:center;z-index:565;transform:matrix(1,0,0,1,695,256.41)">Checkout</div>
-<div class="t c2" style="width:30px;text-align:center;z-index:577;transform:matrix(1,0,0,1,744.53,256.41)">Nights</div>
-<% (hotels || []).forEach((hotel, index) => { const rowTop = 273.88 + (index * 16.32); const widths = { 20.16: 61.84, 82: 220, 353: 74.67, 427.67: 47.98, 475.65: 52.35, 528: 102.59, 630.59: 59.82, 690.41: 70.14, 760.55: 24.65 }; const row = (x, value, extraClass = '') => `<div class="t c10 ${extraClass}" style="width:${widths[x] || 40}px;text-align:center;transform:matrix(1,0,0,1,${x},${rowTop})">${value || ''}</div>`; const roomType = String(hotel.roomType || '').replace(/\s*\d+\s*$/, ''); %>
+<div class="t c2" style="z-index:500;transform:matrix(1,0,0,1,30.98,256.41)">City</div>
+<div class="t c2" style="z-index:507;transform:matrix(1,0,0,1,67.24,256.41)"> Hotel Name</div>
+<div class="t c2" style="z-index:521;transform:matrix(1,0,0,1,358.88,256.41)">View</div>
+<div class="t c2" style="z-index:528;transform:matrix(1,0,0,1,421.72,256.41)">Meal</div>
+<div class="t c2" style="z-index:535;transform:matrix(1,0,0,1,475.65,256.41)">Conf#</div>
+<div class="t c2" style="z-index:543;transform:matrix(1,0,0,1,538.47,256.41)">Room Type</div>
+<div class="t c2" style="z-index:555;transform:matrix(1,0,0,1,627.54,256.41)">Checkin</div>
+<div class="t c2" style="z-index:565;transform:matrix(1,0,0,1,683.16,256.41)">Checkout</div>
+<div class="t c2" style="z-index:577;transform:matrix(1,0,0,1,744.53,256.41)">Nights</div>
+<% (hotels || []).forEach((hotel, index) => { const rowTop = 273.88 + (index * 16.32); const row = (x, value, extraClass = '') => `<div class="t c10 ${extraClass}" style="transform:matrix(1,0,0,1,${x},${rowTop})">${value || ''}</div>`; const roomType = String(hotel.roomType || '').replace(/\s*\d+\s*$/, ''); %>
 <%- row(20.16, hotel.city, 'ktp-hotel-city') %><%- row(82, `<span class="ktp-hotel-name">${hotel.name || ''}</span>`) %><%- row(353, 'Standard') %><%- row(427.67, hotel.mealPlan) %><%- row(475.65, '') %><%- row(528, roomType) %><%- row(630.59, formatRefDate(hotel.checkIn)) %><%- row(690.41, formatRefDate(hotel.checkOut)) %><%- row(760.55, hotel.nights) %><% }); %>
 <div class="t c11" style="z-index:890;transform:matrix(0.94878,0,-0.31594,0.94878,657.64,322.85)">Total Nights:</div>
 <div class="t c12" style="z-index:907;transform:matrix(1,0,0,1,756.7,323.84)"><%= nightsTotal %></div>
@@ -507,7 +506,7 @@ body { background: #e8e8e8; }
 <div class="t c19" style="z-index:2175;transform:matrix(1,0,0,1,643.44,631.96)"> </div>
 <% if (typeof qrImage !== 'undefined' && qrImage) { %><div class="ktp-qr-shell"><img class="ktp-qr-image" src="<%= qrImage %>" alt="Voucher QR"></div><% } %>
 <div class="t c20" style="z-index:2198;transform:matrix(0.64279,-0.76604,0.76604,0.64279,84.41,460.14)">     </div>
-<div class="t c20" style="z-index:2203;transform:matrix(0.64279,-0.76604,0.76604,0.64279,280,470)">Approved</div>
+<div class="t c20" style="z-index:2203;transform:matrix(0.64279,-0.76604,0.76604,0.64279,138.64,395.51)">Approved</div>
 </div>
 </body>
 </html>
