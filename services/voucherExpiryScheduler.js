@@ -1,6 +1,5 @@
 'use strict';
 
-const { Op } = require('sequelize');
 const { vouchers, customers, appSettings } = require('../database/models');
 
 const SETTING_KEY = 'voucherExpiryHoursAfterDeparture';
@@ -73,24 +72,4 @@ async function expireVouchers() {
   }
 }
 
-function startVoucherExpiryScheduler() {
-  let running = false;
-  const tick = async () => {
-    if (running) return;
-    running = true;
-    try {
-      await expireVouchers();
-    } catch (error) {
-      console.error('Voucher expiry scheduler error:', error);
-    } finally {
-      running = false;
-    }
-  };
-
-  void tick();
-  const timer = setInterval(tick, CHECK_INTERVAL_MS);
-  timer.unref?.();
-  return () => clearInterval(timer);
-}
-
-module.exports = { startVoucherExpiryScheduler, expireVouchers };
+module.exports = { expireVouchers, CHECK_INTERVAL_MS };
