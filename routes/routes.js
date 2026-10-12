@@ -30,6 +30,7 @@ const {
   deleteRoomTypePriceController,
   upsertRoomTypePriceController
 } = require('../controllers/actions/roomTypePrices');
+const updateSettingsController = require('../controllers/actions/settings');
 
 const auth   = require('../middlewares/auth');
 const deauth = require('../middlewares/deauth');
@@ -66,6 +67,7 @@ router.post('/api/voucher/update/:id', auth(), updateVoucherController);
 router.get('/api/voucher/update/:status/:id', auth(), updateVoucherStatusController);
 router.post('/room-type-prices', auth(), upsertRoomTypePriceController);
 router.post('/room-type-prices/delete/:id', auth(), deleteRoomTypePriceController);
+router.post('/settings', auth(), updateSettingsController);
 router.post('/login', loginController);
 router.get('/logout', logoutController);
 

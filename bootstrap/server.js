@@ -4,12 +4,14 @@ const os = require('os');
 const cpus = os.cpus().length;
 
 const app = require('./app');
+const { startVoucherExpiryScheduler } = require('../services/voucherExpiryScheduler');
 const PORT = process.env.PORT || 3000;
 
 if (process.env.NODE_ENV === 'production') {
     if (cluster.isPrimary) {
         console.log(`Primary ${process.pid} is running`);
         console.log(`Forking ${cpus} workers...`);
+        startVoucherExpiryScheduler();
         for (let i = 0; i < cpus; i++) cluster.fork();
 
         cluster.on('exit', (worker, code, signal) => {
@@ -27,5 +29,6 @@ if (process.env.NODE_ENV === 'production') {
 } else {
     app.listen(PORT, () => {
         console.log(`Development Environment - http://localhost:${PORT}`);
+        startVoucherExpiryScheduler();
     });
 }
