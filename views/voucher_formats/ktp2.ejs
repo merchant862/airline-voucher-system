@@ -315,6 +315,80 @@ body { background: #e8e8e8; }
 .c19{font-family:"f3", serif;font-size:13.28px;color:#000000}
 .c20{font-family:"f6", sans-serif;font-size:48px;color:rgba(144,238,144,0.8)}
 @page{size:816px 1056px;margin:0}
+
+/* KTP2 precision layout: coordinate positions follow the printed vector grid. */
+.page .ktp-centered-cell, .page .ktp-flight-value {
+  box-sizing:border-box; display:block; padding:0 2px;
+  font-family:Arial,"Liberation Sans",sans-serif !important;
+  font-size:10.5px !important; font-weight:400 !important;
+  line-height:14px !important; text-align:center !important;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.page .ktp-centered-cell span { display:block; width:100%; max-width:100%;
+  font:inherit !important; text-align:center !important; overflow:hidden;
+  white-space:nowrap; text-overflow:ellipsis; }
+.page .ktp-hotel-value { font-size:10px !important; }
+.page .ktp-passenger-value { font-size:9.8px !important; line-height:10px !important; }
+.page .ktp-flight-value { font-size:10px !important; line-height:13px !important; text-align:center !important; }
+.page .ktp-column-heading {
+  box-sizing:border-box; display:block; text-align:center !important;
+  font-family:Arial,"Liberation Sans",sans-serif !important;
+  font-size:11.2px !important; font-weight:700 !important;
+  white-space:nowrap; line-height:14px !important;
+}
+.page .ktp-section-heading { font-family:Arial,"Liberation Sans",sans-serif !important;
+  font-size:12px !important; font-weight:700 !important; text-align:center !important; }
+.page .ktp-approved-stamp { position:absolute; left:50%; top:42%; z-index:2203;
+ transform:translate(-50%,-50%) rotate(-50deg); transform-origin:center;
+ font-family:"f6",sans-serif; font-size:44px; font-weight:normal;
+ color:rgba(144,238,144,.72); white-space:nowrap; pointer-events:none; }
+
+/* This panel masks only the old rasterized row lines, then draws a true grid.
+   Everything above Mutamers and below Transport/Services stays unchanged. */
+.page .ktp-rebuilt-tables {
+  position:absolute; top:202px; left:20px; width:766px; height:146px;
+  z-index:3000; background:#fff; box-sizing:border-box;
+  font-family:Arial,"Liberation Sans",sans-serif; color:#000;
+}
+.page .ktp-passenger-row, .page .ktp-hotel-row {
+  display:grid; box-sizing:border-box; width:100%; height:16px;
+  align-items:center; text-align:center; font-size:10px; font-weight:400;
+  line-height:12px; white-space:nowrap;
+}
+.page .ktp-passenger-row {grid-template-columns:34px 66px 298px 31px 37px 39px 64px 62px 64px 71px; border-bottom:1px dotted #666;}
+.page .ktp-passenger-row span, .page .ktp-hotel-row span,
+.page .ktp-hotel-header span {min-width:0; overflow:hidden; text-overflow:ellipsis; padding:0 2px; box-sizing:border-box;}
+.page .ktp-rebuilt-section {
+  height:18px; box-sizing:border-box; display:flex; align-items:center;
+  justify-content:center; background:#ddd; border-top:1px solid #222; border-bottom:1px solid #222;
+  font:700 12px Arial,"Liberation Sans",sans-serif;
+}
+.page .ktp-hotel-header, .page .ktp-hotel-row {grid-template-columns:47px 275px 55px 55px 52px 99px 60px 62px 61px;}
+.page .ktp-hotel-header {
+  display:grid; height:18px; align-items:center; box-sizing:border-box;
+  border-bottom:1px solid #222;
+  background:#fff; text-align:center; font:700 10.5px Arial,"Liberation Sans",sans-serif;
+}
+.page .ktp-hotel-header span {border-right:1px solid #222; height:100%; display:flex; justify-content:center; align-items:center;}
+.page .ktp-hotel-row {border-bottom:1px dotted #666;}
+.page .ktp-total-nights {height:14px; display:flex; justify-content:flex-end; align-items:center; gap:12px; font:italic 700 11px Arial,"Liberation Sans",sans-serif;}
+.page .ktp-total-nights span {height:14px; width:44px; border:1px solid #222; box-sizing:border-box; text-align:center; font:700 11px Arial,"Liberation Sans",sans-serif;}
+/* Border finishing only: keep original dotted data-row separators. */
+.page .ktp-rebuilt-section {
+  border-left: 1px solid #222;
+  border-right: 1px solid #222;
+}
+.page .ktp-hotel-header {
+  border-left: 1px solid #222;
+  border-right: 1px solid #222;
+}
+.page .ktp-hotel-header span:last-child { border-right: 0; }
+/* Removed the obsolete left vertical SVG stroke at x=18.2, y=255.4..273.9. */
+/* Do not draw vertical lines into passenger/hotel data rows. */
+.page .ktp-passenger-row, .page .ktp-hotel-row {
+  border-left: 0;
+  border-right: 0;
+}
 </style>
 </head>
 <body>
@@ -359,41 +433,41 @@ body { background: #e8e8e8; }
 <svg class="vec" style="z-index:454;left:417.78px;top:235.05px;overflow:hidden" width="32.96" height="4" viewBox="417.78 235.05 32.96 4"><g clip-path="url(#c0_0)"><path d="M419.8 237.1H448.7" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M419.8 237.6V236.6H419.3V237.6Z" fill="#000000"/><path d="M448.7 236.6V237.6H449.2V236.6Z" fill="#000000"/></g></svg>
 <svg class="vec" style="z-index:458;left:587.59px;top:235.05px;overflow:hidden" width="66.85" height="4" viewBox="587.59 235.05 66.85 4"><g clip-path="url(#c0_0)"><path d="M589.6 237.1H652.4" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M589.6 237.6V236.6H589.1V237.6Z" fill="#000000"/><path d="M652.4 236.6V237.6H652.9V236.6Z" fill="#000000"/></g></svg>
 <svg class="vec" style="z-index:469;left:447.74px;top:235.05px;overflow:hidden" width="339.04" height="4.12" viewBox="447.74 235.05 339.04 4.12"><g clip-path="url(#c0_0)"><path d="M715.5 237.1H784.8" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M715.5 237.6V236.6H715V237.6Z" fill="#000000"/><path d="M784.8 236.6V237.6H785.3V236.6Z" fill="#000000"/><path d="M449.7 237.2H481.6" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M449.7 237.7V236.7H449.2V237.7Z" fill="#000000"/><path d="M481.6 236.7V237.7H482.1V236.7Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:480;left:17.24px;top:238.11px;overflow:hidden" width="770" height="18.29" viewBox="17.24 238.11 770 18.29"><g clip-path="url(#c0_0)"><path d="M18.2 255.4H786.2V239.1H18.2Z" fill="#d3d3d3"/><path d="M18.2 255.4H19.2V239.1H18.2Z" fill="#000000"/><path d="M785.2 255.4H786.2V239.1H785.2Z" fill="#000000"/><path d="M18.2 240.1H786.2V239.1H18.2Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:497;left:17.24px;top:254.4px;overflow:hidden" width="50" height="20.48" viewBox="17.24 254.4 50 20.48"><g clip-path="url(#c0_0)"><path d="M18.2 273.9H19.2V255.4H18.2Z" fill="#000000"/><path d="M18.2 256.4H66.2V255.4H18.2Z" fill="#000000"/><path d="M18.2 273.9H66.2V272.9H18.2Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:504;left:65.24px;top:254.4px;overflow:hidden" width="277.48" height="20.48" viewBox="65.24 254.4 277.48 20.48"><g clip-path="url(#c0_0)"><path d="M66.2 273.9H67.2V255.4H66.2Z" fill="#000000"/><path d="M66.2 256.4H341.7V255.4H66.2Z" fill="#000000"/><path d="M66.2 273.9H341.7V272.9H66.2Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:518;left:340.72px;top:254.4px;overflow:hidden" width="64.84" height="20.48" viewBox="340.72 254.4 64.84 20.48"><g clip-path="url(#c0_0)"><path d="M341.7 273.9H342.7V255.4H341.7Z" fill="#000000"/><path d="M341.7 256.4H404.6V255.4H341.7Z" fill="#000000"/><path d="M341.7 273.9H404.6V272.9H341.7Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:525;left:403.56px;top:254.4px;overflow:hidden" width="63.96" height="20.48" viewBox="403.56 254.4 63.96 20.48"><g clip-path="url(#c0_0)"><path d="M404.6 273.9H405.6V255.4H404.6Z" fill="#000000"/><path d="M404.6 256.4H466.5V255.4H404.6Z" fill="#000000"/><path d="M404.6 273.9H466.5V272.9H404.6Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:532;left:465.52px;top:254.4px;overflow:hidden" width="56.76" height="20.48" viewBox="465.52 254.4 56.76 20.48"><g clip-path="url(#c0_0)"><path d="M466.5 273.9H467.5V255.4H466.5Z" fill="#000000"/><path d="M466.5 256.4H521.3V255.4H466.5Z" fill="#000000"/><path d="M466.5 273.9H521.3V272.9H466.5Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:540;left:520.28px;top:254.4px;overflow:hidden" width="102.8" height="20.48" viewBox="520.28 254.4 102.8 20.48"><g clip-path="url(#c0_0)"><path d="M521.3 273.9H522.3V255.4H521.3Z" fill="#000000"/><path d="M521.3 256.4H622.1V255.4H521.3Z" fill="#000000"/><path d="M521.3 273.9H622.1V272.9H521.3Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:552;left:621.08px;top:254.4px;overflow:hidden" width="59.6" height="20.48" viewBox="621.08 254.4 59.6 20.48"><g clip-path="url(#c0_0)"><path d="M622.1 273.9H623.1V255.4H622.1Z" fill="#000000"/><path d="M622.1 256.4H679.7V255.4H622.1Z" fill="#000000"/><path d="M622.1 273.9H679.7V272.9H622.1Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:562;left:678.68px;top:254.4px;overflow:hidden" width="64.4" height="20.48" viewBox="678.68 254.4 64.4 20.48"><g clip-path="url(#c0_0)"><path d="M679.7 273.9H680.7V255.4H679.7Z" fill="#000000"/><path d="M679.7 256.4H742.1V255.4H679.7Z" fill="#000000"/><path d="M679.7 273.9H742.1V272.9H679.7Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:573;left:741.08px;top:254.4px;overflow:hidden" width="46.16" height="20.48" viewBox="741.08 254.4 46.16 20.48"><g clip-path="url(#c0_0)"><path d="M742.1 273.9H743.1V255.4H742.1Z" fill="#000000"/><path d="M785.2 273.9H786.2V255.4H785.2Z" fill="#000000"/><path d="M742.1 256.4H786.2V255.4H742.1Z" fill="#000000"/><path d="M742.1 273.9H786.2V272.9H742.1Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:583;left:16.74px;top:287.7px;overflow:hidden" width="51" height="4" viewBox="16.74 287.7 51 4"><g clip-path="url(#c0_0)"><path d="M18.7 289.7H65.7" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M18.7 290.2V289.2H18.2V290.2Z" fill="#000000"/><path d="M65.7 289.2V290.2H66.2V289.2Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:592;left:64.74px;top:287.7px;overflow:hidden" width="278.48" height="4" viewBox="64.74 287.7 278.48 4"><g clip-path="url(#c0_0)"><path d="M66.7 289.7H341.2" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="3,3"/><path d="M66.7 290.2V289.2H66.2V290.2Z" fill="#000000"/><path d="M341.2 289.2V290.2H341.7V289.2Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:620;left:340.22px;top:287.7px;overflow:hidden" width="65.84" height="4" viewBox="340.22 287.7 65.84 4"><g clip-path="url(#c0_0)"><path d="M342.2 289.7H404.1" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M342.2 290.2V289.2H341.7V290.2Z" fill="#000000"/><path d="M404.1 289.2V290.2H404.6V289.2Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:631;left:403.06px;top:287.7px;overflow:hidden" width="64.96" height="4" viewBox="403.06 287.7 64.96 4"><g clip-path="url(#c0_0)"><path d="M405.1 289.7H466" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M405.1 290.2V289.2H404.6V290.2Z" fill="#000000"/><path d="M466 289.2V290.2H466.5V289.2Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:636;left:465.02px;top:287.7px;overflow:hidden" width="158.56" height="4" viewBox="465.02 287.7 158.56 4"><g clip-path="url(#c0_0)"><path d="M467 289.7H520.8" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M467 290.2V289.2H466.5V290.2Z" fill="#000000"/><path d="M520.8 289.2V290.2H521.3V289.2Z" fill="#000000"/><path d="M526.6 289.7H621.6" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M526.6 290.2V289.2H526.1V290.2Z" fill="#000000"/><path d="M621.6 289.2V290.2H622.1V289.2Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:658;left:621.54px;top:287.7px;overflow:hidden" width="59.64" height="4" viewBox="621.54 287.7 59.64 4"><g clip-path="url(#c0_0)"><path d="M623.5 289.7H679.2" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M623.5 290.2V289.2H623V290.2Z" fill="#000000"/><path d="M679.2 289.2V290.2H679.7V289.2Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:669;left:679.75px;top:287.7px;overflow:hidden" width="62.87" height="4" viewBox="679.75 287.7 62.87 4"><g clip-path="url(#c0_0)"><path d="M681.8 289.7H740.6" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M681.8 290.2V289.2H681.3V290.2Z" fill="#000000"/><path d="M740.6 289.2V290.2H741.1V289.2Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:680;left:739.62px;top:287.7px;overflow:hidden" width="47.52" height="4" viewBox="739.62 287.7 47.52 4"><g clip-path="url(#c0_0)"><path d="M741.6 289.7H785.1" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M741.6 290.2V289.2H741.1V290.2Z" fill="#000000"/><path d="M785.1 289.2V290.2H785.6V289.2Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:684;left:16.74px;top:304.02px;overflow:hidden" width="51" height="4" viewBox="16.74 304.02 51 4"><g clip-path="url(#c0_0)"><path d="M18.7 306H65.7" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M18.7 306.5V305.5H18.2V306.5Z" fill="#000000"/><path d="M65.7 305.5V306.5H66.2V305.5Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:694;left:64.74px;top:304.02px;overflow:hidden" width="278.48" height="4" viewBox="64.74 304.02 278.48 4"><g clip-path="url(#c0_0)"><path d="M66.7 306H341.2" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="3,3"/><path d="M66.7 306.5V305.5H66.2V306.5Z" fill="#000000"/><path d="M341.2 305.5V306.5H341.7V305.5Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:725;left:340.22px;top:304.02px;overflow:hidden" width="65.84" height="4" viewBox="340.22 304.02 65.84 4"><g clip-path="url(#c0_0)"><path d="M342.2 306H404.1" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M342.2 306.5V305.5H341.7V306.5Z" fill="#000000"/><path d="M404.1 305.5V306.5H404.6V305.5Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:736;left:403.06px;top:304.02px;overflow:hidden" width="64.96" height="4" viewBox="403.06 304.02 64.96 4"><g clip-path="url(#c0_0)"><path d="M405.1 306H466" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M405.1 306.5V305.5H404.6V306.5Z" fill="#000000"/><path d="M466 305.5V306.5H466.5V305.5Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:741;left:465.02px;top:304.02px;overflow:hidden" width="158.56" height="4" viewBox="465.02 304.02 158.56 4"><g clip-path="url(#c0_0)"><path d="M467 306H520.8" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M467 306.5V305.5H466.5V306.5Z" fill="#000000"/><path d="M520.8 305.5V306.5H521.3V305.5Z" fill="#000000"/><path d="M526.6 306H621.6" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M526.6 306.5V305.5H526.1V306.5Z" fill="#000000"/><path d="M621.6 305.5V306.5H622.1V305.5Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:763;left:621.54px;top:304.02px;overflow:hidden" width="59.64" height="4" viewBox="621.54 304.02 59.64 4"><g clip-path="url(#c0_0)"><path d="M623.5 306H679.2" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M623.5 306.5V305.5H623V306.5Z" fill="#000000"/><path d="M679.2 305.5V306.5H679.7V305.5Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:774;left:679.75px;top:304.02px;overflow:hidden" width="62.87" height="4" viewBox="679.75 304.02 62.87 4"><g clip-path="url(#c0_0)"><path d="M681.8 306H740.6" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M681.8 306.5V305.5H681.3V306.5Z" fill="#000000"/><path d="M740.6 305.5V306.5H741.1V305.5Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:785;left:739.62px;top:304.02px;overflow:hidden" width="47.52" height="4" viewBox="739.62 304.02 47.52 4"><g clip-path="url(#c0_0)"><path d="M741.6 306H785.1" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M741.6 306.5V305.5H741.1V306.5Z" fill="#000000"/><path d="M785.1 305.5V306.5H785.6V305.5Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:789;left:16.74px;top:320.34px;overflow:hidden" width="51" height="4" viewBox="16.74 320.34 51 4"><g clip-path="url(#c0_0)"><path d="M18.7 322.3H65.7" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M18.7 322.8V321.8H18.2V322.8Z" fill="#000000"/><path d="M65.7 321.8V322.8H66.2V321.8Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:798;left:64.74px;top:320.34px;overflow:hidden" width="278.48" height="4" viewBox="64.74 320.34 278.48 4"><g clip-path="url(#c0_0)"><path d="M66.7 322.3H341.2" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="3,3"/><path d="M66.7 322.8V321.8H66.2V322.8Z" fill="#000000"/><path d="M341.2 321.8V322.8H341.7V321.8Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:826;left:340.22px;top:320.34px;overflow:hidden" width="65.84" height="4" viewBox="340.22 320.34 65.84 4"><g clip-path="url(#c0_0)"><path d="M342.2 322.3H404.1" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M342.2 322.8V321.8H341.7V322.8Z" fill="#000000"/><path d="M404.1 321.8V322.8H404.6V321.8Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:837;left:403.06px;top:320.34px;overflow:hidden" width="64.96" height="4" viewBox="403.06 320.34 64.96 4"><g clip-path="url(#c0_0)"><path d="M405.1 322.3H466" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M405.1 322.8V321.8H404.6V322.8Z" fill="#000000"/><path d="M466 321.8V322.8H466.5V321.8Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:842;left:465.02px;top:320.34px;overflow:hidden" width="158.56" height="4" viewBox="465.02 320.34 158.56 4"><g clip-path="url(#c0_0)"><path d="M467 322.3H520.8" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M467 322.8V321.8H466.5V322.8Z" fill="#000000"/><path d="M520.8 321.8V322.8H521.3V321.8Z" fill="#000000"/><path d="M526.6 322.3H621.6" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M526.6 322.8V321.8H526.1V322.8Z" fill="#000000"/><path d="M621.6 321.8V322.8H622.1V321.8Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:864;left:621.54px;top:320.34px;overflow:hidden" width="59.64" height="4" viewBox="621.54 320.34 59.64 4"><g clip-path="url(#c0_0)"><path d="M623.5 322.3H679.2" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M623.5 322.8V321.8H623V322.8Z" fill="#000000"/><path d="M679.2 321.8V322.8H679.7V321.8Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:875;left:679.75px;top:320.34px;overflow:hidden" width="62.87" height="4" viewBox="679.75 320.34 62.87 4"><g clip-path="url(#c0_0)"><path d="M681.8 322.3H740.6" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M681.8 322.8V321.8H681.3V322.8Z" fill="#000000"/><path d="M740.6 321.8V322.8H741.1V321.8Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:886;left:739.62px;top:320.34px;overflow:hidden" width="47.52" height="4" viewBox="739.62 320.34 47.52 4"><g clip-path="url(#c0_0)"><path d="M741.6 322.3H785.1" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="1,2"/><path d="M741.6 322.8V321.8H741.1V322.8Z" fill="#000000"/><path d="M785.1 321.8V322.8H785.6V321.8Z" fill="#000000"/></g></svg>
-<svg class="vec" style="z-index:903;left:740.12px;top:321.84px;overflow:hidden" width="46.16" height="21.2" viewBox="740.12 321.84 46.16 21.2"><g clip-path="url(#c0_0)"><path d="M741.1 342H742.1V322.8H741.1Z" fill="#000000"/><path d="M784.3 342H785.3V322.8H784.3Z" fill="#000000"/><path d="M741.1 323.8H785.3V322.8H741.1Z" fill="#000000"/><path d="M741.1 342H785.3V341H741.1Z" fill="#000000"/></g></svg>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <svg class="vec" style="z-index:909;left:19.16px;top:347.9px;overflow:hidden" width="766.8" height="21.24" viewBox="19.16 347.9 766.8 21.24"><g clip-path="url(#c0_0)"><path d="M20.2 368.1H785V348.9H20.2Z" fill="#d3d3d3"/><path d="M20.2 368.1H21.2V348.9H20.2Z" fill="#000000"/><path d="M784 368.1H785V348.9H784Z" fill="#000000"/><path d="M20.2 349.9H785V348.9H20.2Z" fill="#000000"/></g></svg>
 <svg class="vec" style="z-index:931;left:19.16px;top:367.14px;overflow:hidden" width="92.52" height="21.2" viewBox="19.16 367.14 92.52 21.2"><g clip-path="url(#c0_0)"><path d="M20.2 387.3H21.2V368.1H20.2Z" fill="#000000"/><path d="M109.7 387.3H110.7V368.1H109.7Z" fill="#000000"/><path d="M20.2 369.1H110.7V368.1H20.2Z" fill="#000000"/><path d="M20.2 387.3H110.7V386.3H20.2Z" fill="#000000"/></g></svg>
 <svg class="vec" style="z-index:946;left:109.68px;top:367.14px;overflow:hidden" width="197.21" height="21.2" viewBox="109.68 367.14 197.21 21.2"><g clip-path="url(#c0_0)"><path d="M110.7 387.3H111.7V368.1H110.7Z" fill="#000000"/><path d="M110.7 369.1H305.9V368.1H110.7Z" fill="#000000"/><path d="M110.7 387.3H305.9V386.3H110.7Z" fill="#000000"/></g></svg>
@@ -443,61 +517,86 @@ body { background: #e8e8e8; }
 <div class="t c5" style="z-index:218;transform:matrix(1,0,0,1,507.63,146.46)"> Manual No:</div>
 <div class="t c7" style="z-index:230;transform:matrix(1,0,0,1,118.44,147.15)"><%= headName || c0.name || '' %></div>
 <div class="t c8" style="z-index:248;transform:matrix(1,0,0,1,374.7,169.02)"> Mutamers</div>
-<div class="t c2" style="z-index:260;transform:matrix(1,0,0,1,22.46,185.31)"> SNO</div>
-<div class="t c2" style="z-index:267;transform:matrix(1,0,0,1,63.66,185.31)">Passport</div>
-<div class="t c2" style="z-index:278;transform:matrix(1,0,0,1,125.85,185.31)"> Mutamer Name</div>
-<div class="t c2" style="z-index:294;transform:matrix(1,0,0,1,453.62,185.31)">PAX</div>
-<div class="t c2" style="z-index:300;transform:matrix(1,0,0,1,665.26,185.31)">Visa #</div>
-<div class="t c2" style="z-index:310;transform:matrix(1,0,0,1,737.69,185.31)">PNR</div>
-<div class="t c2" style="z-index:316;transform:matrix(1,0,0,1,429.88,185.39)">G</div>
-<div class="t c2" style="z-index:320;transform:matrix(1,0,0,1,491.66,185.39)">Bed</div>
-<div class="t c2" style="z-index:326;transform:matrix(1,0,0,1,532.35,185.39)">MOFA #</div>
-<div class="t c2" style="z-index:335;transform:matrix(1,0,0,1,602.08,185.39)">GRP #</div>
-<% (customers || []).forEach((customer, index) => { const rowTop = 203.83 + (index * 17.4); const row = (x, value) => `<div class="t c9" style="transform:matrix(1,0,0,1,${x},${rowTop})">${value || ''}</div>`; %>
-<%- row(21.44, index + 1) %><%- row(60.59, customer.passport) %><%- row(127.73, `<span class="ktp-passenger-name">${customer.name || ''}</span>`) %><%- row(421.12, formatGender(customer.gender)) %><%- row(452.02, customer.paxType || 'Adult') %><%- row(493.28, customer.beds) %><%- row(652, `<span class="ktp-passenger-visa">${customer.visaNumber || ''}</span>`) %><%- row(716, `<span class="ktp-passenger-pnr">${customer.pnr || ''}</span>`) %><% }); %>
-<div class="t c8" style="z-index:484;transform:matrix(1,0,0,1,360.25,240.11)">Accommodation</div>
-<div class="t c2" style="z-index:500;transform:matrix(1,0,0,1,30.98,256.41)">City</div>
-<div class="t c2" style="z-index:507;transform:matrix(1,0,0,1,67.24,256.41)"> Hotel Name</div>
-<div class="t c2" style="z-index:521;transform:matrix(1,0,0,1,358.88,256.41)">View</div>
-<div class="t c2" style="z-index:528;transform:matrix(1,0,0,1,421.72,256.41)">Meal</div>
-<div class="t c2" style="z-index:535;transform:matrix(1,0,0,1,475.65,256.41)">Conf#</div>
-<div class="t c2" style="z-index:543;transform:matrix(1,0,0,1,538.47,256.41)">Room Type</div>
-<div class="t c2" style="z-index:555;transform:matrix(1,0,0,1,627.54,256.41)">Checkin</div>
-<div class="t c2" style="z-index:565;transform:matrix(1,0,0,1,683.16,256.41)">Checkout</div>
-<div class="t c2" style="z-index:577;transform:matrix(1,0,0,1,744.53,256.41)">Nights</div>
-<% (hotels || []).forEach((hotel, index) => { const rowTop = 273.88 + (index * 16.32); const row = (x, value, extraClass = '') => `<div class="t c10 ${extraClass}" style="transform:matrix(1,0,0,1,${x},${rowTop})">${value || ''}</div>`; const roomType = String(hotel.roomType || '').replace(/\s*\d+\s*$/, ''); %>
-<%- row(20.16, hotel.city, 'ktp-hotel-city') %><%- row(82, `<span class="ktp-hotel-name">${hotel.name || ''}</span>`) %><%- row(353, 'Standard') %><%- row(427.67, hotel.mealPlan) %><%- row(475.65, '') %><%- row(528, roomType) %><%- row(630.59, formatRefDate(hotel.checkIn)) %><%- row(690.41, formatRefDate(hotel.checkOut)) %><%- row(760.55, hotel.nights) %><% }); %>
-<div class="t c11" style="z-index:890;transform:matrix(0.94878,0,-0.31594,0.94878,657.64,322.85)">Total Nights:</div>
-<div class="t c12" style="z-index:907;transform:matrix(1,0,0,1,756.7,323.84)"><%= nightsTotal %></div>
-<div class="t c13" style="z-index:913;transform:matrix(1,0,0,1,342.68,349.9)">Transport/Services</div>
-<div class="t c14" style="z-index:935;transform:matrix(1,0,0,1,32.68,369.15)">Travel Date</div>
-<div class="t c14" style="z-index:949;transform:matrix(1,0,0,1,175.22,369.15)">Transporter</div>
-<div class="t c14" style="z-index:963;transform:matrix(1,0,0,1,373.04,369.15)">Type</div>
-<div class="t c14" style="z-index:971;transform:matrix(1,0,0,1,467.52,369.15)"> Description</div>
+<div class="t ktp-column-heading" style="z-index:260;transform:matrix(1,0,0,1,21,185.31);width:34px">SNO</div>
+<div class="t ktp-column-heading" style="z-index:267;transform:matrix(1,0,0,1,55,185.31);width:66px">Passport</div>
+<div class="t ktp-column-heading" style="z-index:278;transform:matrix(1,0,0,1,121,185.31);width:298px">Mutamer Name</div>
+<div class="t ktp-column-heading" style="z-index:294;transform:matrix(1,0,0,1,450,185.31);width:37px">PAX</div>
+<div class="t ktp-column-heading" style="z-index:300;transform:matrix(1,0,0,1,652,185.31);width:64px">Visa #</div>
+<div class="t ktp-column-heading" style="z-index:310;transform:matrix(1,0,0,1,716,185.31);width:70px">PNR</div>
+<div class="t ktp-column-heading" style="z-index:316;transform:matrix(1,0,0,1,419,185.39);width:31px">G</div>
+<div class="t ktp-column-heading" style="z-index:320;transform:matrix(1,0,0,1,487,185.39);width:39px">Bed</div>
+<div class="t ktp-column-heading" style="z-index:326;transform:matrix(1,0,0,1,526,185.39);width:64px">MOFA #</div>
+<div class="t ktp-column-heading" style="z-index:335;transform:matrix(1,0,0,1,590,185.39);width:62px">GRP #</div>
+<% /* Rebuilt passenger and accommodation grid: consistent row heights and borders. */ %>
+<div class="ktp-rebuilt-tables">
+  <div class="ktp-passenger-rows">
+    <% (customers || []).slice(0,3).forEach((customer, index) => { %>
+      <div class="ktp-passenger-row">
+        <span><%= index + 1 %></span>
+        <span><%= customer.passport || '' %></span>
+        <span><%= customer.name || '' %></span>
+        <span><%= formatGender(customer.gender) %></span>
+        <span><%= customer.paxType || 'Adult' %></span>
+        <span><%= customer.beds || '' %></span>
+        <span><%= customer.mofaNumber || customer.mofa || '' %></span>
+        <span><%= customer.groupNumber || customer.grpNumber || '' %></span>
+        <span><%= customer.visaNumber || '' %></span>
+        <span><%= customer.pnr || '' %></span>
+      </div>
+    <% }); %>
+    <% for (let i = (customers || []).slice(0,3).length; i < 3; i++) { %>
+      <div class="ktp-passenger-row ktp-empty-row"><% for(let k=0;k<10;k++){ %><span></span><% } %></div>
+    <% } %>
+  </div>
+  <div class="ktp-rebuilt-section">Accommodation</div>
+  <div class="ktp-hotel-header">
+    <span>City</span><span>Hotel Name</span><span>View</span><span>Meal</span><span>Conf#</span><span>Room Type</span><span>Checkin</span><span>Checkout</span><span>Nights</span>
+  </div>
+  <% (hotels || []).slice(0,3).forEach((hotel) => { const roomType = String(hotel.roomType || '').replace(/\s*\d+\s*$/, ''); %>
+    <div class="ktp-hotel-row">
+      <span><%= hotel.city || '' %></span>
+      <span><%= hotel.name || '' %></span>
+      <span>Standard</span>
+      <span><%= hotel.mealPlan || '' %></span>
+      <span></span>
+      <span><%= roomType %></span>
+      <span><%= formatRefDate(hotel.checkIn) %></span>
+      <span><%= formatRefDate(hotel.checkOut) %></span>
+      <span><%= hotel.nights ?? '' %></span>
+    </div>
+  <% }); %>
+  <% for (let i = (hotels || []).slice(0,3).length; i < 3; i++) { %><div class="ktp-hotel-row ktp-empty-row"><% for(let k=0;k<9;k++){ %><span></span><% } %></div><% } %>
+  <div class="ktp-total-nights"><strong>Total Nights:</strong><span><%= nightsTotal %></span></div>
+</div>
+<div class="t c13" style="z-index:913;transform:matrix(1,0,0,1,21,349.9);width:765px;text-align:center">Transport/Services</div>
+<div class="t ktp-column-heading" style="z-index:935;transform:matrix(1,0,0,1,21,369.15);width:91px">Travel Date</div>
+<div class="t ktp-column-heading" style="z-index:949;transform:matrix(1,0,0,1,112,369.15);width:195px">Transporter</div>
+<div class="t ktp-column-heading" style="z-index:963;transform:matrix(1,0,0,1,307,369.15);width:160px">Type</div>
+<div class="t ktp-column-heading" style="z-index:971;transform:matrix(1,0,0,1,467,369.15);width:319px">Description</div>
 <div class="t c15" style="z-index:989;transform:matrix(1,0,0,1,112.6,387.34)"></div>
-<div class="t c15" style="z-index:1003;transform:matrix(1,0,0,1,307.81,387.34)"><%= transport.type || '' %></div>
-<div class="t c15" style="z-index:1020;transform:matrix(1,0,0,1,468.44,387.34)"><%= transport.route || '' %></div>
-<div class="t c16" style="z-index:1729;transform:matrix(1,0,0,1,92.67,408.62)"> Departure (Pakistan to KSA)</div>
-<div class="t c16" style="z-index:1761;transform:matrix(1,0,0,1,450.07,408.62)"> Arrival (KSA to PAK)</div>
-<div class="t c14" style="z-index:1785;transform:matrix(1,0,0,1,34.61,427.86)">Flight</div>
-<div class="t c14" style="z-index:1794;transform:matrix(1,0,0,1,99.56,427.86)">Sector</div>
-<div class="t c14" style="z-index:1803;transform:matrix(1,0,0,1,175.06,427.86)">Departure</div>
-<div class="t c14" style="z-index:1816;transform:matrix(1,0,0,1,283.43,427.86)">Arrival</div>
-<div class="t c14" style="z-index:1826;transform:matrix(1,0,0,1,371.53,427.86)">Flight</div>
-<div class="t c14" style="z-index:1835;transform:matrix(1,0,0,1,436.66,427.86)">Sector</div>
-<div class="t c14" style="z-index:1844;transform:matrix(1,0,0,1,511.28,427.86)">Departure</div>
-<div class="t c14" style="z-index:1857;transform:matrix(1,0,0,1,619.85,427.86)">Arrival</div>
-<div class="t c15 ktp-flight-value" style="z-index:1866;transform:matrix(1,0,0,1,30.29,444.54)"><%= departureFlight?.flightNo || '' %></div>
-<div class="t c15 ktp-flight-value" style="z-index:1874;transform:matrix(1,0,0,1,90.37,444.54)"><%= departureFlight?.fromCity || '' %>-<%= departureFlight?.toCity || '' %></div>
-<div class="t c15 ktp-flight-value" style="z-index:1883;transform:matrix(1,0,0,1,167.64,444.54)"><%= formatRefDate(departureFlight?.date) %> <%= formatRefTime(departureFlight?.takeoff) %></div>
-<div class="t c15 ktp-flight-value" style="z-index:1898;transform:matrix(1,0,0,1,264.22,444.54)"><%= formatRefDate(departureFlight?.date) %> <%= formatRefTime(departureFlight?.landing) %></div>
-<div class="t c15 ktp-flight-value" style="z-index:1912;transform:matrix(1,0,0,1,367.21,444.54)"><%= arrivalFlight?.flightNo || '' %></div>
-<div class="t c15 ktp-flight-value" style="z-index:1920;transform:matrix(1,0,0,1,430,444.54)"><%= arrivalFlight?.fromCity || '' %>-<%= arrivalFlight?.toCity || '' %></div>
-<div class="t c15 ktp-flight-value" style="z-index:1929;transform:matrix(1,0,0,1,502.06,444.54)"><%= formatRefDate(arrivalFlight?.date) %> <%= formatRefTime(arrivalFlight?.takeoff) %></div>
-<div class="t c15 ktp-flight-value" style="z-index:1944;transform:matrix(1,0,0,1,600.64,444.54)"><%= formatRefDate(arrivalFlight?.date) %> <%= formatRefTime(arrivalFlight?.landing) %></div>
+<div class="t c15" style="z-index:1003;transform:matrix(1,0,0,1,307,387.34);width:160px;text-align:center;font-family:Arial,sans-serif;font-size:11px;font-weight:400"><%= transport.type || '' %></div>
+<div class="t c15" style="z-index:1020;transform:matrix(1,0,0,1,467,387.34);width:319px;text-align:center;font-family:Arial,sans-serif;font-size:11px;font-weight:400"><%= transport.route || '' %></div>
+<div class="t c16" style="z-index:1729;transform:matrix(1,0,0,1,21,408.62);width:334px;text-align:center">Departure (Pakistan to KSA)</div>
+<div class="t c16" style="z-index:1761;transform:matrix(1,0,0,1,357,408.62);width:332px;text-align:center">Arrival (KSA to PAK)</div>
+<div class="t ktp-column-heading" style="z-index:1785;transform:matrix(1,0,0,1,21,427.86);width:60px">Flight</div>
+<div class="t ktp-column-heading" style="z-index:1794;transform:matrix(1,0,0,1,81,427.86);width:74px">Sector</div>
+<div class="t ktp-column-heading" style="z-index:1803;transform:matrix(1,0,0,1,155,427.86);width:99px">Departure</div>
+<div class="t ktp-column-heading" style="z-index:1816;transform:matrix(1,0,0,1,254,427.86);width:101px">Arrival</div>
+<div class="t ktp-column-heading" style="z-index:1826;transform:matrix(1,0,0,1,357,427.86);width:62px">Flight</div>
+<div class="t ktp-column-heading" style="z-index:1835;transform:matrix(1,0,0,1,419,427.86);width:72px">Sector</div>
+<div class="t ktp-column-heading" style="z-index:1844;transform:matrix(1,0,0,1,491,427.86);width:99px">Departure</div>
+<div class="t ktp-column-heading" style="z-index:1857;transform:matrix(1,0,0,1,590,427.86);width:99px">Arrival</div>
+<div class="t c15 ktp-flight-value" style="z-index:1866;transform:matrix(1,0,0,1,21,444.54);width:60px"><%= departureFlight?.flightNo || '' %></div>
+<div class="t c15 ktp-flight-value" style="z-index:1874;transform:matrix(1,0,0,1,82,444.54);width:73px"><%= departureFlight?.fromCity || '' %>-<%= departureFlight?.toCity || '' %></div>
+<div class="t c15 ktp-flight-value" style="z-index:1883;transform:matrix(1,0,0,1,155,444.54);width:98px"><%= formatRefDate(departureFlight?.date) %> <%= formatRefTime(departureFlight?.takeoff) %></div>
+<div class="t c15 ktp-flight-value" style="z-index:1898;transform:matrix(1,0,0,1,254,444.54);width:101px"><%= formatRefDate(departureFlight?.date) %> <%= formatRefTime(departureFlight?.landing) %></div>
+<div class="t c15 ktp-flight-value" style="z-index:1912;transform:matrix(1,0,0,1,357,444.54);width:62px"><%= arrivalFlight?.flightNo || '' %></div>
+<div class="t c15 ktp-flight-value" style="z-index:1920;transform:matrix(1,0,0,1,419,444.54);width:72px"><%= arrivalFlight?.fromCity || '' %>-<%= arrivalFlight?.toCity || '' %></div>
+<div class="t c15 ktp-flight-value" style="z-index:1929;transform:matrix(1,0,0,1,491,444.54);width:99px"><%= formatRefDate(arrivalFlight?.date) %> <%= formatRefTime(arrivalFlight?.takeoff) %></div>
+<div class="t c15 ktp-flight-value" style="z-index:1944;transform:matrix(1,0,0,1,590,444.54);width:99px"><%= formatRefDate(arrivalFlight?.date) %> <%= formatRefTime(arrivalFlight?.landing) %></div>
 <div class="t c17" style="z-index:1956;transform:matrix(1,0,0,1,20.12,462.9)">Special Instructions:</div>
 <div class="t c18" style="z-index:1977;transform:matrix(1,0,0,1,21.68,537.88)">                                                                  </div>
-<div class="t c18" style="z-index:2043;transform:matrix(1,0,0,1,243.44,537.88)">SAUDI ARABIA TEAM CONTACT DETAILS</div>
+<div class="t c18" style="z-index:2043;transform:matrix(1,0,0,1,21,537.88);width:765px;text-align:center">SAUDI ARABIA TEAM CONTACT DETAILS</div>
 <div class="t c18" style="z-index:2076;transform:matrix(1,0,0,1,78,589.08)">MAKKAH HOTEL / COMPLAIN HELPLINE</div>
 <div class="t c18" style="z-index:2108;transform:matrix(1,0,0,1,546.16,589.08)">+966 55 869 5215</div>
 <div class="t c18" style="z-index:2124;transform:matrix(1,0,0,1,78,631.96)">MADINA  HOTEL / COMPLAIN HELPLINE</div>
@@ -505,8 +604,7 @@ body { background: #e8e8e8; }
 <div class="t c18" style="z-index:2158;transform:matrix(1,0,0,1,542.64,631.96)"> +966 55 304 3236</div>
 <div class="t c19" style="z-index:2175;transform:matrix(1,0,0,1,643.44,631.96)"> </div>
 <% if (typeof qrImage !== 'undefined' && qrImage) { %><div class="ktp-qr-shell"><img class="ktp-qr-image" src="<%= qrImage %>" alt="Voucher QR"></div><% } %>
-<div class="t c20" style="z-index:2198;transform:matrix(0.64279,-0.76604,0.76604,0.64279,84.41,460.14)">     </div>
-<div class="t c20" style="z-index:2203;transform:matrix(0.64279,-0.76604,0.76604,0.64279,138.64,395.51)">Approved</div>
+<div class="ktp-approved-stamp">Approved</div>
 </div>
 </body>
 </html>
