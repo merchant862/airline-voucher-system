@@ -338,10 +338,20 @@ body { background: #e8e8e8; }
 }
 .page .ktp-section-heading { font-family:Arial,"Liberation Sans",sans-serif !important;
   font-size:12px !important; font-weight:700 !important; text-align:center !important; }
-.page .ktp-approved-stamp { position:absolute; left:50%; top:42%; z-index:2203;
- transform:translate(-50%,-50%) rotate(-50deg); transform-origin:center;
- font-family:"f6",sans-serif; font-size:44px; font-weight:normal;
- color:rgba(144,238,144,.72); white-space:nowrap; pointer-events:none; }
+.page .ktp-approved-stamp {
+  position: absolute;
+  left: 50%;
+  top: 26%;
+  z-index: 3201;
+  transform: translate(-50%, -50%) rotate(-50deg);
+  transform-origin: center;
+  font-family: "f6", sans-serif;
+  font-size: 44px;
+  font-weight: normal;
+  color: rgba(144,238,144,.72);
+  white-space: nowrap;
+  pointer-events: none;
+}
 
 /* This panel masks only the old rasterized row lines, then draws a true grid.
    Everything above Mutamers and below Transport/Services stays unchanged. */
