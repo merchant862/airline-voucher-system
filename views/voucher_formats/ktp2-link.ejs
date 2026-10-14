@@ -356,6 +356,8 @@ body { background: #e8e8e8; }
   line-height:12px; white-space:nowrap;
 }
 .page .ktp-passenger-row {grid-template-columns:34px 66px 298px 31px 37px 39px 64px 62px 64px 71px; border-bottom:1px dotted #666;}
+/* Name column only: test medium font weight without changing the voucher layout. */
+.page .ktp-passenger-row span:nth-child(3) { font-weight: 500; }
 .page .ktp-passenger-row span, .page .ktp-hotel-row span,
 .page .ktp-hotel-header span {min-width:0; overflow:hidden; text-overflow:ellipsis; padding:0 2px; box-sizing:border-box;}
 .page .ktp-rebuilt-section {
