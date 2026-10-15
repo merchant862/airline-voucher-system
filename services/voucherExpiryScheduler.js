@@ -5,6 +5,7 @@ const { vouchers, customers, appSettings } = require('../database/models');
 const SETTING_KEY = 'voucherExpiryHoursAfterDeparture';
 const DEFAULT_EXPIRY_HOURS = 24;
 const CHECK_INTERVAL_MS = 60 * 1000;
+const PAKISTAN_OFFSET_HOURS = 5;
 
 function dateParts(value) {
   if (!value) return null;
@@ -26,7 +27,17 @@ function departureDate(dateValue, timeValue) {
   const hour = Number(time[0]) || 0;
   const minute = Number(time[1]) || 0;
   const second = Number.parseInt(time[2], 10) || 0;
-  const result = new Date(parts.year, parts.month, parts.day, hour, minute, second, 0);
+  // Flight dates/times are entered in Pakistan time. Build the instant explicitly
+  // instead of using the server's local timezone.
+  const result = new Date(Date.UTC(
+    parts.year,
+    parts.month,
+    parts.day,
+    hour - PAKISTAN_OFFSET_HOURS,
+    minute,
+    second,
+    0
+  ));
   return Number.isNaN(result.getTime()) ? null : result;
 }
 
@@ -37,13 +48,12 @@ async function getExpiryHours() {
 }
 
 function getVoucherDeparture(voucher) {
-  const firstPassengerDeparture = (voucher.customers || [])
-    .slice()
-    .sort((a, b) => a.id - b.id)
+  const passengerDepartures = (voucher.customers || [])
     .map((customer) => departureDate(customer.departureFlightDate, customer.departureFlightTakeOffTime))
-    .find(Boolean);
+    .filter(Boolean)
+    .sort((a, b) => a.getTime() - b.getTime());
 
-  return firstPassengerDeparture || departureDate(voucher.departureFlightDate, voucher.departureFlightTakeOffTime);
+  return passengerDepartures[0] || departureDate(voucher.departureFlightDate, voucher.departureFlightTakeOffTime);
 }
 
 async function expireVouchers() {
