@@ -102,7 +102,7 @@ body { background: #e8e8e8; }
 .ktp-dynamic-logo {
 	position: absolute;
 	left: 364.71px;
-	top: 34px;
+	top: 27px;
 	width: 137.05px;
 	height: 63.89px;
 	z-index: 3002;
@@ -514,8 +514,8 @@ body { background: #e8e8e8; }
 <% const formatRefTime = (value) => String(value || '').replace(/:\d{2}(?:\.\d+)?$/, ''); %>
 <div class="t c0" style="z-index:3005;width:250px;white-space:normal;line-height:1;overflow:visible;transform:matrix(1,0,0,1,106.82,12.97)"><%= headName || c0.name || '' %></div>
 <div class="ktp-company-name"><%= foreignName %></div>
-<div class="t c1" style="z-index:57;transform:matrix(1,0,0,1,104.9,34.59)">Voucher Date:</div>
-<div class="t c1" style="z-index:70;transform:matrix(1,0,0,1,183.75,34.59)"><%= formatRefDate(voucher?.date) %></div>
+<div class="t c1" style="z-index:57;transform:matrix(1,0,0,1,104.9,44.59)">Voucher Date:</div>
+<div class="t c1" style="z-index:70;transform:matrix(1,0,0,1,183.75,44.59)"><%= formatRefDate(voucher?.date) %></div>
 <% if (company?.logo || foreignCompany?.logo) { %><img class="ktp-dynamic-logo" src="<%= company?.logo || foreignCompany?.logo %>" alt="Company logo"><% } %>
 <div class="ktp-company-name-pbt"><%= foreignName %><%= foreignName ? ' (PBT)' : '' %></div>
 <div class="t c1" style="z-index:115;transform:matrix(1,0,0,1,104.9,86.14)">Package:</div>
@@ -529,7 +529,7 @@ body { background: #e8e8e8; }
 <div class="t c5" style="z-index:194;transform:matrix(1,0,0,1,24.28,146.46)">Family Head:</div>
 <div class="t c6" style="z-index:209;transform:matrix(1,0,0,1,397.91,146.46)"><span style="display:inline-block;width:105px;overflow:hidden;white-space:nowrap;text-align:center;font-size:13px"><%= voucher?.voucherNo || '' %></span></div>
 <div class="t c5" style="z-index:218;transform:matrix(1,0,0,1,507.63,146.46)"> Manual No:</div>
-<div class="t c7" style="z-index:3005;width:270px;white-space:normal;line-height:.8;overflow:visible;transform:matrix(1,0,0,1,118.44,143.5)"><%= headName || c0.name || '' %></div>
+<div class="t c7" style="z-index:3005;width:270px;white-space:normal;line-height:.7;overflow:visible;transform:matrix(1,0,0,1,118.44,141.5)"><%= headName || c0.name || '' %></div>
 <div class="t c8" style="z-index:248;transform:matrix(1,0,0,1,374.7,169.02)"> Mutamers</div>
 <div class="t ktp-column-heading" style="z-index:260;transform:matrix(1,0,0,1,21,185.31);width:34px">SNO</div>
 <div class="t ktp-column-heading" style="z-index:267;transform:matrix(1,0,0,1,55,185.31);width:66px">Passport</div>
