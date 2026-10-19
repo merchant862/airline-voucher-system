@@ -310,6 +310,10 @@ function renderTable(vouchers) {
         tbody.appendChild(tr);
     });
 
+    document.getElementById('totalVouchers').textContent = totalVouchers;
+    document.getElementById('totalActiveVouchers').textContent = totalActiveVouchers;
+    document.getElementById('totalInactiveVouchers').textContent = totalInactiveVouchers;
+
     if (vouchers.length === 0) {
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -319,21 +323,6 @@ function renderTable(vouchers) {
         `;
         tbody.appendChild(tr);
     }
-
-    // Keep the results area stable without duplicating voucher data.
-    const renderedRows = vouchers.length === 0 ? 1 : vouchers.length;
-    for (let i = renderedRows; i < pageSize; i++) {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td colspan="5" style="height:56px; padding:12px; border:1px solid #444;"></td>
-        `;
-        tbody.appendChild(tr);
-    }
-
-    document.getElementById('totalVouchers').textContent = totalVouchers;
-    document.getElementById('totalActiveVouchers').textContent = totalActiveVouchers;
-    document.getElementById('totalInactiveVouchers').textContent = totalInactiveVouchers;
-
 }
 
 // --------------------- SEARCH VOUCHER ---------------------
