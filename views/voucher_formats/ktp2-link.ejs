@@ -397,8 +397,6 @@ body { background: #e8e8e8; }
   border-right: 1px solid #222;
 }
 .page .ktp-hotel-header span:last-child { border-right: 0; }
-.page .ktp-family-row-frame { position:absolute; left:18.48px; top:146.14px; width:768.76px; height:26px; z-index:3004; box-sizing:border-box; background:#f5f5f5; border:1px solid #000; }
-.page .ktp-family-row-frame ~ * { margin-top:4px; }
 /* Removed the obsolete left vertical SVG stroke at x=18.2, y=255.4..273.9. */
 /* Do not draw vertical lines into passenger/hotel data rows. */
 .page .ktp-passenger-row, .page .ktp-hotel-row {
@@ -528,11 +526,10 @@ body { background: #e8e8e8; }
 <div class="t c1" style="z-index:150;transform:matrix(1,0,0,1,104.9,107.26)">PAX:</div>
 <div class="t c4" style="z-index:154;transform:matrix(1,0,0,1,156.75,107.26)"><%= `${customers?.length || 0} (A:${customers?.filter(c => (c.paxType || 'Adult').toLowerCase() === 'adult').length || 0},C:${customers?.filter(c => (c.paxType || '').toLowerCase() === 'child').length || 0},I:${customers?.filter(c => (c.paxType || '').toLowerCase() === 'infant').length || 0}),Beds=${voucher?.beds || customers?.length || 0}` %></div>
 <div class="t c4" style="z-index:176;transform:matrix(1,0,0,1,391.75,125.49)">Hotel Voucher</div>
-<div class="t c5" style="z-index:3005;transform:matrix(1,0,0,1,24.28,146.46)">Family Head:</div>
-<div class="t c6" style="z-index:3005;transform:matrix(1,0,0,1,397.91,146.46)"><span style="display:inline-block;width:105px;overflow:hidden;white-space:nowrap;text-align:center;font-size:13px"><%= voucher?.voucherNo || '' %></span></div>
-<div class="t c5" style="z-index:3005;transform:matrix(1,0,0,1,507.63,146.46)"> Manual No:</div>
-<div class="t c7" style="z-index:3005;width:270px;height:24px;font-size:12px;white-space:normal;line-height:12px;overflow:hidden;transform:matrix(1,0,0,1,118.44,141.5)"><%= headName || c0.name || '' %></div>
-<div class="ktp-family-row-frame" aria-hidden="true"></div>
+<div class="t c5" style="z-index:194;transform:matrix(1,0,0,1,24.28,146.46)">Family Head:</div>
+<div class="t c6" style="z-index:209;transform:matrix(1,0,0,1,397.91,146.46)"><span style="display:inline-block;width:105px;overflow:hidden;white-space:nowrap;text-align:center;font-size:13px"><%= voucher?.voucherNo || '' %></span></div>
+<div class="t c5" style="z-index:218;transform:matrix(1,0,0,1,507.63,146.46)"> Manual No:</div>
+<div class="t c7" style="z-index:3005;width:270px;font-size:12px;white-space:normal;line-height:.7;overflow:visible;transform:matrix(1,0,0,1,118.44,141.5)"><%= headName || c0.name || '' %></div>
 <div class="t c8" style="z-index:248;transform:matrix(1,0,0,1,374.7,169.02)"> Mutamers</div>
 <div class="t ktp-column-heading" style="z-index:260;transform:matrix(1,0,0,1,21,185.31);width:34px">SNO</div>
 <div class="t ktp-column-heading" style="z-index:267;transform:matrix(1,0,0,1,55,185.31);width:66px">Passport</div>
