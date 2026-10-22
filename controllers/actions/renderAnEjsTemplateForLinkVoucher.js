@@ -208,7 +208,8 @@ async function getVoucherTemplate(req, res, next) {
 
         const qrImage = await generateVoucherQr(
             voucher.id,
-            isKtpFormat ? (requestedGroup?.customerIds || []) : []
+            isKtpFormat ? (requestedGroup?.customerIds || []) : [],
+            { shortUrl: isKtpFormat }
         );
 
         // ================= Template Path =================

@@ -252,7 +252,12 @@ async function addVoucherController(req, res, next) {
         // ==============================
         // PREPARE EJS DATA
         // ==============================
-        const qrImage = await generateVoucherQr(voucherId);
+        const isKtpFormat = voucherData.voucherFormat?.ejsPath?.toLowerCase().includes('ktp');
+        const qrImage = await generateVoucherQr(
+            voucherId,
+            isKtpFormat ? voucherData.customers.map(customer => String(customer.id)) : [],
+            { shortUrl: isKtpFormat }
+        );
 
         const passengerFlightData = buildPassengerFlightData(voucherData.customers, {
             flightNo: voucherData.departureFlightNo, date: formatDate(voucherData.departureFlightDate),

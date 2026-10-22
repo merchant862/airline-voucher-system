@@ -172,7 +172,11 @@ async function downloadVoucherPdfController(req, res, next) {
         departureFallback,
         arrivalFallback
       );
-      const qrImage = await generateVoucherQr(voucherData.id, isKtpFormat ? group.customerIds : []);
+      const qrImage = await generateVoucherQr(
+        voucherData.id,
+        isKtpFormat ? group.customerIds : [],
+        { shortUrl: isKtpFormat }
+      );
 
       return {
 

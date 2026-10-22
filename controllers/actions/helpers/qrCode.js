@@ -14,7 +14,7 @@ const QR_OPTIONS = {
   }
 };
 
-function buildVoucherQrUrl(voucherId, customerIds = []) {
+function buildVoucherQrUrl(voucherId, customerIds = [], options = {}) {
   let baseUrl = String(process.env.URL || '').trim();
   baseUrl = baseUrl.replace(/^(https?):(?!\/\/)/i, '$1://');
   const groupQuery = Array.isArray(customerIds) && customerIds.length
@@ -23,6 +23,13 @@ function buildVoucherQrUrl(voucherId, customerIds = []) {
   if (!baseUrl) return `/voucher/scan/${encodeURIComponent(voucherId)}${groupQuery}`;
 
   const url = new URL(baseUrl);
+
+  // KTP QR codes use the short redirect route so long public paths do not
+  // turn the QR into an unnecessarily dense, hard-to-scan symbol.
+  if (options.shortUrl) {
+    return `${url.origin}/voucher/scan/${encodeURIComponent(voucherId)}${groupQuery}`;
+  }
+
   const publicPath = url.pathname.replace(/\/+$/, '');
 
   // URL is configured as the public voucher path in production. Keep that
@@ -34,8 +41,8 @@ function buildVoucherQrUrl(voucherId, customerIds = []) {
   return `${url.origin}/voucher/scan/${encodeURIComponent(voucherId)}${groupQuery}`;
 }
 
-async function generateVoucherQr(voucherId, customerIds = []) {
-  return generateQr(buildVoucherQrUrl(voucherId, customerIds));
+async function generateVoucherQr(voucherId, customerIds = [], options = {}) {
+  return generateQr(buildVoucherQrUrl(voucherId, customerIds, options));
 }
 
 async function generateQr(data) {

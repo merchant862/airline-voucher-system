@@ -233,7 +233,12 @@ async function updateVoucherController(req, res, next) {
             } catch { return null; }
         };
 
-        const qrImage = await generateVoucherQr(voucherId);
+        const isKtpFormat = voucherData.voucherFormat?.ejsPath?.toLowerCase().includes('ktp');
+        const qrImage = await generateVoucherQr(
+            voucherId,
+            isKtpFormat ? voucherData.customers.map(customer => String(customer.id)) : [],
+            { shortUrl: isKtpFormat }
+        );
         const passengerFlightData = buildPassengerFlightData(voucherData.customers, {
             flightNo: voucherData.departureFlightNo, date: formatDate(voucherData.departureFlightDate),
             fromCity: voucherData.departureFlightFromCity, toCity: voucherData.departureFlightToCity,
