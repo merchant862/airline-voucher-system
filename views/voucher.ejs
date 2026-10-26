@@ -1124,8 +1124,8 @@ form.addEventListener('submit', async e => {
         a.click();
         a.remove();
 
-        clearPassengersOnly();
-        clearPassengersFromStorage();
+        // Keep the complete form populated so the next submission can create
+        // a new voucher after the user edits any details.
         saveFormData();
 
         setTimeout(() => {
