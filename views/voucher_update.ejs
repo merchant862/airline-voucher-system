@@ -153,6 +153,29 @@
       margin-top: 12px;
     }
 
+    .status-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .status-toggle input {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: #00c853;
+      cursor: pointer;
+    }
+
+    .status-hint {
+      margin: 8px 0 0;
+      color: #aaa;
+      font-size: 12px;
+    }
+
     .passenger-item,
     .hotel-item,
     .transport-item {
@@ -503,6 +526,15 @@
     <div class="form-section">
       <h3>Notes</h3>
       <textarea id="voucherNotes" name="notes" rows="5" placeholder="Type your notes here..." oninput="formatBullets(this)"><%= (voucherData.notes || []).map(n => n.content).join('\n') %></textarea>
+    </div>
+
+    <div class="form-section">
+      <h3>Voucher Status</h3>
+      <label class="status-toggle" for="voucherStatusActive">
+        <input type="checkbox" id="voucherStatusActive" <%= voucherData.status === 'active' ? 'checked' : '' %>>
+        <span>Keep voucher active</span>
+      </label>
+      <p class="status-hint">Checked means Active. Unchecked means Inactive.</p>
     </div>
 
     <button type="submit" class="submit-btn" id="submitBtn">Update Voucher</button>
@@ -1126,6 +1158,7 @@
         foreignCompanyId: document.getElementById('foreignCompanySelect').value,
         packageNumber: document.getElementById('packageNumber').value,
         packageName: document.getElementById('packageName').value,
+        status: document.getElementById('voucherStatusActive').checked ? 'active' : 'inactive',
         voucherFormatsId: voucherFormatId,
         linkVoucherFormatsId: linkVoucherFormatId,
         pdfTheme: document.getElementById('pdfThemeSelect').value,

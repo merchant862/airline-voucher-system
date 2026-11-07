@@ -84,6 +84,10 @@ async function updateVoucherController(req, res, next) {
             return res.status(400).json({ error: 'Invalid voucher format selected' });
         }
 
+        const status = ['active', 'inactive'].includes(req.body.status)
+            ? req.body.status
+            : voucher.status;
+
         // ==============================
         // 1️⃣ UPDATE VOUCHER FIELDS
         // ==============================
@@ -92,6 +96,7 @@ async function updateVoucherController(req, res, next) {
             foreignCompanyId: req.body.foreignCompanyId,
             packageNumber: req.body.packageNumber === '' ? null : Number(req.body.packageNumber) || null,
             packageName: req.body.packageName?.trim() || null,
+            status,
             departureFlightDate: req.body.departureFlightDate,
             departureFlightNo: req.body.departureFlightNo,
             departureFlightFromCity: req.body.departureFlightFromCity,
