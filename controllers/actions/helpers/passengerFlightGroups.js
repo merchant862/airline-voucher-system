@@ -10,7 +10,7 @@ const FLIGHT_FIELDS = [
 function normalize(value, field) {
   if (value === null || value === undefined || value === '') return '';
   const text = String(value);
-  if (field.endsWith('Date')) return text.split('T')[0];
+  if (field.endsWith('Date')) return text.split(/[T ]/)[0];
   if (field.endsWith('Time')) return text.slice(0, 5);
   return text.trim().toUpperCase();
 }
