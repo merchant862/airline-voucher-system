@@ -49,6 +49,10 @@ async function getExpiryHours() {
 
 function getVoucherDeparture(voucher) {
   const passengerDepartures = (voucher.customers || [])
+    .filter((customer) => {
+      const time = String(customer.departureFlightTakeOffTime || '').slice(0, 5);
+      return customer.departureFlightDate && time && time !== '00:00';
+    })
     .map((customer) => departureDate(customer.departureFlightDate, customer.departureFlightTakeOffTime))
     .filter(Boolean)
     .sort((a, b) => a.getTime() - b.getTime());
