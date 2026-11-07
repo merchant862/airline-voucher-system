@@ -14,7 +14,9 @@ function normalizeFlightValue(field, value) {
 
   if (field.endsWith('Date')) {
     if (value instanceof Date) return value.toISOString().split('T')[0];
-    return String(value).split('T')[0];
+    // Sequelize normally returns a Date, but raw SQL/JSON values can use a space
+    // between the date and midnight time. Keep only the date in both cases.
+    return String(value).split(/[T ]/)[0];
   }
 
   if (field.endsWith('Time')) {
@@ -43,23 +45,25 @@ function valuesFor(customers, field, fallback) {
 }
 
 function buildPassengerFlightData(customers = [], departureFallback = {}, arrivalFallback = {}) {
+  const normalizedDepartureFallback = normalizeFlightObject(departureFallback);
+  const normalizedArrivalFallback = normalizeFlightObject(arrivalFallback);
   const passengerRows = customers.map(customer => ({
     passengerName: customer.customerName,
     departureFlight: {
-      date: normalizeFlightValue('departureFlightDate', customer.departureFlightDate) || departureFallback.date || '',
-      flightNo: normalizeFlightValue('departureFlightNo', customer.departureFlightNo) || departureFallback.flightNo || '',
-      fromCity: normalizeFlightValue('departureFlightFromCity', customer.departureFlightFromCity) || departureFallback.fromCity || '',
-      toCity: normalizeFlightValue('departureFlightToCity', customer.departureFlightToCity) || departureFallback.toCity || '',
-      takeoff: normalizeFlightValue('departureFlightTakeOffTime', customer.departureFlightTakeOffTime) || departureFallback.takeoff || '',
-      landing: normalizeFlightValue('departureFlightLandingTime', customer.departureFlightLandingTime) || departureFallback.landing || ''
+      date: normalizeFlightValue('departureFlightDate', customer.departureFlightDate) || normalizedDepartureFallback.date || '',
+      flightNo: normalizeFlightValue('departureFlightNo', customer.departureFlightNo) || normalizedDepartureFallback.flightNo || '',
+      fromCity: normalizeFlightValue('departureFlightFromCity', customer.departureFlightFromCity) || normalizedDepartureFallback.fromCity || '',
+      toCity: normalizeFlightValue('departureFlightToCity', customer.departureFlightToCity) || normalizedDepartureFallback.toCity || '',
+      takeoff: normalizeFlightValue('departureFlightTakeOffTime', customer.departureFlightTakeOffTime) || normalizedDepartureFallback.takeoff || '',
+      landing: normalizeFlightValue('departureFlightLandingTime', customer.departureFlightLandingTime) || normalizedDepartureFallback.landing || ''
     },
     arrivalFlight: {
-      date: normalizeFlightValue('arrivalFlightDate', customer.arrivalFlightDate) || arrivalFallback.date || '',
-      flightNo: normalizeFlightValue('arrivalFlightNo', customer.arrivalFlightNo) || arrivalFallback.flightNo || '',
-      fromCity: normalizeFlightValue('arrivalFlightFromCity', customer.arrivalFlightFromCity) || arrivalFallback.fromCity || '',
-      toCity: normalizeFlightValue('arrivalFlightToCity', customer.arrivalFlightToCity) || arrivalFallback.toCity || '',
-      takeoff: normalizeFlightValue('arrivalFlightTakeOffTime', customer.arrivalFlightTakeOffTime) || arrivalFallback.takeoff || '',
-      landing: normalizeFlightValue('arrivalFlightLandingTime', customer.arrivalFlightLandingTime) || arrivalFallback.landing || ''
+      date: normalizeFlightValue('arrivalFlightDate', customer.arrivalFlightDate) || normalizedArrivalFallback.date || '',
+      flightNo: normalizeFlightValue('arrivalFlightNo', customer.arrivalFlightNo) || normalizedArrivalFallback.flightNo || '',
+      fromCity: normalizeFlightValue('arrivalFlightFromCity', customer.arrivalFlightFromCity) || normalizedArrivalFallback.fromCity || '',
+      toCity: normalizeFlightValue('arrivalFlightToCity', customer.arrivalFlightToCity) || normalizedArrivalFallback.toCity || '',
+      takeoff: normalizeFlightValue('arrivalFlightTakeOffTime', customer.arrivalFlightTakeOffTime) || normalizedArrivalFallback.takeoff || '',
+      landing: normalizeFlightValue('arrivalFlightLandingTime', customer.arrivalFlightLandingTime) || normalizedArrivalFallback.landing || ''
     }
   }));
 
@@ -67,38 +71,49 @@ function buildPassengerFlightData(customers = [], departureFallback = {}, arriva
     return {
       passengerFlights: [],
       passengerFlightDisplay: {
-        departureFlight: buildDisplayFlight([], 'departureFlight', departureFallback),
-        arrivalFlight: buildDisplayFlight([], 'arrivalFlight', arrivalFallback)
+        departureFlight: buildDisplayFlight([], 'departureFlight', normalizedDepartureFallback),
+        arrivalFlight: buildDisplayFlight([], 'arrivalFlight', normalizedArrivalFallback)
       },
-      passengerFlightRows: buildPassengerFlightRows([], departureFallback, arrivalFallback),
-      departureFlight: departureFallback,
-      arrivalFlight: arrivalFallback
+      passengerFlightRows: buildPassengerFlightRows([], normalizedDepartureFallback, normalizedArrivalFallback),
+      departureFlight: normalizedDepartureFallback,
+      arrivalFlight: normalizedArrivalFallback
     };
   }
 
   return {
     passengerFlights: passengerRows,
-    passengerFlightRows: buildPassengerFlightRows(passengerRows, departureFallback, arrivalFallback),
+    passengerFlightRows: buildPassengerFlightRows(passengerRows, normalizedDepartureFallback, normalizedArrivalFallback),
     passengerFlightDisplay: {
-      departureFlight: buildDisplayFlight(passengerRows, 'departureFlight', departureFallback),
-      arrivalFlight: buildDisplayFlight(passengerRows, 'arrivalFlight', arrivalFallback)
+      departureFlight: buildDisplayFlight(passengerRows, 'departureFlight', normalizedDepartureFallback),
+      arrivalFlight: buildDisplayFlight(passengerRows, 'arrivalFlight', normalizedArrivalFallback)
     },
     departureFlight: {
-      flightNo: valuesFor(customers, 'departureFlightNo', departureFallback.flightNo),
-      date: valuesFor(customers, 'departureFlightDate', departureFallback.date),
-      fromCity: valuesFor(customers, 'departureFlightFromCity', departureFallback.fromCity),
-      toCity: valuesFor(customers, 'departureFlightToCity', departureFallback.toCity),
-      takeoff: valuesFor(customers, 'departureFlightTakeOffTime', departureFallback.takeoff),
-      landing: valuesFor(customers, 'departureFlightLandingTime', departureFallback.landing)
+      flightNo: valuesFor(customers, 'departureFlightNo', normalizedDepartureFallback.flightNo),
+      date: valuesFor(customers, 'departureFlightDate', normalizedDepartureFallback.date),
+      fromCity: valuesFor(customers, 'departureFlightFromCity', normalizedDepartureFallback.fromCity),
+      toCity: valuesFor(customers, 'departureFlightToCity', normalizedDepartureFallback.toCity),
+      takeoff: valuesFor(customers, 'departureFlightTakeOffTime', normalizedDepartureFallback.takeoff),
+      landing: valuesFor(customers, 'departureFlightLandingTime', normalizedDepartureFallback.landing)
     },
     arrivalFlight: {
-      flightNo: valuesFor(customers, 'arrivalFlightNo', arrivalFallback.flightNo),
-      date: valuesFor(customers, 'arrivalFlightDate', arrivalFallback.date),
-      fromCity: valuesFor(customers, 'arrivalFlightFromCity', arrivalFallback.fromCity),
-      toCity: valuesFor(customers, 'arrivalFlightToCity', arrivalFallback.toCity),
-      takeoff: valuesFor(customers, 'arrivalFlightTakeOffTime', arrivalFallback.takeoff),
-      landing: valuesFor(customers, 'arrivalFlightLandingTime', arrivalFallback.landing)
+      flightNo: valuesFor(customers, 'arrivalFlightNo', normalizedArrivalFallback.flightNo),
+      date: valuesFor(customers, 'arrivalFlightDate', normalizedArrivalFallback.date),
+      fromCity: valuesFor(customers, 'arrivalFlightFromCity', normalizedArrivalFallback.fromCity),
+      toCity: valuesFor(customers, 'arrivalFlightToCity', normalizedArrivalFallback.toCity),
+      takeoff: valuesFor(customers, 'arrivalFlightTakeOffTime', normalizedArrivalFallback.takeoff),
+      landing: valuesFor(customers, 'arrivalFlightLandingTime', normalizedArrivalFallback.landing)
     }
+  };
+}
+
+function normalizeFlightObject(flight = {}) {
+  return {
+    flightNo: normalizeFlightValue('flightNo', flight.flightNo),
+    date: normalizeFlightValue('flightDate', flight.date),
+    fromCity: normalizeFlightValue('fromCity', flight.fromCity),
+    toCity: normalizeFlightValue('toCity', flight.toCity),
+    takeoff: normalizeFlightValue('flightTime', flight.takeoff),
+    landing: normalizeFlightValue('flightTime', flight.landing)
   };
 }
 

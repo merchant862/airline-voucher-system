@@ -25,6 +25,32 @@ function buildVoucherPdfFilename(customerList = []) {
     return `${passengerName || 'passenger'}.pdf`;
 }
 
+const passengerFlightFields = {
+    departure: ['departureFlightDate', 'departureFlightNo', 'departureFlightFromCity', 'departureFlightToCity', 'departureFlightTakeOffTime', 'departureFlightLandingTime'],
+    arrival: ['arrivalFlightDate', 'arrivalFlightNo', 'arrivalFlightFromCity', 'arrivalFlightToCity', 'arrivalFlightTakeOffTime', 'arrivalFlightLandingTime']
+};
+
+function comparableFlightValue(field, value) {
+    if (value === null || value === undefined || value === '') return '';
+    if (field.endsWith('Date')) {
+        if (value instanceof Date) return value.toISOString().split('T')[0];
+        return String(value).split(/[T ]/)[0];
+    }
+    return String(value);
+}
+
+function passengerFlightFollowsGeneral(customer, voucher, fields) {
+    return fields.every(field => {
+        const passengerValue = comparableFlightValue(field, customer?.[field]);
+        const voucherValue = comparableFlightValue(field, voucher?.[field]);
+        return passengerValue === '' || passengerValue === voucherValue;
+    });
+}
+
+function generalFlightValues(voucherFields, fields) {
+    return Object.fromEntries(fields.map(field => [field, voucherFields[field]]));
+}
+
 function getVerifiedImagePath(ejsPath = '') {
     if (ejsPath.includes('crm2')) return 'images/verified.jpeg';
     if (ejsPath.includes('meem2')) return 'images/verified2.png';
@@ -37,6 +63,12 @@ async function updateVoucherController(req, res, next) {
         const { id } = req.params;
         const voucher = await vouchers.findByPk(id, { transaction: t });
         if (!voucher) return res.status(404).json({ error: 'Voucher not found' });
+
+        const existingCustomers = await customers.findAll({
+            where: { voucherId: voucher.id },
+            order: [['id', 'ASC']],
+            transaction: t
+        });
 
         const selectedVoucherFormat = await voucherFormats.findOne({
             where: { id: req.body.voucherFormatsId, name: 'DOWNLOAD_FORMAT' },
@@ -86,27 +118,44 @@ async function updateVoucherController(req, res, next) {
         if (Array.isArray(req.body.customers)) {
             await customers.destroy({ where: { voucherId }, transaction: t });
 
+            const updatedGeneralFlight = {
+                ...generalFlightValues(req.body, passengerFlightFields.departure),
+                ...generalFlightValues(req.body, passengerFlightFields.arrival)
+            };
+
             const validGenders = ['male', 'female', 'infant', 'children'];
-            const customersData = req.body.customers.map(c => ({
+            const customersData = req.body.customers.map((c, index) => {
+                const previousCustomer = existingCustomers[index];
+                const departureFollowsGeneral = passengerFlightFollowsGeneral(previousCustomer, voucher, passengerFlightFields.departure);
+                const arrivalFollowsGeneral = passengerFlightFollowsGeneral(previousCustomer, voucher, passengerFlightFields.arrival);
+                const departureFlight = departureFollowsGeneral
+                    ? generalFlightValues(updatedGeneralFlight, passengerFlightFields.departure)
+                    : Object.fromEntries(passengerFlightFields.departure.map(field => [field, c[field] || null]));
+                const arrivalFlight = arrivalFollowsGeneral
+                    ? generalFlightValues(updatedGeneralFlight, passengerFlightFields.arrival)
+                    : Object.fromEntries(passengerFlightFields.arrival.map(field => [field, c[field] || null]));
+
+                return {
                 customerName: c.customerName?.trim() || 'Unknown',
                 customerPassport: c.customerPassport?.trim() || null,
                 customerVisa: c.customerVisa?.trim() || null,
                 customerGender: validGenders.includes(c.customerGender) ? c.customerGender : 'male', // default male
                 customerPNR: c.customerPNR?.trim() || null,
-                departureFlightDate: c.departureFlightDate || null,
-                departureFlightNo: c.departureFlightNo?.trim() || null,
-                departureFlightFromCity: c.departureFlightFromCity?.trim() || null,
-                departureFlightToCity: c.departureFlightToCity?.trim() || null,
-                departureFlightTakeOffTime: c.departureFlightTakeOffTime || null,
-                departureFlightLandingTime: c.departureFlightLandingTime || null,
-                arrivalFlightDate: c.arrivalFlightDate || null,
-                arrivalFlightNo: c.arrivalFlightNo?.trim() || null,
-                arrivalFlightFromCity: c.arrivalFlightFromCity?.trim() || null,
-                arrivalFlightToCity: c.arrivalFlightToCity?.trim() || null,
-                arrivalFlightTakeOffTime: c.arrivalFlightTakeOffTime || null,
-                arrivalFlightLandingTime: c.arrivalFlightLandingTime || null,
+                departureFlightDate: departureFlight.departureFlightDate || null,
+                departureFlightNo: departureFlight.departureFlightNo?.trim() || null,
+                departureFlightFromCity: departureFlight.departureFlightFromCity?.trim() || null,
+                departureFlightToCity: departureFlight.departureFlightToCity?.trim() || null,
+                departureFlightTakeOffTime: departureFlight.departureFlightTakeOffTime || null,
+                departureFlightLandingTime: departureFlight.departureFlightLandingTime || null,
+                arrivalFlightDate: arrivalFlight.arrivalFlightDate || null,
+                arrivalFlightNo: arrivalFlight.arrivalFlightNo?.trim() || null,
+                arrivalFlightFromCity: arrivalFlight.arrivalFlightFromCity?.trim() || null,
+                arrivalFlightToCity: arrivalFlight.arrivalFlightToCity?.trim() || null,
+                arrivalFlightTakeOffTime: arrivalFlight.arrivalFlightTakeOffTime || null,
+                arrivalFlightLandingTime: arrivalFlight.arrivalFlightLandingTime || null,
                 voucherId
-            }));
+                };
+            });
             await customers.bulkCreate(customersData, { transaction: t });
         }
 

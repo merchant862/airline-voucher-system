@@ -108,9 +108,15 @@ async function getVoucherTemplate(req, res, next) {
 
         // ================= Flight Data =================
 
+        const formatFlightDate = (value) => {
+            if (!value) return '';
+            if (value instanceof Date) return value.toISOString().split('T')[0];
+            return String(value).split(/[T ]/)[0];
+        };
+
         const departureFlight = {
             flightNo: voucher.departureFlightNo,
-            date: voucher.departureFlightDate?.toISOString().split("T")[0],
+            date: formatFlightDate(voucher.departureFlightDate),
             fromCity: voucher.departureFlightFromCity,
             toCity: voucher.departureFlightToCity,
             takeoff: voucher.departureFlightTakeOffTime,
@@ -119,7 +125,7 @@ async function getVoucherTemplate(req, res, next) {
 
         const arrivalFlight = {
             flightNo: voucher.arrivalFlightNo,
-            date: voucher.arrivalFlightDate?.toISOString().split("T")[0],
+            date: formatFlightDate(voucher.arrivalFlightDate),
             fromCity: voucher.arrivalFlightFromCity,
             toCity: voucher.arrivalFlightToCity,
             takeoff: voucher.arrivalFlightTakeOffTime,
@@ -133,8 +139,10 @@ async function getVoucherTemplate(req, res, next) {
             : null;
         const customersForRender = requestedGroup?.customers || voucher.customers;
 
+        // KTP link vouchers use one common flight pair. Customer-wise flight
+        // fields are intentionally ignored for these legacy formats.
         const passengerFlightData = buildPassengerFlightData(
-            customersForRender,
+            isKtpFormat ? [] : customersForRender,
             departureFlight,
             arrivalFlight
         );
@@ -163,8 +171,8 @@ async function getVoucherTemplate(req, res, next) {
                 beds: "Yes",
                 visaNumber: c.customerVisa,
                 pnr: c.customerPNR,
-                departureFlight: { date: c.departureFlightDate?.toISOString().split('T')[0], flightNo: c.departureFlightNo, fromCity: c.departureFlightFromCity, toCity: c.departureFlightToCity, takeoff: c.departureFlightTakeOffTime, landing: c.departureFlightLandingTime },
-                arrivalFlight: { date: c.arrivalFlightDate?.toISOString().split('T')[0], flightNo: c.arrivalFlightNo, fromCity: c.arrivalFlightFromCity, toCity: c.arrivalFlightToCity, takeoff: c.arrivalFlightTakeOffTime, landing: c.arrivalFlightLandingTime }
+                departureFlight: { date: formatFlightDate(c.departureFlightDate), flightNo: c.departureFlightNo, fromCity: c.departureFlightFromCity, toCity: c.departureFlightToCity, takeoff: c.departureFlightTakeOffTime, landing: c.departureFlightLandingTime },
+                arrivalFlight: { date: formatFlightDate(c.arrivalFlightDate), flightNo: c.arrivalFlightNo, fromCity: c.arrivalFlightFromCity, toCity: c.arrivalFlightToCity, takeoff: c.arrivalFlightTakeOffTime, landing: c.arrivalFlightLandingTime }
             };
         });
 
@@ -248,7 +256,7 @@ async function getVoucherTemplate(req, res, next) {
 
             voucher: {
                 voucherNo: voucher.voucherNo,
-                date: voucher.departureFlightDate?.toISOString().split('T')[0] || voucher.createdAt?.toISOString().split('T')[0],
+                date: formatFlightDate(voucher.departureFlightDate) || formatFlightDate(voucher.createdAt),
                 package: voucher.packageNumber,
                 packageType: voucher.packageName
             },
