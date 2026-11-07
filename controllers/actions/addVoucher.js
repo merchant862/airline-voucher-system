@@ -7,7 +7,7 @@ const puppeteer = require('puppeteer'); // instead of puppeteer-core
 //const puppeteer = require('puppeteer-core');
 const { generateVoucherQr } = require('./helpers/qrCode');
 const { getVoucherThemeKey, getVoucherTheme, getUrduFontData } = require('./helpers/voucherThemes');
-const { buildPassengerFlightData } = require('./helpers/passengerFlights');
+const { buildPassengerFlightData, normalizePassengerFlightValue } = require('./helpers/passengerFlights');
 
 const { vouchers, 
     customers, 
@@ -109,14 +109,14 @@ async function addVoucherController(req, res, next) {
                     departureFlightNo: req.body.customerDepartureFlightNo?.[i]?.trim() || null,
                     departureFlightFromCity: req.body.customerDepartureFlightFromCity?.[i]?.trim() || null,
                     departureFlightToCity: req.body.customerDepartureFlightToCity?.[i]?.trim() || null,
-                    departureFlightTakeOffTime: req.body.customerDepartureFlightTakeOffTime?.[i] || null,
-                    departureFlightLandingTime: req.body.customerDepartureFlightLandingTime?.[i] || null,
+                    departureFlightTakeOffTime: normalizePassengerFlightValue('departureFlightTakeOffTime', req.body.customerDepartureFlightTakeOffTime?.[i]) || null,
+                    departureFlightLandingTime: normalizePassengerFlightValue('departureFlightLandingTime', req.body.customerDepartureFlightLandingTime?.[i]) || null,
                     arrivalFlightDate: req.body.customerArrivalFlightDate?.[i] || null,
                     arrivalFlightNo: req.body.customerArrivalFlightNo?.[i]?.trim() || null,
                     arrivalFlightFromCity: req.body.customerArrivalFlightFromCity?.[i]?.trim() || null,
                     arrivalFlightToCity: req.body.customerArrivalFlightToCity?.[i]?.trim() || null,
-                    arrivalFlightTakeOffTime: req.body.customerArrivalFlightTakeOffTime?.[i] || null,
-                    arrivalFlightLandingTime: req.body.customerArrivalFlightLandingTime?.[i] || null,
+                    arrivalFlightTakeOffTime: normalizePassengerFlightValue('arrivalFlightTakeOffTime', req.body.customerArrivalFlightTakeOffTime?.[i]) || null,
+                    arrivalFlightLandingTime: normalizePassengerFlightValue('arrivalFlightLandingTime', req.body.customerArrivalFlightLandingTime?.[i]) || null,
                     voucherId
                 };
             });

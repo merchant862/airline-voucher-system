@@ -26,6 +26,11 @@ function normalizeFlightValue(field, value) {
   return value;
 }
 
+function normalizePassengerFlightValue(field, value) {
+  const normalized = normalizeFlightValue(field, value);
+  return field.endsWith('Time') && normalized === '00:00' ? '' : normalized;
+}
+
 function escapeHtml(value) {
   return String(value ?? '')
     .replace(/&/g, '&amp;')
@@ -38,7 +43,7 @@ function escapeHtml(value) {
 function valuesFor(customers, field, fallback) {
   const values = customers
     .filter(hasPassengerFlight)
-    .map(customer => normalizeFlightValue(field, customer[field]))
+    .map(customer => normalizePassengerFlightValue(field, customer[field]))
     .filter(value => value !== null && value !== undefined && value !== '');
 
   return values.length ? values.join(' / ') : fallback || '';
@@ -54,16 +59,16 @@ function buildPassengerFlightData(customers = [], departureFallback = {}, arriva
       flightNo: normalizeFlightValue('departureFlightNo', customer.departureFlightNo) || normalizedDepartureFallback.flightNo || '',
       fromCity: normalizeFlightValue('departureFlightFromCity', customer.departureFlightFromCity) || normalizedDepartureFallback.fromCity || '',
       toCity: normalizeFlightValue('departureFlightToCity', customer.departureFlightToCity) || normalizedDepartureFallback.toCity || '',
-      takeoff: normalizeFlightValue('departureFlightTakeOffTime', customer.departureFlightTakeOffTime) || normalizedDepartureFallback.takeoff || '',
-      landing: normalizeFlightValue('departureFlightLandingTime', customer.departureFlightLandingTime) || normalizedDepartureFallback.landing || ''
+      takeoff: normalizePassengerFlightValue('departureFlightTakeOffTime', customer.departureFlightTakeOffTime) || normalizedDepartureFallback.takeoff || '',
+      landing: normalizePassengerFlightValue('departureFlightLandingTime', customer.departureFlightLandingTime) || normalizedDepartureFallback.landing || ''
     },
     arrivalFlight: {
       date: normalizeFlightValue('arrivalFlightDate', customer.arrivalFlightDate) || normalizedArrivalFallback.date || '',
       flightNo: normalizeFlightValue('arrivalFlightNo', customer.arrivalFlightNo) || normalizedArrivalFallback.flightNo || '',
       fromCity: normalizeFlightValue('arrivalFlightFromCity', customer.arrivalFlightFromCity) || normalizedArrivalFallback.fromCity || '',
       toCity: normalizeFlightValue('arrivalFlightToCity', customer.arrivalFlightToCity) || normalizedArrivalFallback.toCity || '',
-      takeoff: normalizeFlightValue('arrivalFlightTakeOffTime', customer.arrivalFlightTakeOffTime) || normalizedArrivalFallback.takeoff || '',
-      landing: normalizeFlightValue('arrivalFlightLandingTime', customer.arrivalFlightLandingTime) || normalizedArrivalFallback.landing || ''
+      takeoff: normalizePassengerFlightValue('arrivalFlightTakeOffTime', customer.arrivalFlightTakeOffTime) || normalizedArrivalFallback.takeoff || '',
+      landing: normalizePassengerFlightValue('arrivalFlightLandingTime', customer.arrivalFlightLandingTime) || normalizedArrivalFallback.landing || ''
     }
   }));
 
@@ -151,4 +156,4 @@ function buildDisplayFlight(rows, direction, fallback) {
   return display;
 }
 
-module.exports = { buildPassengerFlightData };
+module.exports = { buildPassengerFlightData, normalizeFlightValue, normalizePassengerFlightValue };

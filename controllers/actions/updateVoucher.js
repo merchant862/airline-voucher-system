@@ -5,7 +5,7 @@ const ejs = require('ejs');
 const puppeteer = require('puppeteer');
 const { generateVoucherQr } = require('./helpers/qrCode');
 const { getVoucherThemeKey, getVoucherTheme, getUrduFontData } = require('./helpers/voucherThemes');
-const { buildPassengerFlightData } = require('./helpers/passengerFlights');
+const { buildPassengerFlightData, normalizeFlightValue, normalizePassengerFlightValue } = require('./helpers/passengerFlights');
 const { vouchers, customers, hotels, transports, notes, agencies, foreignAgencies, voucherFormats } = require('./../../database/models');
 
 function getFamilyHeadName(customerList = []) {
@@ -145,14 +145,14 @@ async function updateVoucherController(req, res, next) {
                 departureFlightNo: departureFlight.departureFlightNo?.trim() || null,
                 departureFlightFromCity: departureFlight.departureFlightFromCity?.trim() || null,
                 departureFlightToCity: departureFlight.departureFlightToCity?.trim() || null,
-                departureFlightTakeOffTime: departureFlight.departureFlightTakeOffTime || null,
-                departureFlightLandingTime: departureFlight.departureFlightLandingTime || null,
+                departureFlightTakeOffTime: normalizePassengerFlightValue('departureFlightTakeOffTime', departureFlight.departureFlightTakeOffTime) || null,
+                departureFlightLandingTime: normalizePassengerFlightValue('departureFlightLandingTime', departureFlight.departureFlightLandingTime) || null,
                 arrivalFlightDate: arrivalFlight.arrivalFlightDate || null,
                 arrivalFlightNo: arrivalFlight.arrivalFlightNo?.trim() || null,
                 arrivalFlightFromCity: arrivalFlight.arrivalFlightFromCity?.trim() || null,
                 arrivalFlightToCity: arrivalFlight.arrivalFlightToCity?.trim() || null,
-                arrivalFlightTakeOffTime: arrivalFlight.arrivalFlightTakeOffTime || null,
-                arrivalFlightLandingTime: arrivalFlight.arrivalFlightLandingTime || null,
+                arrivalFlightTakeOffTime: normalizePassengerFlightValue('arrivalFlightTakeOffTime', arrivalFlight.arrivalFlightTakeOffTime) || null,
+                arrivalFlightLandingTime: normalizePassengerFlightValue('arrivalFlightLandingTime', arrivalFlight.arrivalFlightLandingTime) || null,
                 voucherId
                 };
             });

@@ -11,7 +11,10 @@ function normalize(value, field) {
   if (value === null || value === undefined || value === '') return '';
   const text = String(value);
   if (field.endsWith('Date')) return text.split(/[T ]/)[0];
-  if (field.endsWith('Time')) return text.slice(0, 5);
+  if (field.endsWith('Time')) {
+    const time = text.slice(0, 5);
+    return time === '00:00' ? '' : time;
+  }
   return text.trim().toUpperCase();
 }
 
@@ -32,7 +35,13 @@ function flightGroupKey(customer, departureFallback = {}, arrivalFallback = {}) 
   };
 
   return FLIGHT_FIELDS
-    .map(field => normalize(customer[field] || fallback[field], field))
+    .map(field => {
+      const customerValue = customer[field];
+      const isZeroTime = field.endsWith('Time') && String(customerValue || '').slice(0, 5) === '00:00';
+      return normalize(isZeroTime || customerValue === null || customerValue === undefined || customerValue === ''
+        ? fallback[field]
+        : customerValue, field);
+    })
     .join('|');
 }
 
