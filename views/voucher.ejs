@@ -1001,8 +1001,12 @@ function escapeAttr(value) {
     return escapeHtml(value);
 }
 
+let isSubmitting = false;
+
 form.addEventListener('submit', async e => {
     e.preventDefault();
+
+    if (isSubmitting) return;
 
     const voucherFormatSelect = document.getElementById('voucherFormatSelect');
     const linkVoucherFormatSelect = document.getElementById('linkVoucherFormatSelect');
@@ -1072,6 +1076,7 @@ form.addEventListener('submit', async e => {
 
     const submitBtn = document.querySelector('.submitBtn');
     const originalBtnText = submitBtn.textContent;
+    isSubmitting = true;
 
     const statusDiv = document.createElement('div');
     statusDiv.style.position = 'fixed';
@@ -1135,6 +1140,7 @@ form.addEventListener('submit', async e => {
     } catch (err) {
         alert(err.message);
     } finally {
+        isSubmitting = false;
         statusDiv?.remove();
         submitBtn.disabled = false;
         submitBtn.style.opacity = '1';
