@@ -1,6 +1,6 @@
 'use strict';
 
-const { vouchers, customers, appSettings } = require('../database/models');
+const { vouchers, appSettings } = require('../database/models');
 
 const SETTING_KEY = 'voucherExpiryHoursAfterDeparture';
 const DEFAULT_EXPIRY_HOURS = 24;
@@ -48,16 +48,7 @@ async function getExpiryHours() {
 }
 
 function getVoucherDeparture(voucher) {
-  const passengerDepartures = (voucher.customers || [])
-    .filter((customer) => {
-      const time = String(customer.departureFlightTakeOffTime || '').slice(0, 5);
-      return customer.departureFlightDate && time && time !== '00:00';
-    })
-    .map((customer) => departureDate(customer.departureFlightDate, customer.departureFlightTakeOffTime))
-    .filter(Boolean)
-    .sort((a, b) => a.getTime() - b.getTime());
-
-  return passengerDepartures[0] || departureDate(voucher.departureFlightDate, voucher.departureFlightTakeOffTime);
+  return departureDate(voucher.departureFlightDate, voucher.departureFlightTakeOffTime);
 }
 
 async function expireVouchers() {
@@ -66,12 +57,6 @@ async function expireVouchers() {
   const activeVouchers = await vouchers.findAll({
     where: { status: 'active' },
     attributes: ['id', 'voucherNo', 'departureFlightDate', 'departureFlightTakeOffTime'],
-    include: [{
-      model: customers,
-      as: 'customers',
-      attributes: ['id', 'departureFlightDate', 'departureFlightTakeOffTime'],
-      required: false
-    }]
   });
 
   for (const voucher of activeVouchers) {
