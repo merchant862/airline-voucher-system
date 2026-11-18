@@ -348,15 +348,18 @@ if (!html || html.trim().length === 0) {
 const browser = await puppeteer.launch({
     executablePath: process.env.CHROMIUM_PATH, // Ensure correct path
     headless: true,
+    protocolTimeout: 300000,
     args: ['--no-sandbox', '--disable-setuid-sandbox']
 });
 
 const page = await browser.newPage();
+page.setDefaultTimeout(300000);
+page.setDefaultNavigationTimeout(300000);
 
 await page.setViewport({ width: 1200, height: 1600 }); // viewport first
 
 // Set HTML content and wait for network idle
-await page.setContent(html, { waitUntil: 'networkidle2' });
+await page.setContent(html, { waitUntil: 'domcontentloaded', timeout: 300000 });
 
 // Wait for all images and fonts to load
 await page.evaluate(async () => {

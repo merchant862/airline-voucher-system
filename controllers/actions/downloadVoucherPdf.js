@@ -286,12 +286,15 @@ async function downloadVoucherPdfController(req, res, next) {
     const browser = await puppeteer.launch({
       executablePath: process.env.CHROMIUM_PATH,
       headless: true,
+      protocolTimeout: 300000,
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
     const page = await browser.newPage();
+    page.setDefaultTimeout(300000);
+    page.setDefaultNavigationTimeout(300000);
     await page.setViewport({ width: 1200, height: 1600 });
-    await page.setContent(html, { waitUntil: 'networkidle2' });
+    await page.setContent(html, { waitUntil: 'domcontentloaded', timeout: 300000 });
 
     await page.evaluate(async () => {
       const imgs = Array.from(document.images);
@@ -307,7 +310,8 @@ async function downloadVoucherPdfController(req, res, next) {
       await document.fonts.ready;
     });
 
-    const isKtp2Download = voucherData.voucherFormat.ejsPath.includes('ktp2');
+    const downloadFormatPath = voucherData.voucherFormat.ejsPath.toLowerCase();
+    const isKtp2Download = downloadFormatPath.includes('ktp2') || downloadFormatPath.includes('ktp-2');
     const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true,

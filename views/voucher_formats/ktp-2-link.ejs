@@ -11,7 +11,7 @@
     html, body { margin: 0; padding: 0; }
     body { background: #eef0f4; color: #252a31; font-family: Arial, Helvetica, sans-serif; font-size: 10px; }
     .voucher { position: relative; width: min(820px, calc(100% - 60px)); min-height: 1068px; margin: 24px auto; padding: 22px 26px 18px; background: #fff; }
-    .header { display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: start; min-height: 152px; border-bottom: 1px solid #e6e8ec; padding-bottom: 12px; }
+    .header { display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: start; min-height: 112px; border-bottom: 1px solid #e6e8ec; padding-bottom: 12px; }
     .header-left { padding-top: 5px; }
     .title { font-size: 15px; line-height: 1.05; font-weight: 700; letter-spacing: .2px; white-space: nowrap; }
     .voucher-no { margin-top: 7px; font-size: 14px; }
@@ -28,6 +28,7 @@
     .section-title { margin-top: 14px; padding: 6px 8px; background: #f4f4f4; color: #0798ba; text-align: center; font-size: 17px; font-weight: 700; }
     table { width: 100%; border-collapse: collapse; table-layout: fixed; }
     th, td { padding: 11px 6px; border-bottom: 1px solid #e8eaed; text-align: left; vertical-align: middle; overflow-wrap: anywhere; }
+    .passenger-table td, .accommodation-table td { padding: 8px 6px; }
     th { background: #f4f5f7; font-size: 8.5px; font-weight: 700; }
     td { font-size: 8.5px; color: #6e737b; }
     td.name, td.hotel { color: #42474e; }
@@ -36,8 +37,27 @@
     .flight-title { padding: 5px; background: #f4f4f4; color: #0798ba; text-align: center; font-size: 16px; font-weight: 700; }
     .flight th, .flight td { padding: 10px 5px; font-size: 8.5px; }
     .notes { position: absolute; left: 26px; right: 26px; bottom: 72px; margin: 0; min-height: 0; color: #777; }
-    .print-button { position: absolute; right: 16px; bottom: 16px; display: block; width: max-content; padding: 7px 8px; border: 0; border-radius: 3px; background: #0798ba; color: #fff; font: inherit; font-size: 10px; cursor: pointer; }
-    @media print { body { background: #fff; } .voucher { width: 100%; min-height: 1068px; margin: 0; padding: 16px 22px; } .print-button { display: none; } }
+    .notes-heading, .notes-content { display: inline; }
+    @media screen {
+      .notes { position: static; margin: 8px 0 0; }
+      .notes-heading { display: block; margin-bottom: 5px; font-weight: 700; }
+      .notes-content { display: block; }
+    }
+    .print-button { position: static; display: block; margin: 28px auto 0; width: max-content; padding: 7px 8px; border: 0; border-radius: 3px; background: #0798ba; color: #fff; font: inherit; font-size: 10px; cursor: pointer; }
+    @media print {
+      body { background: #fff; }
+      .voucher { width: 100%; height: 100vh; min-height: 0; margin: 0; padding: 10px 22px 12px; overflow: hidden; break-after: avoid; }
+      .header { min-height: 132px; padding-bottom: 8px; }
+      .info { gap: 3px 16px; padding: 14px 0 6px; line-height: 1.45; }
+      .section-title { margin-top: 8px; padding: 4px 6px; font-size: 15px; }
+      .passenger-table td, .accommodation-table td { padding: 5px 6px; }
+      .total { padding: 5px 32px 2px 0; }
+      .flight-grid { gap: 12px; margin-top: 7px; }
+      .flight-title { padding: 4px; font-size: 14px; }
+      .flight th, .flight td { padding: 6px 4px; font-size: 8px; }
+      .notes { bottom: 48px; font-size: 8px; }
+      .print-button { display: none; }
+    }
     @media (max-width: 620px) {
       body { font-size: 7px; }
       .voucher { width: calc(100% - 28px); min-height: 600px; margin: 14px auto; padding: 12px 14px 46px; }
@@ -51,12 +71,13 @@
       .info-row.pax { grid-column: 1; }
       .section-title { font-size: 10px; padding: 4px; }
       th, td { padding: 5px 3px; font-size: 5.5px; }
+      .passenger-table td, .accommodation-table td { padding: 4px 3px; }
       th { font-size: 5.5px; }
       .flight-grid { gap: 7px; }
       .flight-title { font-size: 10px; }
       .flight th, .flight td { padding: 5px 2px; font-size: 5.5px; }
       .notes { position: static; margin-top: 12px; }
-      .print-button { position: static; margin: 12px auto 0; padding: 5px 6px; font-size: 7px; }
+      .print-button { position: static; transform: none; margin: 24px auto 0; padding: 5px 6px; font-size: 7px; }
     }
   </style>
 </head>
@@ -80,12 +101,12 @@
   </section>
 
   <div class="section-title">Mutamers</div>
-  <table><tr><th>Passport</th><th>Mutamer Name</th><th>Gender</th><th>PAX</th><th>Bed</th><th>Group No.</th><th>Visa</th><th>Ticket</th><th>PNR</th></tr>
+  <table class="passenger-table"><tr><th>Passport</th><th>Mutamer Name</th><th>Gender</th><th>PAX</th><th>Bed</th><th>Group No.</th><th>Visa</th><th>Ticket</th><th>PNR</th></tr>
     <% customers.forEach((c, i) => { %><tr><td><%= c.passport || '' %></td><td class="name"><%= c.name || '' %></td><td><%= /^female$/i.test(c.gender || '') ? 'Female' : /^male$/i.test(c.gender || '') ? 'Male' : c.gender || '' %></td><td><%= c.paxType || '' %></td><td><%= c.beds || 'Yes' %></td><td><%= c.pnr || '' %></td><td><%= c.visaNumber || '' %></td><td></td><td><%= c.pnr || '' %></td></tr><% }) %>
   </table>
 
   <div class="section-title">Accommodation</div>
-  <table><tr><th>Hotel Name</th><th>Room Type</th><th>BRN</th><th>Confirm #</th><th>Checkin</th><th>Checkout</th><th>Nights</th><th>View Type</th><th>Meal Plan</th></tr>
+  <table class="accommodation-table"><tr><th>Hotel Name</th><th>Room Type</th><th>BRN</th><th>Confirm #</th><th>Checkin</th><th>Checkout</th><th>Nights</th><th>View Type</th><th>Meal Plan</th></tr>
     <% hotels.forEach(h => { %><tr><td class="hotel"><%= h.name || '' %></td><td><%= h.roomType || '' %></td><td></td><td><%= h.confirmNo || '' %></td><td><%= h.checkIn || '' %></td><td><%= h.checkOut || '' %></td><td><%= h.nights || '' %></td><td>Standard</td><td><%= h.mealPlan || '' %></td></tr><% }) %>
   </table>
   <div class="total">Total Nights: <%= hotels.reduce((sum, h) => sum + Number(h.nights || 0), 0) %></div>
@@ -99,7 +120,7 @@
     <div><div class="flight-title">Departure (Pakistan to KSA)</div><table class="flight"><tr><th>Flight</th><th>Sector</th><th>Departure</th><th>Arrival</th></tr><tr><td><%= departureFlight.flightNo || '' %></td><td><%= departureFlight.fromCity || '' %> - <%= departureFlight.toCity || '' %></td><td><%= departureFlight.date || '' %><br><%= departureFlight.takeoff || '' %></td><td><%= departureFlight.date || '' %><br><%= departureFlight.landing || '' %></td></tr></table></div>
     <div><div class="flight-title">Arrival (KSA to PAK)</div><table class="flight"><tr><th>Flight</th><th>Sector</th><th>Departure</th><th>Arrival</th></tr><tr><td><%= arrivalFlight.flightNo || '' %></td><td><%= arrivalFlight.fromCity || '' %> - <%= arrivalFlight.toCity || '' %></td><td><%= arrivalFlight.date || '' %><br><%= arrivalFlight.takeoff || '' %></td><td><%= arrivalFlight.date || '' %><br><%= arrivalFlight.landing || '' %></td></tr></table></div>
   </div>
-  <div class="notes">Notes: <%= notes || '—' %></div>
+  <div class="notes"><div class="notes-heading">Notes:</div><div class="notes-content"><%= notes || '—' %></div></div>
   <button class="print-button" type="button" onclick="window.print()">▣ Print</button>
 </main>
 </body>

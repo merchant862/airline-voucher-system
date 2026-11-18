@@ -149,12 +149,15 @@ async function downloadPaymentSlipPdfController(req, res, next) {
     const browser = await puppeteer.launch({
       executablePath: process.env.CHROMIUM_PATH,
       headless: true,
+      protocolTimeout: 300000,
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
     const page = await browser.newPage();
+    page.setDefaultTimeout(300000);
+    page.setDefaultNavigationTimeout(300000);
     await page.setViewport({ width: 1200, height: 1600 });
-    await page.setContent(html, { waitUntil: 'networkidle2' });
+    await page.setContent(html, { waitUntil: 'domcontentloaded', timeout: 300000 });
     await page.evaluate(async () => {
       const imgs = Array.from(document.images);
       await Promise.all(imgs.map(img => img.complete ? null : new Promise(resolve => { img.onload = img.onerror = resolve; })));

@@ -43,7 +43,12 @@ async function getVoucherTemplate(req, res, next) {
         const customers = [
             { name: "SAIF ALI", gender: "male", passport: "KT9826272", paxType: "Adult", beds: "Yes", visaNumber: "VISA12345", pnr: "PNR001" },
             { name: "AYESHA KHAN", gender: "female", passport: "RN4167421", paxType: "Adult", beds: "Yes", visaNumber: "VISA67890", pnr: "PNR002" },
-            { name: "ALI SAIF", gender: "male", passport: "JV9820162", paxType: "Adult", beds: "No", visaNumber: "VISA99999", pnr: "PNR003" }
+            { name: "ALI SAIF", gender: "male", passport: "JV9820162", paxType: "Adult", beds: "No", visaNumber: "VISA99999", pnr: "PNR003" },
+            { name: "MUHAMMAD USMAN", gender: "male", passport: "AB1234567", paxType: "Adult", beds: "Yes", visaNumber: "VISA10004", pnr: "PNR004" },
+            { name: "SANA IQBAL", gender: "female", passport: "CD2345678", paxType: "Adult", beds: "Yes", visaNumber: "VISA10005", pnr: "PNR005" },
+            { name: "HAMZA RAZA", gender: "male", passport: "EF3456789", paxType: "Adult", beds: "Yes", visaNumber: "VISA10006", pnr: "PNR006" },
+            { name: "HINA ASLAM", gender: "female", passport: "GH4567890", paxType: "Adult", beds: "Yes", visaNumber: "VISA10007", pnr: "PNR007" },
+            { name: "BILAL AHMED", gender: "male", passport: "IJ5678901", paxType: "Adult", beds: "Yes", visaNumber: "VISA10008", pnr: "PNR008" }
         ];
 
         const hotels = [
@@ -60,8 +65,14 @@ async function getVoucherTemplate(req, res, next) {
         // Keep the KTP-2 demo close to the supplied reference while real vouchers remain dynamic.
         if (isKtp2Link) {
             customers.splice(0, customers.length,
-                { name: "MUHAMMAD AQIB", gender: "male", passport: "CH1359551", paxType: "Adult", beds: "Yes", visaNumber: "", pnr: "45002344" },
-                { name: "SHER MUHAMMAD", gender: "male", passport: "VE0169331", paxType: "Adult", beds: "Yes", visaNumber: "", pnr: "45002344" }
+                { name: "MUHAMMAD AQIB", gender: "male", passport: "CH1359551", paxType: "Adult", beds: "Yes", visaNumber: "VISA12345", pnr: "45002344" },
+                { name: "SHER MUHAMMAD", gender: "male", passport: "VE0169331", paxType: "Adult", beds: "Yes", visaNumber: "VISA67890", pnr: "45002344" },
+                { name: "MUHAMMAD USMAN", gender: "male", passport: "AB1234567", paxType: "Adult", beds: "Yes", visaNumber: "VISA10004", pnr: "45002344" },
+                { name: "SANA IQBAL", gender: "female", passport: "CD2345678", paxType: "Adult", beds: "Yes", visaNumber: "VISA10005", pnr: "45002344" },
+                { name: "HAMZA RAZA", gender: "male", passport: "EF3456789", paxType: "Adult", beds: "Yes", visaNumber: "VISA10006", pnr: "45002344" },
+                { name: "HINA ASLAM", gender: "female", passport: "GH4567890", paxType: "Adult", beds: "Yes", visaNumber: "VISA10007", pnr: "45002344" },
+                { name: "BILAL AHMED", gender: "male", passport: "IJ5678901", paxType: "Adult", beds: "Yes", visaNumber: "VISA10008", pnr: "45002344" },
+                { name: "FAISAL KHAN", gender: "male", passport: "KL6789012", paxType: "Adult", beds: "Yes", visaNumber: "VISA10009", pnr: "45002344" }
             );
             hotels.splice(0, hotels.length,
                 { name: "Land Premium-1000 Meter", confirmNo: "", city: "Makkah", roomType: "Sharing", mealPlan: "RO", checkIn: "30-09-26", checkOut: "07-10-26", nights: 7 },

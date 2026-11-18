@@ -383,6 +383,16 @@ function openFormatDemo(formatId, themeId) {
     window.open(`/api/voucher/template/${format.value}?theme=${theme.value}`, '_blank');
 }
 
+function updateCreateCustomerFlightVisibility(root = document) {
+    const formatSelect = document.getElementById('voucherFormatSelect');
+    const formatPath = formatSelect?.selectedOptions[0]?.dataset.ejsPath || '';
+    const hideCustomerFlights = /ktp/i.test(formatPath);
+
+    root.querySelectorAll('.passenger-flight-fields').forEach(fieldset => {
+        fieldset.hidden = hideCustomerFlights;
+    });
+}
+
 document.addEventListener("DOMContentLoaded", async function () {
     ['departureFlightTakeOffTime', 'departureFlightLandingTime', 'arrivalFlightTakeOffTime', 'arrivalFlightLandingTime'].forEach(id => {
         flatpickr("#" + id, {
@@ -589,10 +599,12 @@ async function loadVoucherFormats() {
             const o = document.createElement('option');
             o.value = f.id;
             o.textContent = formatDisplayName(f, index, 'Download Format');
+            o.dataset.ejsPath = f.ejsPath || '';
             select.appendChild(o);
         });
 
         select.addEventListener('change', function () {
+            updateCreateCustomerFlightVisibility();
             if (!this.value) return;
             saveFormData();
             openFormatDemo('voucherFormatSelect', 'pdfThemeSelect');
@@ -736,6 +748,7 @@ function addCustomer(prefill = {}) {
 
     document.getElementById('customersContainer').appendChild(div);
     initPassengerFlightPickers(div);
+    updateCreateCustomerFlightVisibility(div);
     saveFormData();
 }
 
