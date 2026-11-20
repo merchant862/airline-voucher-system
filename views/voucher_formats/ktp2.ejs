@@ -601,9 +601,8 @@ body { background: #e8e8e8; }
 <div class="t ktp-column-heading" style="z-index:335;transform:matrix(1,0,0,1,590,185.39);width:62px">GRP #</div>
 <% /* Rebuilt passenger and accommodation grid: consistent row heights and borders. */ %>
 <div class="ktp-rebuilt-tables">
-  <% const ktpCustomers = (customers || []).slice(0, 8); const ktpPassengerRowCount = Math.min(9, ktpCustomers.length + 1); %>
   <div class="ktp-passenger-rows">
-    <% ktpCustomers.forEach((customer, index) => { %>
+    <% (customers || []).slice(0,8).forEach((customer, index) => { %>
       <div class="ktp-passenger-row">
         <span><%= index + 1 %></span>
         <span><%= customer.passport || '' %></span>
@@ -617,7 +616,7 @@ body { background: #e8e8e8; }
         <span><%= customer.pnr || '' %></span>
       </div>
     <% }); %>
-    <% for (let i = ktpCustomers.length; i < ktpPassengerRowCount; i++) { %>
+    <% for (let i = (customers || []).slice(0,8).length; i < 8; i++) { %>
       <div class="ktp-passenger-row ktp-empty-row"><% for(let k=0;k<10;k++){ %><span></span><% } %></div>
     <% } %>
   </div>
