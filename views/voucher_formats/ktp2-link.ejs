@@ -709,8 +709,6 @@ body { background: #e8e8e8; }
 <div class="ktp-contact-vertical-line" aria-hidden="true"></div>
 <div class="ktp-approved-stamp">Approved</div>
 </div>
-<% if (typeof qrImage !== 'undefined' && qrImage) { %><div class="ktp-qr-shell"><img class="ktp-qr-image" src="<%= qrImage %>" alt="Voucher QR"></div><% } %>
-<div class="ktp-legacy-qr-mask" aria-hidden="true"></div>
 </div>
 <script>
   const ktpLowerShift = parseFloat(getComputedStyle(document.querySelector('.ktp-lower-content')).getPropertyValue('--ktp-lower-shift')) || 0;
