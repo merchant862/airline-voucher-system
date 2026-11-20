@@ -686,10 +686,9 @@ body { background: #e8e8e8; }
 </div>
 </div>
 <script>
-  const ktpLowerShift = parseFloat(getComputedStyle(document.querySelector('.ktp-lower-content')).getPropertyValue('--ktp-lower-shift')) || 0;
   document.querySelectorAll('.page > svg.vec').forEach((node) => {
     const top = parseFloat(node.style.top);
-    if (Number.isFinite(top) && top >= 349) node.style.top = `${top + 35 + ktpLowerShift}px`;
+    if (Number.isFinite(top) && top >= 349) node.style.top = `${top + 35}px`;
   });
 </script>
 </body>
