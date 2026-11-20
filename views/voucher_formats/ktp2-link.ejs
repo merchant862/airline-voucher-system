@@ -128,6 +128,7 @@ body { background: #e8e8e8; }
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	display: none;
 }
 .ktp-qr-image {
 	position: static;
@@ -428,6 +429,10 @@ body { background: #e8e8e8; }
   box-sizing:border-box; height:18px; padding-top:1px;
   background:#ddd; border:1px solid #222; z-index:1;
 }
+.page .ktp-transport-travel-divider {
+  position:absolute; left:110px; top:368px; width:4px; height:40px;
+  box-sizing:border-box; background:#fff; border-right:1px solid #222; z-index:1200;
+}
 .page .ktp-contact-border {
   position:absolute; left:21px; top:577px; width:765px; height:87px;
   border-left:1px solid #222; border-right:1px solid #222;
@@ -653,6 +658,7 @@ body { background: #e8e8e8; }
 </div>
 <div class="ktp-lower-content" style="--ktp-lower-shift:<%= ktpLowerShift %>px">
 <div class="ktp-transport-value-mask" aria-hidden="true"></div>
+<div class="ktp-transport-travel-divider" aria-hidden="true"></div>
 <div class="t c13 ktp-transport-heading" style="z-index:913;transform:matrix(1,0,0,1,21,349.9);width:765px;text-align:center">Transport/Services</div>
 <div class="t ktp-column-heading" style="z-index:935;transform:matrix(1,0,0,1,21,369.15);width:91px">Travel Date</div>
 <div class="t ktp-column-heading" style="z-index:949;transform:matrix(1,0,0,1,112,369.15);width:195px">Transporter</div>
