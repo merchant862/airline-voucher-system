@@ -641,7 +641,7 @@ body { background: #e8e8e8; }
   <% for (let i = (hotels || []).slice(0,3).length; i < 3; i++) { %><div class="ktp-hotel-row ktp-empty-row"><% for(let k=0;k<9;k++){ %><span></span><% } %></div><% } %>
   <div class="ktp-total-nights"><strong>Total Nights:</strong><span><%= nightsTotal %></span></div>
 </div>
-<div class="ktp-lower-content">
+<div class="ktp-lower-content" style="--ktp-lower-shift:<%= ktpLowerShift %>px">
 <div class="t c13" style="z-index:913;transform:matrix(1,0,0,1,21,349.9);width:765px;text-align:center">Transport/Services</div>
 <div class="t ktp-column-heading" style="z-index:935;transform:matrix(1,0,0,1,21,369.15);width:91px">Travel Date</div>
 <div class="t ktp-column-heading" style="z-index:949;transform:matrix(1,0,0,1,112,369.15);width:195px">Transporter</div>
