@@ -416,7 +416,7 @@ body { background: #e8e8e8; }
 .page .ktp-total-nights span {height:12px; width:61px; transform:translateY(-1px); border:1px solid #222; box-sizing:border-box; text-align:center; font:700 10px/10px Arial,"Liberation Sans",sans-serif;}
 .page .ktp-lower-content {
   position:absolute; inset:0; z-index:3201; pointer-events:none;
-  transform:translateY(calc(35px + var(--ktp-lower-shift, 0px)));
+  transform:translateY(35px);
 }
 .page .ktp-contact-border {
   position:absolute; left:21px; top:577px; width:765px; height:87px;
@@ -600,7 +600,7 @@ body { background: #e8e8e8; }
 <div class="t ktp-column-heading" style="z-index:326;transform:matrix(1,0,0,1,526,185.39);width:64px">MOFA #</div>
 <div class="t ktp-column-heading" style="z-index:335;transform:matrix(1,0,0,1,590,185.39);width:62px">GRP #</div>
 <% /* Rebuilt passenger and accommodation grid: consistent row heights and borders. */ %>
-<% const ktpCustomers = (customers || []).slice(0, 8); const ktpPassengerRowCount = Math.min(9, ktpCustomers.length + 1); const ktpLowerShift = (ktpPassengerRowCount - 8) * 12; %>
+<% const ktpCustomers = (customers || []).slice(0, 8); const ktpPassengerRowCount = Math.min(9, ktpCustomers.length + 1); %>
 <div class="ktp-rebuilt-tables">
   <div class="ktp-passenger-rows">
     <% ktpCustomers.forEach((customer, index) => { %>
@@ -641,7 +641,7 @@ body { background: #e8e8e8; }
   <% for (let i = (hotels || []).slice(0,3).length; i < 3; i++) { %><div class="ktp-hotel-row ktp-empty-row"><% for(let k=0;k<9;k++){ %><span></span><% } %></div><% } %>
   <div class="ktp-total-nights"><strong>Total Nights:</strong><span><%= nightsTotal %></span></div>
 </div>
-<div class="ktp-lower-content" style="--ktp-lower-shift:<%= ktpLowerShift %>px">
+<div class="ktp-lower-content">
 <div class="t c13" style="z-index:913;transform:matrix(1,0,0,1,21,349.9);width:765px;text-align:center">Transport/Services</div>
 <div class="t ktp-column-heading" style="z-index:935;transform:matrix(1,0,0,1,21,369.15);width:91px">Travel Date</div>
 <div class="t ktp-column-heading" style="z-index:949;transform:matrix(1,0,0,1,112,369.15);width:195px">Transporter</div>
@@ -686,10 +686,9 @@ body { background: #e8e8e8; }
 </div>
 </div>
 <script>
-  const ktpLowerShift = parseFloat(getComputedStyle(document.querySelector('.ktp-lower-content')).getPropertyValue('--ktp-lower-shift')) || 0;
   document.querySelectorAll('.page > svg.vec').forEach((node) => {
     const top = parseFloat(node.style.top);
-    if (Number.isFinite(top) && top >= 349) node.style.top = `${top + 35 + ktpLowerShift}px`;
+    if (Number.isFinite(top) && top >= 349) node.style.top = `${top + 35}px`;
   });
 </script>
 </body>
