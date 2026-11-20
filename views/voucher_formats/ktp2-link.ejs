@@ -120,7 +120,7 @@ body { background: #e8e8e8; }
 .ktp-qr-shell {
 	position: absolute;
 	left: 690px;
-	top: 394px;
+	top: 470px;
 	width: 100px;
 	height: 102px;
 	z-index: 2999;
@@ -419,10 +419,19 @@ body { background: #e8e8e8; }
   position:absolute; inset:0; z-index:3201; pointer-events:none;
   transform:translateY(calc(35px + var(--ktp-lower-shift, 0px)));
 }
+.page .ktp-transport-value-mask {
+  position:absolute; left:21px; top:383px; width:765px; height:24px;
+  box-sizing:border-box; background:#fff; border-top:1px solid #222;
+  border-bottom:1px dotted #666; z-index:0;
+}
+.page .ktp-transport-heading {
+  box-sizing:border-box; height:18px; padding-top:1px;
+  background:#ddd; border:1px solid #222; z-index:1;
+}
 .page .ktp-contact-border {
   position:absolute; left:21px; top:577px; width:765px; height:87px;
   border-left:1px solid #222; border-right:1px solid #222;
-  border-bottom:1px solid #222; box-sizing:border-box;
+  border-bottom:0; box-sizing:border-box;
 }
 .page .ktp-contact-middle-line {
   position:absolute; left:21px; top:620px; width:765px;
@@ -643,7 +652,8 @@ body { background: #e8e8e8; }
   <div class="ktp-total-nights"><strong>Total Nights:</strong><span><%= nightsTotal %></span></div>
 </div>
 <div class="ktp-lower-content" style="--ktp-lower-shift:<%= ktpLowerShift %>px">
-<div class="t c13" style="z-index:913;transform:matrix(1,0,0,1,21,349.9);width:765px;text-align:center">Transport/Services</div>
+<div class="ktp-transport-value-mask" aria-hidden="true"></div>
+<div class="t c13 ktp-transport-heading" style="z-index:913;transform:matrix(1,0,0,1,21,349.9);width:765px;text-align:center">Transport/Services</div>
 <div class="t ktp-column-heading" style="z-index:935;transform:matrix(1,0,0,1,21,369.15);width:91px">Travel Date</div>
 <div class="t ktp-column-heading" style="z-index:949;transform:matrix(1,0,0,1,112,369.15);width:195px">Transporter</div>
 <div class="t ktp-column-heading" style="z-index:963;transform:matrix(1,0,0,1,307,369.15);width:160px">Type</div>
