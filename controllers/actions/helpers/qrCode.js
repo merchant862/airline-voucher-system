@@ -25,9 +25,11 @@ function buildVoucherQrUrl(voucherId, customerIds = [], options = {}) {
   const url = new URL(baseUrl);
 
   // KTP QR codes use the short redirect route so long public paths do not
-  // turn the QR into an unnecessarily dense, hard-to-scan symbol.
+  // turn the QR into an unnecessarily dense, hard-to-scan symbol. KTP
+  // vouchers show one shared flight, so customer-group IDs are unnecessary;
+  // the redirect still resolves the selected link-voucher format by voucher ID.
   if (options.shortUrl) {
-    return `${url.origin}/voucher/scan/${encodeURIComponent(voucherId)}${groupQuery}`;
+    return `${url.origin}/voucher/scan/${encodeURIComponent(voucherId)}`;
   }
 
   const publicPath = url.pathname.replace(/\/+$/, '');
