@@ -127,6 +127,36 @@ body { background: #e8e8e8; }
 	overflow: visible;
 	pointer-events: none;
 }
+.ktp-legacy-qr-mask {
+	position: absolute;
+	left: 690px;
+	top: 350px;
+	width: 110px;
+	height: 100px;
+	z-index: 2000000001;
+	background: #fff;
+}
+.ktp-qr-shell {
+	position: absolute;
+	left: 706px;
+	top: 365px;
+	width: 80px;
+	height: 82px;
+	z-index: 2000000002;
+	background: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+.ktp-qr-image {
+	position: static;
+	display: block;
+	width: 72px;
+	height: 72px;
+	object-fit: contain;
+	opacity: 0.86;
+}
 
 /* Zero-size internal-link target anchor at a destination's exact Y; scroll lands here, not the page top. */
 .dst {
@@ -677,6 +707,8 @@ body { background: #e8e8e8; }
 <div class="ktp-contact-bottom-cleanup" aria-hidden="true"></div>
 <div class="ktp-contact-vertical-line" aria-hidden="true"></div>
 <div class="ktp-approved-stamp">Approved</div>
+<div class="ktp-legacy-qr-mask" aria-hidden="true"></div>
+<% if (typeof qrImage !== 'undefined' && qrImage) { %><div class="ktp-qr-shell"><img class="ktp-qr-image" src="<%= qrImage %>" alt="Voucher QR"></div><% } %>
 </div>
 </div>
 <script>
