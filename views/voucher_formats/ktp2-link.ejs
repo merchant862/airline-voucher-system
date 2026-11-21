@@ -120,7 +120,7 @@ body { background: #e8e8e8; }
 .ktp-qr-shell {
 	position: absolute;
 	left: 706px;
-	top: 520px;
+	top: 440px;
 	width: 80px;
 	height: 82px;
 	z-index: 2000000002;
@@ -144,6 +144,15 @@ body { background: #e8e8e8; }
 	top: 520px;
 	width: 110px;
 	height: 160px;
+	z-index: 2000000001;
+	background: #fff;
+}
+.ktp-upper-legacy-qr-mask {
+	position: absolute;
+	left: 690px;
+	top: 420px;
+	width: 110px;
+	height: 110px;
 	z-index: 2000000001;
 	background: #fff;
 }
@@ -711,6 +720,7 @@ body { background: #e8e8e8; }
 </div>
 <% if (typeof qrImage !== 'undefined' && qrImage) { %><div class="ktp-qr-shell"><img class="ktp-qr-image" src="<%= qrImage %>" alt="Voucher QR"></div><% } %>
 <div class="ktp-legacy-qr-mask" aria-hidden="true"></div>
+<div class="ktp-upper-legacy-qr-mask" aria-hidden="true"></div>
 </div>
 <script>
   const ktpLowerShift = parseFloat(getComputedStyle(document.querySelector('.ktp-lower-content')).getPropertyValue('--ktp-lower-shift')) || 0;
