@@ -191,8 +191,8 @@
       (() => {
         const page = document.querySelector('.voucher-page');
         const fitMobile = () => {
-          const mobile = window.matchMedia('(screen and (max-width: 800px))').matches;
-          const viewportWidth = Math.min(window.innerWidth, document.documentElement.clientWidth, window.visualViewport?.width || window.innerWidth);
+          const mobile = Math.min(window.innerWidth, screen.width) < 816;
+          const viewportWidth = Math.min(window.innerWidth, screen.width, document.documentElement.clientWidth, window.visualViewport?.width || window.innerWidth);
           const scale = mobile ? Math.min(1, viewportWidth / 816) : 1;
           page.style.transform = 'none';
           page.style.zoom = scale;
