@@ -72,7 +72,7 @@
     .accommodation-section { margin-top: -5px; }
     .section-title { height: 17px; line-height: 15px; background: #d3d3d3; border: 1px solid #333; text-align: center; font-family: Arial, Helvetica, sans-serif; font-weight: 700; font-size: 12px; padding: 0 4px; color: #111; }
     table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-    .passengers, .accommodation, .transport { border: 1px solid #444 !important; box-shadow: inset 1px 0 0 #444, inset -1px 0 0 #444; }
+    .passengers, .accommodation, .transport { border: 1px solid #444 !important; }
     th, td { border: 1px solid var(--line); padding: 2px 3px; line-height: 1.1; overflow-wrap: anywhere; vertical-align: middle; }
     th { background: #eee; font-weight: 700; text-align: center; white-space: nowrap; }
     td { height: 18px; }
@@ -120,7 +120,7 @@
     .approved-stamp { position: absolute; left: 50%; top: 29%; z-index: 5; transform: translate(-50%, -50%) rotate(-50deg); color: rgba(144,238,144,.72); font-size: 44px; font-weight: 400; white-space: nowrap; pointer-events: none; }
     .print-button { display: block; margin: 10px auto 0; padding: 5px 12px; border: 0; border-radius: 3px; background: #079ac1; color: #fff; cursor: pointer; }
     @media screen and (max-width: 800px) { html, body { min-width: 0; width: 100%; overflow-x: hidden; } .voucher-page { width: 816px; margin: 8px 0; box-shadow: none; } }
-    @media print { html, body { background: #fff !important; } .voucher-page { margin: 0; min-height: 1056px; height: 1056px; box-shadow: none; } .print-button { display: none; } }
+    @media print { html, body { background: #fff !important; } .voucher-page { margin: 0; min-height: 1056px; height: 1056px; box-shadow: none; } .passengers, .accommodation, .transport { border: 0 !important; outline: 1px solid #444; outline-offset: -1px; } .passengers tbody td:first-child, .accommodation tbody td:first-child, .transport tbody td:first-child, .passengers tbody td:last-child, .accommodation tbody td:last-child, .transport tbody td:last-child { border-left: 0 !important; border-right: 0 !important; } .print-button { display: none; } }
   </style>
 </head>
 <body>
