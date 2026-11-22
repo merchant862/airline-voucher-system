@@ -75,7 +75,7 @@
     .passengers th:nth-child(1) { width: 34px; } .passengers th:nth-child(2) { width: 66px; } .passengers th:nth-child(3) { width: 298px; }
     .passengers th:nth-child(4) { width: 31px; } .passengers th:nth-child(5) { width: 37px; } .passengers th:nth-child(6) { width: 39px; }
     .passengers th:nth-child(7) { width: 64px; } .passengers th:nth-child(8) { width: 62px; } .passengers th:nth-child(9) { width: 64px; } .passengers th:nth-child(10) { width: 71px; }
-    .passengers th, .passengers td { padding: 1px 3px; line-height: 1; font-size: 10px; }
+    .passengers th, .passengers td { padding: 1px 3px; line-height: 1; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: clip; }
     .passengers td { height: 12px; }
     .passengers td:first-child, .passengers td:nth-child(4), .passengers td:nth-child(5), .passengers td:nth-child(6) { text-align: center; }
     .passengers th, .passengers td, .accommodation th, .accommodation td, .transport th, .transport td { text-align: center; }
@@ -85,19 +85,19 @@
     .accommodation th:nth-child(4) { width: 55px; } .accommodation th:nth-child(5) { width: 52px; } .accommodation th:nth-child(6) { width: 99px; }
     .accommodation th:nth-child(7) { width: 60px; } .accommodation th:nth-child(8) { width: 62px; } .accommodation th:nth-child(9) { width: 61px; }
     .accommodation thead th { height: 15px; padding-top: 0; padding-bottom: 0; line-height: 1; }
-    .accommodation td { height: 14px; font-size: 10px; }
+    .accommodation td { height: 14px; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: clip; }
     .accommodation tbody td { border-left: 0; border-right: 0; border-top: 0; border-bottom: 1px dotted #666; }
     .total-nights { height: 10px; margin-top: 4px; display: flex; align-items: center; border: 0; padding: 0; font: italic 700 10px/10px Arial, Helvetica, sans-serif; }
     .total-nights strong { flex: 1; text-align: right; padding-right: 10px; }
     .total-nights span { width: 61px; height: 12px; display: flex; align-items: center; justify-content: center; border: 1px solid #222; font: 700 10px/10px Arial, Helvetica, sans-serif; }
     .transport th:nth-child(1) { width: 91px; } .transport th:nth-child(2) { width: 195px; } .transport th:nth-child(3) { width: 160px; } .transport th:nth-child(4) { width: 319px; }
-    .transport td { text-align: center; font-size: 11px; }
+    .transport td { text-align: center; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: clip; }
     .transport tbody td { border-left: 0; border-right: 0; border-top: 0; border-bottom: 1px dotted #666; }
     .flight-row { display: grid; grid-template-columns: 336px 332px 91px; gap: 2px; align-items: stretch; margin-top: 4px; }
     .flight-box { min-width: 0; }
     .voucher-page > section:nth-of-type(3) .section-title { height: 18px; line-height: 16px; }
     .flight-box .section-title { height: 18px; line-height: 16px; color: var(--blue); font-family: "Times New Roman", Times, serif; font-size: 14.67px; }
-    .flight-table th, .flight-table td { padding: 3px 2px; text-align: center; font-size: 10.5px; }
+    .flight-table th, .flight-table td { padding: 3px 2px; text-align: center; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: clip; }
     .flight-table th:nth-child(1) { width: 19%; } .flight-table th:nth-child(2) { width: 25%; } .flight-table th:nth-child(3), .flight-table th:nth-child(4) { width: 28%; }
     .qr { width: 84px; height: 84px; align-self: end; object-fit: contain; margin-left: 7px; }
     .notes { margin-top: 7px; min-height: 18px; transform: translateY(-23px); color: var(--blue); font-family: "Times New Roman", Times, serif; font-size: 12px; font-weight: 700; font-style: italic; }
@@ -119,9 +119,9 @@
       <div class="top-left">
         <div class="title"><%= safe(passengerList[0]?.name || familyHead) %></div>
         <div class="meta">
-          <div><b>Voucher Date:</b><%= shortDate(voucher?.date) %></div>
-          <div><b>Package:</b><%= safe(voucher?.package) %> <%= safe(voucher?.packageType) %></div>
-          <div><b>PAX:</b><%= passengerList.length %> (A:<%= adults %>,C:<%= children %>,I:<%= infants %>), Beds=<%= voucher?.beds || passengerList.length %></div>
+          <div><b>Voucher Date:</b> <%= shortDate(voucher?.date) %></div>
+          <div><b>Package:</b> <%= safe(voucher?.package) %> <%= safe(voucher?.packageType) %></div>
+          <div><b>PAX:</b> <%= passengerList.length %> (A:<%= adults %>,C:<%= children %>,I:<%= infants %>), Beds=<%= voucher?.beds || passengerList.length %></div>
         </div>
       </div>
       <% if (logo) { %><img class="logo" src="<%= logo %>" alt="Company logo"><% } else { %><div></div><% } %>
@@ -155,7 +155,7 @@
       <table class="accommodation">
         <thead><tr><th>City</th><th>Hotel Name</th><th>View</th><th>Meal</th><th>Conf#</th><th>Room Type</th><th>Checkin</th><th>Checkout</th><th>Nights</th></tr></thead>
         <tbody>
-          <% hotelList.forEach(hotel => { %><tr><td><%= safe(hotel.city).toUpperCase() %></td><td><%= safe(hotel.name) %></td><td>Standard</td><td><%= safe(hotel.mealPlan) %></td><td><%= safe(hotel.confirmNo) %></td><td><%= safe(hotel.roomType).replace(/\s*\d+\s*$/, '') %></td><td><%= shortDate(hotel.checkIn) %></td><td><%= shortDate(hotel.checkOut) %></td><td><%= safe(hotel.nights) %></td></tr><% }); %>
+          <% hotelList.forEach(hotel => { %><tr><td><%= safe(hotel.city).toUpperCase() %></td><td><%= safe(hotel.name) %></td><td>Standard</td><td><%= safe(hotel.mealPlan) %></td><td></td><td><%= safe(hotel.roomType).replace(/\s*\d+\s*$/, '') %></td><td><%= shortDate(hotel.checkIn) %></td><td><%= shortDate(hotel.checkOut) %></td><td><%= safe(hotel.nights) %></td></tr><% }); %>
         </tbody>
       </table>
       <div class="total-nights"><strong>Total Nights:</strong><span><%= totalNights %></span></div>
