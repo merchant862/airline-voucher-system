@@ -109,7 +109,7 @@
     .urdu div::before { content: "•"; display: inline-block; margin-left: 8px; font-family: Arial, sans-serif; font-size: 10px; vertical-align: middle; }
     .approved-stamp { position: absolute; left: 50%; top: 29%; z-index: 5; transform: translate(-50%, -50%) rotate(-50deg); color: rgba(144,238,144,.72); font-size: 44px; font-weight: 400; white-space: nowrap; pointer-events: none; }
     .print-button { display: block; margin: 10px auto 0; padding: 5px 12px; border: 0; border-radius: 3px; background: #079ac1; color: #fff; cursor: pointer; }
-    @media screen and (max-width: 800px) { html, body { min-width: 816px; overflow-x: auto; } .voucher-page { width: 816px; margin: 8px 0; box-shadow: none; } }
+    @media screen and (max-width: 800px) { html, body { min-width: 0; width: 100%; overflow-x: hidden; } .voucher-page { width: 816px; margin: 8px 0; box-shadow: none; } }
     @media print { html, body { background: #fff !important; } .voucher-page { margin: 0; min-height: 1056px; height: 1056px; box-shadow: none; } .print-button { display: none; } }
   </style>
 </head>
@@ -187,6 +187,20 @@
       <div>کسی بھی تبدیلی کی صورت میں فوری طور پر ایجنسی سے رابطہ کریں۔</div>
     </div>
     <% if (typeof pdfUrl !== 'undefined' && pdfUrl) { %><button class="print-button" type="button" onclick="window.print()">Print</button><% } %>
+    <script>
+      (() => {
+        const page = document.querySelector('.voucher-page');
+        const fitMobile = () => {
+          const mobile = window.matchMedia('(screen and (max-width: 800px))').matches;
+          const scale = mobile ? Math.min(1, window.innerWidth / 816) : 1;
+          page.style.transformOrigin = 'top left';
+          page.style.transform = `scale(${scale})`;
+          document.body.style.height = mobile ? `${1056 * scale + 16}px` : '';
+        };
+        fitMobile();
+        window.addEventListener('resize', fitMobile);
+      })();
+    </script>
   </main>
 </body>
 </html>
