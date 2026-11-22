@@ -328,6 +328,7 @@ async function addVoucherController(req, res, next) {
     arrivalFlight: passengerFlightData.arrivalFlight,
     notes: voucherData.notes.map(n => n.content).join('\n'),
     qrImage: qrImage,
+    urduInstructionsImage: await getBase64Image('/images/ktp-urdu-instructions.jpg'),
     theme: getVoucherTheme(voucherData.pdfTheme),
     urduFontData: getUrduFontData(),
     verifiedImage: await getBase64Image(getVerifiedImagePath(voucherData.voucherFormat.ejsPath))

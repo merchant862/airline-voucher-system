@@ -3,7 +3,7 @@
 const { voucherFormats } = require('../../database/models');
 
 const path = require('path');
-const { generateQr } = require('./helpers/qrCode');
+const { generateVoucherQr } = require('./helpers/qrCode');
 const { getVoucherTheme, getUrduFontData } = require('./helpers/voucherThemes');
 const { buildPassengerFlightData } = require('./helpers/passengerFlights');
 
@@ -18,7 +18,7 @@ async function getVoucherTemplate(req, res, next) {
 
         const format = await voucherFormats.findOne({ where: { id: req.params.id } });
         if (!format) return res.status(404).send('Format not found');
-        const isKtp2 = format.ejsPath.includes('ktp2') || format.ejsPath.includes('ktp-2');
+        const isKtp2 = format.ejsPath.includes('ktp2') || format.ejsPath.includes('ktp-2') || format.ejsPath.includes('ktp3');
         const isKtp2Link = format.ejsPath.includes('ktp-2-link');
 
         // ======= Static Data =======
@@ -87,10 +87,13 @@ async function getVoucherTemplate(req, res, next) {
         const notes = ``;
         const passengerFlightData = buildPassengerFlightData(customers, departureFlight, arrivalFlight);
 
-        const qrData = `Voucher: ${Date.now()}`;
-
-        // Base64 QR generate
-        const qrImage = await generateQr(qrData);
+        // Use the same dynamic short redirect as real KTP vouchers so the
+        // demo/template QR opens the selected voucher link format as well.
+        const qrImage = await generateVoucherQr(
+            req.params.id,
+            [],
+            { shortUrl: isKtp2 }
+        );
         // ======= Render EJS =======
         res.render(path.join(__dirname, '../../', format.ejsPath), {
             company: {
@@ -122,7 +125,8 @@ async function getVoucherTemplate(req, res, next) {
             passengerFlightRows: passengerFlightData.passengerFlightRows,
             passengerFlightDisplay: passengerFlightData.passengerFlightDisplay,
             qrImage,
-            pdfUrl: '#',
+            pdfUrl: format.ejsPath.includes('link') ? '#' : '',
+            urduInstructionsImage: '/images/ktp-urdu-instructions.jpg',
             theme: getVoucherTheme(req.query.theme),
             urduFontData: getUrduFontData(),
             verifiedImage: getVerifiedImagePath(format.ejsPath)

@@ -265,6 +265,7 @@ async function getVoucherTemplate(req, res, next) {
             hotels: formattedHotels,
             transports: formattedTransports,
             notes: formattedNotes,
+            urduInstructionsImage: '/images/ktp-urdu-instructions.jpg',
             theme: getVoucherTheme(voucher.linkTheme),
             urduFontData: getUrduFontData(),
             passengerFlights: passengerFlightData.passengerFlights,

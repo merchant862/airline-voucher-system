@@ -1,0 +1,191 @@
+<%
+  function safe(value) { return value == null ? '' : String(value); }
+  function shortTime(value) {
+    const text = safe(value).trim();
+    const match = text.match(/^(\d{1,2}:\d{2})(?::\d{2}(?:\.\d+)?)?$/);
+    return match ? match[1] : text;
+  }
+  function shortDate(value) {
+    if (!value) return '';
+    const raw = safe(value).trim().replaceAll('/', '-');
+    const compact = raw.match(/^(\d{1,2})-(\d{1,2})-(\d{2}|\d{4})$/);
+    if (compact) {
+      const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+      return `${compact[1].padStart(2, '0')}-${months[Number(compact[2]) - 1] || compact[2]}-${compact[3].slice(-2)}`;
+    }
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return raw;
+    return `${String(date.getDate()).padStart(2, '0')}-${date.toLocaleString('en-US', { month: 'short' }).toUpperCase()}-${String(date.getFullYear()).slice(-2)}`;
+  }
+  function gender(value) {
+    return /^female$/i.test(safe(value)) ? 'F' : /^male$/i.test(safe(value)) ? 'M' : safe(value);
+  }
+%>
+<%
+  const passengerList = Array.isArray(customers) ? customers : [];
+  const hotelList = Array.isArray(hotels) ? hotels : [];
+  const transportList = Array.isArray(transports) ? transports : [];
+  const departure = departureFlight || {};
+  const arrival = arrivalFlight || {};
+  const foreignName = safe(foreignCompany?.name).replace(/\s*\(PBT\)\s*$/i, '');
+  const adults = passengerList.filter(c => /^(male|female)$/i.test(safe(c.gender))).length;
+  const children = passengerList.filter(c => /^children$/i.test(safe(c.gender))).length;
+  const infants = passengerList.filter(c => /^infant$/i.test(safe(c.gender))).length;
+  const totalNights = hotelList.reduce((sum, hotel) => sum + Number(hotel.nights || 0), 0);
+  const logo = company?.logo || foreignCompany?.logo || '';
+%>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= safe(voucher?.voucherNo) %></title>
+  <style>
+    @page { size: A4; margin: 0; }
+    :root { --ink: #111; --blue: #001b85; --line: #444; --soft: #d8d8d8; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #e7e7e7; color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+    body { font-size: 9px; }
+    .voucher-page { position: relative; width: 816px; min-height: 1056px; margin: 8px auto; padding: 8px 31px 7px 20px; background: #fff; box-shadow: 0 1px 4px #999; }
+    .top { display: grid; grid-template-columns: 1fr 150px 1fr; align-items: start; height: 122px; min-height: 122px; padding-bottom: 8px; }
+    .top-left { padding-top: 2px; padding-left: 85px; }
+    .title { color: var(--blue); font-size: 15px; font-weight: 800; text-transform: uppercase; }
+    .meta { margin-top: 16px; line-height: 1.15; font-size: 12px; }
+    .meta > div { margin-bottom: 14px; }
+    .meta > div:first-child { margin-bottom: 29px; }
+    .meta > div:nth-child(2) { margin-bottom: 10px; }
+    .meta > div:last-child { margin-bottom: 0; }
+    .meta b { display: inline-block; min-width: 56px; font-weight: 400; }
+    .logo { position: absolute; left: 364.71px; top: 27px; width: 137.05px; height: 63.89px; object-fit: contain; }
+    .foreign { grid-column: 3; color: var(--blue); text-align: right; font-size: 14px; font-weight: 800; text-transform: uppercase; padding-top: 5px; max-width: 220px; justify-self: end; }
+    .foreign small { display: block; margin-top: 10px; color: #222; font-size: 12px; font-weight: 400; line-height: 1.18; }
+    .foreign small b { display: block; margin-top: 8px; color: #111; }
+    .voucher-label { text-align: center; height: 14px; line-height: 14px; font-size: 13.33px; }
+    .summary { display: grid; grid-template-columns: 45% 18.5% 36.5%; border: 1px solid #555; margin-top: 0; min-height: 23px; padding: 3px 7px; line-height: 1.05; font-size: 12px; font-weight: 700; background: #e8e8e8; }
+    .summary > div + div { border-left: 1px solid #555; padding-left: 7px; }
+    .summary b { display: inline-block; min-width: 90px; margin-right: 0; font-weight: 700; }
+    .summary > div:nth-child(2) { text-align: center; }
+    section { margin-top: 0; break-inside: avoid; }
+    .accommodation-section { margin-top: -5px; }
+    .section-title { height: 17px; line-height: 15px; background: #d3d3d3; border: 1px solid #333; text-align: center; font-family: Arial, Helvetica, sans-serif; font-weight: 700; font-size: 12px; padding: 0 4px; color: #111; }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    th, td { border: 1px solid var(--line); padding: 2px 3px; line-height: 1.1; overflow-wrap: anywhere; vertical-align: middle; }
+    th { background: #eee; font-weight: 700; text-align: center; white-space: nowrap; }
+    td { height: 18px; }
+    .passengers th:nth-child(1) { width: 34px; } .passengers th:nth-child(2) { width: 66px; } .passengers th:nth-child(3) { width: 298px; }
+    .passengers th:nth-child(4) { width: 31px; } .passengers th:nth-child(5) { width: 37px; } .passengers th:nth-child(6) { width: 39px; }
+    .passengers th:nth-child(7) { width: 64px; } .passengers th:nth-child(8) { width: 62px; } .passengers th:nth-child(9) { width: 64px; } .passengers th:nth-child(10) { width: 71px; }
+    .passengers th, .passengers td { padding: 1px 3px; line-height: 1; font-size: 10px; }
+    .passengers td { height: 12px; }
+    .passengers td:first-child, .passengers td:nth-child(4), .passengers td:nth-child(5), .passengers td:nth-child(6) { text-align: center; }
+    .passengers th, .passengers td, .accommodation th, .accommodation td, .transport th, .transport td { text-align: center; }
+    .passengers tbody td { border-left: 0; border-right: 0; border-top: 0; border-bottom: 1px dotted #666; }
+    .passengers tbody tr:last-child td { border-bottom: 1px dotted #666; }
+    .accommodation th:nth-child(1) { width: 75px; } .accommodation th:nth-child(2) { width: 247px; } .accommodation th:nth-child(3) { width: 55px; }
+    .accommodation th:nth-child(4) { width: 55px; } .accommodation th:nth-child(5) { width: 52px; } .accommodation th:nth-child(6) { width: 99px; }
+    .accommodation th:nth-child(7) { width: 60px; } .accommodation th:nth-child(8) { width: 62px; } .accommodation th:nth-child(9) { width: 61px; }
+    .accommodation thead th { height: 15px; padding-top: 0; padding-bottom: 0; line-height: 1; }
+    .accommodation td { height: 14px; font-size: 10px; }
+    .accommodation tbody td { border-left: 0; border-right: 0; border-top: 0; border-bottom: 1px dotted #666; }
+    .total-nights { height: 10px; margin-top: 4px; display: flex; align-items: center; border: 0; padding: 0; font: italic 700 10px/10px Arial, Helvetica, sans-serif; }
+    .total-nights strong { flex: 1; text-align: right; padding-right: 10px; }
+    .total-nights span { width: 61px; height: 12px; display: flex; align-items: center; justify-content: center; border: 1px solid #222; font: 700 10px/10px Arial, Helvetica, sans-serif; }
+    .transport th:nth-child(1) { width: 91px; } .transport th:nth-child(2) { width: 195px; } .transport th:nth-child(3) { width: 160px; } .transport th:nth-child(4) { width: 319px; }
+    .transport td { text-align: center; font-size: 11px; }
+    .transport tbody td { border-left: 0; border-right: 0; border-top: 0; border-bottom: 1px dotted #666; }
+    .flight-row { display: grid; grid-template-columns: 336px 332px 91px; gap: 2px; align-items: stretch; margin-top: 4px; }
+    .flight-box { min-width: 0; }
+    .voucher-page > section:nth-of-type(3) .section-title { height: 18px; line-height: 16px; }
+    .flight-box .section-title { height: 18px; line-height: 16px; color: var(--blue); font-family: "Times New Roman", Times, serif; font-size: 14.67px; }
+    .flight-table th, .flight-table td { padding: 3px 2px; text-align: center; font-size: 10.5px; }
+    .flight-table th:nth-child(1) { width: 19%; } .flight-table th:nth-child(2) { width: 25%; } .flight-table th:nth-child(3), .flight-table th:nth-child(4) { width: 28%; }
+    .qr { width: 84px; height: 84px; align-self: end; object-fit: contain; margin-left: 7px; }
+    .notes { margin-top: 7px; min-height: 18px; transform: translateY(-23px); color: var(--blue); font-family: "Times New Roman", Times, serif; font-size: 12px; font-weight: 700; font-style: italic; }
+    .contacts { margin-top: 62px; }
+    .contacts td { height: 48px; text-align: center; font-size: 11.95px; font-weight: 700; }
+    .contact-heading { position: absolute; left: 20px; top: 590px; width: 765px; text-align: center; font-family: "Times New Roman", Times, serif; font-size: 12px; font-weight: 700; }
+    .urdu { position: absolute; left: 42px; top: 720px; width: 732px; height: 224px; padding: 4px 12px 0; direction: rtl; text-align: right; color: #111; font-family: "Noto Nastaliq Urdu", "Noto Naskh Arabic", Tahoma, Arial, sans-serif; font-size: 12px; line-height: 1.9; white-space: nowrap; }
+    .urdu div { margin: 0 0 4px; padding: 0; }
+    .urdu div::before { content: "•"; display: inline-block; margin-left: 8px; font-family: Arial, sans-serif; font-size: 10px; vertical-align: middle; }
+    .approved-stamp { position: absolute; left: 50%; top: 36%; z-index: 5; transform: translate(-50%, -50%) rotate(-50deg); color: rgba(144,238,144,.72); font-size: 44px; font-weight: 400; white-space: nowrap; pointer-events: none; }
+    .print-button { display: block; margin: 10px auto 0; padding: 5px 12px; border: 0; border-radius: 3px; background: #079ac1; color: #fff; cursor: pointer; }
+    @media screen and (max-width: 800px) { .voucher-page { width: 100%; margin: 0; box-shadow: none; } }
+    @media print { html, body { background: #fff !important; } .voucher-page { margin: 0; min-height: 1056px; height: 1056px; box-shadow: none; } .print-button { display: none; } }
+  </style>
+</head>
+<body>
+  <main class="voucher-page">
+    <header class="top">
+      <div class="top-left">
+        <div class="title"><%= safe(passengerList[0]?.name || familyHead) %></div>
+        <div class="meta">
+          <div><b>Voucher Date:</b><%= shortDate(voucher?.date) %></div>
+          <div><b>Package:</b><%= safe(voucher?.package) %> <%= safe(voucher?.packageType) %></div>
+          <div><b>PAX:</b><%= passengerList.length %> (A:<%= adults %>,C:<%= children %>,I:<%= infants %>), Beds=<%= voucher?.beds || passengerList.length %></div>
+        </div>
+      </div>
+      <% if (logo) { %><img class="logo" src="<%= logo %>" alt="Company logo"><% } else { %><div></div><% } %>
+      <div class="foreign"><%= foreignName %><small><%= foreignName %> (PBT)<b>Karachi</b><b>Whats APP:</b></small></div>
+    </header>
+
+    <div class="voucher-label">Hotel Voucher</div>
+    <div class="summary">
+      <div><b>Family Head:</b><%= safe(familyHead || passengerList[0]?.name) %></div>
+      <div><strong><%= safe(voucher?.voucherNo) %></strong></div>
+      <div><b>Manual No:</b><strong></strong></div>
+    </div>
+
+    <section>
+      <div class="section-title">Mutamers</div>
+      <table class="passengers">
+        <thead><tr><th>SNO</th><th>Passport</th><th>Mutamer Name</th><th>G</th><th>PAX</th><th>Bed</th><th>MOFA #</th><th>GRP #</th><th>Visa #</th><th>PNR</th></tr></thead>
+        <tbody>
+          <% passengerList.forEach((customer, index) => { %>
+            <tr><td><%= index + 1 %></td><td><%= safe(customer.passport) %></td><td><%= safe(customer.name) %></td><td><%= gender(customer.gender) %></td><td><%= safe(customer.paxType || 'Adult') %></td><td></td><td><%= safe(customer.mofaNumber || customer.mofa) %></td><td><%= safe(customer.groupNumber || customer.grpNumber) %></td><td><%= safe(customer.visaNumber) %></td><td><%= safe(customer.pnr) %></td></tr>
+          <% }); %>
+          <% for (let i = passengerList.length; i < Math.min(10, passengerList.length + 1); i++) { %>
+            <tr class="empty-row"><% for (let cell = 0; cell < 10; cell++) { %><td></td><% } %></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="accommodation-section">
+      <div class="section-title">Accommodation</div>
+      <table class="accommodation">
+        <thead><tr><th>City</th><th>Hotel Name</th><th>View</th><th>Meal</th><th>Conf#</th><th>Room Type</th><th>Checkin</th><th>Checkout</th><th>Nights</th></tr></thead>
+        <tbody>
+          <% hotelList.forEach(hotel => { %><tr><td><%= safe(hotel.city).toUpperCase() %></td><td><%= safe(hotel.name) %></td><td>Standard</td><td><%= safe(hotel.mealPlan) %></td><td><%= safe(hotel.confirmNo) %></td><td><%= safe(hotel.roomType).replace(/\s*\d+\s*$/, '') %></td><td><%= shortDate(hotel.checkIn) %></td><td><%= shortDate(hotel.checkOut) %></td><td><%= safe(hotel.nights) %></td></tr><% }); %>
+        </tbody>
+      </table>
+      <div class="total-nights"><strong>Total Nights:</strong><span><%= totalNights %></span></div>
+    </section>
+
+    <section>
+      <div class="section-title">Transport/Services</div>
+      <table class="transport">
+        <thead><tr><th>Travel Date</th><th>Transporter</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody><% const transport = transportList[0] || {}; %><tr><td><%= shortDate(voucher?.date) %></td><td><%= safe(transport.type) %></td><td></td><td><%= safe(transport.route) %></td></tr></tbody>
+      </table>
+    </section>
+
+    <div class="flight-row">
+      <section class="flight-box"><div class="section-title">Departure (Pakistan to KSA)</div><table class="flight-table"><thead><tr><th>Flight</th><th>Sector</th><th>Departure</th><th>Arrival</th></tr></thead><tbody><tr><td><%= safe(departure.flightNo) %></td><td><%= safe(departure.fromCity) %> / <%= safe(departure.toCity) %></td><td><%= shortDate(departure.date) %> <%= shortTime(departure.takeoff) %></td><td><%= shortDate(departure.date) %> <%= shortTime(departure.landing) %></td></tr></tbody></table></section>
+      <section class="flight-box"><div class="section-title">Arrival (KSA to PAK)</div><table class="flight-table"><thead><tr><th>Flight</th><th>Sector</th><th>Departure</th><th>Arrival</th></tr></thead><tbody><tr><td><%= safe(arrival.flightNo) %></td><td><%= safe(arrival.fromCity) %> / <%= safe(arrival.toCity) %></td><td><%= shortDate(arrival.date) %> <%= shortTime(arrival.takeoff) %></td><td><%= shortDate(arrival.date) %> <%= shortTime(arrival.landing) %></td></tr></tbody></table></section>
+      <% if (typeof qrImage !== 'undefined' && qrImage) { %><img class="qr" src="<%= qrImage %>" alt="Voucher QR"><% } %>
+    </div>
+    <div class="notes">Special Instructions: <span><%= safe(typeof notes !== 'undefined' ? notes : '—') %></span></div>
+    <div class="contact-heading">SAUDI ARABIA TEAM CONTACT DETAILS</div>
+    <table class="contacts"><tbody><tr><td>MAKKAH HOTEL / COMPLAIN HELPLINE</td><td>+966 55 869 5215</td></tr><tr><td>MADINA HOTEL / COMPLAIN HELPLINE</td><td>+966 55 304 3236</td></tr></tbody></table>
+    <div class="approved-stamp" aria-hidden="true">Approved</div>
+    <div class="urdu" lang="ur">
+      <div>ہوٹل چیک اِن ٹائم 04:00 PM اور چیک آؤٹ ٹائم 02:00 PM ہے۔</div>
+      <div>فلائٹ مس ہونے کی صورت میں کمپنی ذمہ دار نہیں، ہوٹل چارجز ریفنڈ نہیں ہوں گے۔</div>
+      <div>ایئر لائن میں تاخیر کسی بھی صورت میں ہماری ذمہ داری نہیں ہے، براہِ کرم اسے سمجھ لیں۔</div>
+      <div>سعودی عرب میں کسی بھی پریشانی کی صورت میں ہمارے دیے گئے نمبروں پر رابطہ کریں۔</div>
+      <div>یہ واؤچر صرف اس شخص کے لیے ہے جس کے نام پر جاری کیا گیا ہے۔</div>
+      <div>کسی بھی تبدیلی کی صورت میں فوری طور پر ایجنسی سے رابطہ کریں۔</div>
+    </div>
+  </main>
+</body>
+</html>
