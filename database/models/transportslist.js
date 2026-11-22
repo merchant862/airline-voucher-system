@@ -36,7 +36,8 @@ module.exports = (sequelize, DataTypes) => {
       'MED-JED',
       'MED-JED-MED',
       'JED-MED-JED',
-      'MED-MAK-MED'
+      'MED-MAK-MED',
+      'MED-MAK-JED'
     )
 
   }, {
