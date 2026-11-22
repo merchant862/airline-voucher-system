@@ -191,9 +191,14 @@
         const page = document.querySelector('.voucher-page');
         const fitMobile = () => {
           const mobile = window.matchMedia('(screen and (max-width: 800px))').matches;
-          const scale = mobile ? Math.min(1, window.innerWidth / 816) : 1;
+          const viewportWidth = Math.min(window.innerWidth, document.documentElement.clientWidth, window.visualViewport?.width || window.innerWidth);
+          const scale = mobile ? Math.min(1, viewportWidth / 816) : 1;
           page.style.transform = 'none';
           page.style.zoom = scale;
+          page.style.margin = mobile ? '0' : '';
+          document.documentElement.style.overflowX = mobile ? 'hidden' : '';
+          document.body.style.width = mobile ? '100vw' : '';
+          document.body.style.overflowX = mobile ? 'hidden' : '';
           document.body.style.height = mobile ? `${1056 * scale + 16}px` : '';
         };
         fitMobile();
