@@ -72,6 +72,7 @@
     .accommodation-section { margin-top: -5px; }
     .section-title { height: 17px; line-height: 15px; background: #d3d3d3; border: 1px solid #333; text-align: center; font-family: Arial, Helvetica, sans-serif; font-weight: 700; font-size: 12px; padding: 0 4px; color: #111; }
     table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .passengers, .accommodation, .transport { border-left: 1px solid #444; border-right: 1px solid #444; }
     th, td { border: 1px solid var(--line); padding: 2px 3px; line-height: 1.1; overflow-wrap: anywhere; vertical-align: middle; }
     th { background: #eee; font-weight: 700; text-align: center; white-space: nowrap; }
     td { height: 18px; }
@@ -98,10 +99,10 @@
     .transport tbody td { border-left: 0; border-right: 0; border-top: 0; border-bottom: 1px dotted #666; }
     .passengers tbody td:first-child,
     .accommodation tbody td:first-child,
-    .transport tbody td:first-child { border-left: 1px solid var(--line); }
+    .transport tbody td:first-child { border-left: 1px solid #444 !important; }
     .passengers tbody td:last-child,
     .accommodation tbody td:last-child,
-    .transport tbody td:last-child { border-right: 1px solid var(--line); }
+    .transport tbody td:last-child { border-right: 1px solid #444 !important; }
     .flight-row { display: grid; width: 765px; max-width: 765px; grid-template-columns: 336px 332px 93px; gap: 2px; align-items: stretch; margin-top: 4px; }
     .flight-box { min-width: 0; }
     .voucher-page > section:nth-of-type(3) .section-title { height: 18px; line-height: 16px; }
