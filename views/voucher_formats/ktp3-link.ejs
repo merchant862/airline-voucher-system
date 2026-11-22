@@ -165,7 +165,7 @@
       <div class="section-title">Transport/Services</div>
       <table class="transport">
         <thead><tr><th>Travel Date</th><th>Transporter</th><th>Type</th><th>Description</th></tr></thead>
-        <tbody><% const transport = transportList[0] || {}; %><tr><td><%= shortDate(voucher?.date) %></td><td><%= safe(transport.type) %></td><td></td><td><%= safe(transport.route) %></td></tr></tbody>
+        <tbody><% const transport = transportList[0] || {}; %><tr><td><%= shortDate(voucher?.date) %></td><td></td><td><%= safe(transport.type) %></td><td><%= safe(transport.route) %></td></tr></tbody>
       </table>
     </section>
 
@@ -193,8 +193,9 @@
           const mobile = window.matchMedia('(screen and (max-width: 800px))').matches;
           const viewportWidth = Math.min(window.innerWidth, document.documentElement.clientWidth, window.visualViewport?.width || window.innerWidth);
           const scale = mobile ? Math.min(1, viewportWidth / 816) : 1;
-          page.style.transform = 'none';
-          page.style.zoom = scale;
+          page.style.zoom = 1;
+          page.style.transformOrigin = 'top left';
+          page.style.transform = `scale(${scale})`;
           page.style.margin = mobile ? '0' : '';
           document.documentElement.style.overflowX = mobile ? 'hidden' : '';
           document.body.style.width = mobile ? '100vw' : '';

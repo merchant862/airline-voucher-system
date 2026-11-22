@@ -165,7 +165,7 @@
       <div class="section-title">Transport/Services</div>
       <table class="transport">
         <thead><tr><th>Travel Date</th><th>Transporter</th><th>Type</th><th>Description</th></tr></thead>
-        <tbody><% const transport = transportList[0] || {}; %><tr><td><%= shortDate(voucher?.date) %></td><td><%= safe(transport.type) %></td><td></td><td><%= safe(transport.route) %></td></tr></tbody>
+        <tbody><% const transport = transportList[0] || {}; %><tr><td><%= shortDate(voucher?.date) %></td><td></td><td><%= safe(transport.type) %></td><td><%= safe(transport.route) %></td></tr></tbody>
       </table>
     </section>
 
