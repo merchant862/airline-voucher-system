@@ -83,10 +83,6 @@ async function getVoucherTemplate(req, res, next) {
             Object.assign(departureFlight, { flightNo: "EY-295", date: "30-Sep", fromCity: "KHI", toCity: "RUH", takeoff: "21:35", landing: "02:55" });
             Object.assign(arrivalFlight, { flightNo: "EY-602", date: "20-Oct", fromCity: "JED", toCity: "KHI", takeoff: "03:10", landing: "11:00" });
         }
-
-        // Keep the KTP-3 preview compact for one-customer layout checks.
-        if (format.ejsPath.includes('ktp3')) customers.splice(1);
-
         const notes = ``;
         const passengerFlightData = buildPassengerFlightData(customers, departureFlight, arrivalFlight);
 
