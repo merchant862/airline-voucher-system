@@ -50,15 +50,40 @@ function stableStringify(value) {
     return JSON.stringify(value);
 }
 
+function normalizeFingerprintValue(value) {
+    if (typeof value === 'string') {
+        const normalized = value.trim();
+        return normalized === '' ? null : normalized;
+    }
+
+    if (Array.isArray(value)) {
+        const normalized = value.map(item => normalizeFingerprintValue(item));
+        while (normalized.length && normalized[normalized.length - 1] === null) normalized.pop();
+        return normalized.length ? normalized : null;
+    }
+
+    if (value && typeof value === 'object') {
+        const normalized = {};
+        for (const key of Object.keys(value).sort()) {
+            const item = normalizeFingerprintValue(value[key]);
+            if (item !== null && item !== undefined) normalized[key] = item;
+        }
+        return Object.keys(normalized).length ? normalized : null;
+    }
+
+    return value == null ? null : value;
+}
+
 async function addVoucherController(req, res, next) {
     const t = await vouchers.sequelize.transaction();
     const createRequestId = String(
         req.body.createRequestId || req.get('Idempotency-Key') || ''
     ).trim().slice(0, 64);
     const { createRequestId: ignoredRequestId, ...voucherDetails } = req.body;
+    const normalizedVoucherDetails = normalizeFingerprintValue(voucherDetails) || {};
     const detailsFingerprint = crypto
         .createHash('sha256')
-        .update(stableStringify(voucherDetails))
+        .update(stableStringify(normalizedVoucherDetails))
         .digest('hex');
 
     try {
