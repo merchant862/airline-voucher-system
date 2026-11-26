@@ -1018,6 +1018,20 @@ function escapeAttr(value) {
 
 let isSubmitting = false;
 
+function getCreateRequestId() {
+    const storageKey = 'pendingVoucherCreateRequestId';
+    let requestId = localStorage.getItem(storageKey);
+    if (!requestId) {
+        requestId = window.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+        localStorage.setItem(storageKey, requestId);
+    }
+    return requestId;
+}
+
+function clearCreateRequestId() {
+    localStorage.removeItem('pendingVoucherCreateRequestId');
+}
+
 form.addEventListener('submit', async e => {
     e.preventDefault();
 
@@ -1039,6 +1053,7 @@ form.addEventListener('submit', async e => {
     }
 
     const payload = {
+        createRequestId: getCreateRequestId(),
         linkVoucherFormatsId: linkVoucherFormatSelect.value,
         voucherFormatsId: voucherFormatSelect.value,
         pdfTheme: document.getElementById('pdfThemeSelect').value,
@@ -1114,12 +1129,20 @@ form.addEventListener('submit', async e => {
     try {
         const response = await fetch('/api/voucher/create', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Idempotency-Key': payload.createRequestId
+            },
             body: JSON.stringify(payload)
         });
 
         if (!response.ok) {
-            throw new Error('Failed to generate PDF');
+            let errorMessage = 'Failed to generate PDF';
+            try {
+                const errorData = await response.json();
+                errorMessage = errorData.error || errorMessage;
+            } catch (_) {}
+            throw new Error(errorMessage);
         }
 
         const disposition = response.headers.get('Content-Disposition') || '';
@@ -1143,6 +1166,10 @@ form.addEventListener('submit', async e => {
         document.body.appendChild(a);
         a.click();
         a.remove();
+
+        // Only rotate after a completed response. Failed/timeout requests
+        // retain the key so a retry cannot create a second voucher.
+        clearCreateRequestId();
 
         // Keep the complete form populated so the next submission can create
         // a new voucher after the user edits any details.

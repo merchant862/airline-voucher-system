@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const ejs = require('ejs');
@@ -41,10 +42,50 @@ function getVerifiedImagePath(ejsPath = '') {
     return null;
 }
 
+function stableStringify(value) {
+    if (Array.isArray(value)) return `[${value.map(stableStringify).join(',')}]`;
+    if (value && typeof value === 'object') {
+        return `{${Object.keys(value).sort().map(key => `${JSON.stringify(key)}:${stableStringify(value[key])}`).join(',')}}`;
+    }
+    return JSON.stringify(value);
+}
+
 async function addVoucherController(req, res, next) {
     const t = await vouchers.sequelize.transaction();
+    const createRequestId = String(
+        req.body.createRequestId || req.get('Idempotency-Key') || ''
+    ).trim().slice(0, 64);
+    const { createRequestId: ignoredRequestId, ...voucherDetails } = req.body;
+    const detailsFingerprint = crypto
+        .createHash('sha256')
+        .update(stableStringify(voucherDetails))
+        .digest('hex');
 
     try {
+        // Replaying a timed-out create request must reuse its voucher.
+        if (createRequestId) {
+            const existingVoucher = await vouchers.findOne({
+                where: { createRequestId },
+                transaction: t
+            });
+
+            if (existingVoucher) {
+                await t.rollback();
+                return res.redirect(303, `/voucher/download/${existingVoucher.id}`);
+            }
+        }
+
+        const duplicateVoucher = await vouchers.findOne({
+            where: { detailsFingerprint },
+            transaction: t
+        });
+        if (duplicateVoucher) {
+            await t.rollback();
+            return res.status(409).json({
+                error: `Voucher with the same details is already created (${duplicateVoucher.voucherNo})`
+            });
+        }
+
         const selectedVoucherFormat = await voucherFormats.findOne({
             where: { id: req.body.voucherFormatsId, name: 'DOWNLOAD_FORMAT' },
             transaction: t
@@ -64,6 +105,8 @@ async function addVoucherController(req, res, next) {
         // 1️⃣ CREATE VOUCHER
         // ==============================
         const voucher = await vouchers.create({
+            createRequestId: createRequestId || null,
+            detailsFingerprint,
             linkVoucherFormatsId: req.body.linkVoucherFormatsId,
             voucherFormatsId: req.body.voucherFormatsId,
             pdfTheme: getVoucherThemeKey(req.body.pdfTheme),
@@ -395,7 +438,23 @@ res.set({
 return res.end(Buffer.from(pdfBuffer), 'binary');
 
     } catch (error) {
-        if (t.finished !== 'commit') await t.rollback();
+        // The unique index arbitrates concurrent retries with the same key.
+        if (createRequestId && error.name === 'SequelizeUniqueConstraintError') {
+            try { if (!t.finished) await t.rollback(); } catch (_) {}
+            const existingVoucher = await vouchers.findOne({ where: { createRequestId } });
+            if (existingVoucher) {
+                return res.redirect(303, `/voucher/download/${existingVoucher.id}`);
+            }
+
+            const duplicateVoucher = await vouchers.findOne({ where: { detailsFingerprint } });
+            if (duplicateVoucher) {
+                return res.status(409).json({
+                    error: `Voucher with the same details is already created (${duplicateVoucher.voucherNo})`
+                });
+            }
+        }
+
+        if (t.finished !== 'commit' && !t.finished) await t.rollback();
         next(error);
     }
 }

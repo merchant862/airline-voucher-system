@@ -24,6 +24,8 @@ module.exports = (sequelize, DataTypes) => {
   vouchers.init({
     companyId: DataTypes.INTEGER,
     voucherNo: DataTypes.STRING,
+    createRequestId: DataTypes.STRING,
+    detailsFingerprint: DataTypes.STRING,
     departureFlightDate: DataTypes.DATE,
     departureFlightNo: DataTypes.STRING,
     departureFlightFromCity: DataTypes.STRING,
